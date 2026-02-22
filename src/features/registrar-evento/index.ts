@@ -1,0 +1,1 @@
+export { RegistrarEventoForm } from './RegistrarEventoForm';

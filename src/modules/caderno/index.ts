@@ -1,0 +1,1 @@
+export { CadernoView } from './CadernoView';
