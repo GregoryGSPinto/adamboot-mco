@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '@app/auth';
 import { Navigate } from 'react-router-dom';
 
@@ -15,13 +15,25 @@ export function HomePage() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
+  const [errorCount, setErrorCount] = useState(0);
+
+  // Shake on error
+  useEffect(() => {
+    if (errorCount > 0) {
+      setShake(true);
+      const t = setTimeout(() => setShake(false), 500);
+      return () => clearTimeout(t);
+    }
+  }, [errorCount]);
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
     setShake(false);
     await login(email, password);
     setLoading(false);
-    requestAnimationFrame(() => { setShake(true); setTimeout(() => setShake(false), 500); });
+    // loginError is set synchronously in useDevAuth, so check after await
+    // We increment errorCount to trigger shake even for repeated errors
+    setErrorCount((c) => c + 1);
   }, [email, password, login]);
 
   const onKey = useCallback((e: React.KeyboardEvent) => { if (e.key === 'Enter') handleSubmit(); }, [handleSubmit]);
