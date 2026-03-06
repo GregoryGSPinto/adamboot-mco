@@ -186,7 +186,7 @@ export function PerfilPage() {
 
           <ToggleRow
             label="Alertas de prazo"
-            desc="Avisar quando faltar &lt; 7 dias para apresentação"
+            desc="Avisar quando faltar menos de 7 dias para apresentação"
             value={settings.deadlineAlerts as boolean}
             onChange={(v) => update('deadlineAlerts', v)}
           />

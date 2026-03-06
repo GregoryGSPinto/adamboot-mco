@@ -31,8 +31,8 @@ export function HomePage() {
     setShake(false);
     await login(email, password);
     setLoading(false);
-    // loginError is set synchronously in useDevAuth, so check after await
-    // We increment errorCount to trigger shake even for repeated errors
+    // Increment errorCount to re-trigger shake on repeated failures.
+    // On success, isAuthenticated flips and <Navigate> renders immediately.
     setErrorCount((c) => c + 1);
   }, [email, password, login]);
 
@@ -59,25 +59,26 @@ export function HomePage() {
 
         {/* Email */}
         <div style={field}>
-          <label style={label}>E-mail</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={onKey}
+          <label htmlFor="login-email" style={label}>E-mail</label>
+          <input id="login-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={onKey}
             placeholder="demo@mco.vale.com" autoComplete="email" autoFocus style={input} className="login-input" />
         </div>
 
         {/* Senha */}
         <div style={field}>
-          <label style={label}>Senha</label>
+          <label htmlFor="login-password" style={label}>Senha</label>
           <div style={{ position: 'relative' }}>
-            <input type={showPw ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)}
+            <input id="login-password" type={showPw ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)}
               onKeyDown={onKey} placeholder="••••••" autoComplete="current-password" style={input} className="login-input" />
-            <button onClick={() => setShowPw(!showPw)} style={eyeBtn} type="button" tabIndex={-1}>
+            <button onClick={() => setShowPw(!showPw)} style={eyeBtn} type="button" tabIndex={-1}
+              aria-label={showPw ? 'Ocultar senha' : 'Mostrar senha'}>
               {showPw ? '◉' : '◎'}
             </button>
           </div>
         </div>
 
         {/* Entrar */}
-        <button onClick={handleSubmit} disabled={loading || !email || !password} className="login-btn" style={submitBtn}>
+        <button onClick={handleSubmit} disabled={loading || !email || !password} className="login-btn" style={submitBtn} aria-label="Entrar">
           {loading ? <span className="login-spinner" /> : 'Entrar'}
         </button>
 

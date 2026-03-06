@@ -589,7 +589,7 @@ a:hover { color: var(--vale-cyan); }
 }
 
 .login-card input::placeholder {
-  color: rgba(255,255,255,0.15);
+  color: var(--text-muted);
 }
 
 .login-btn:disabled {

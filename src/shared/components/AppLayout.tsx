@@ -179,6 +179,7 @@ export function AppLayout({ children }: Props) {
             onClick={() => setMenuOpen(true)}
             className={menuOpen ? 'nav-active' : ''}
             style={menuBtnStyle}
+            aria-label="Abrir menu de navegação"
           >
             <span className="nav-icon">☰</span>
             <span>Menu</span>
@@ -189,11 +190,11 @@ export function AppLayout({ children }: Props) {
       {/* ═══ MOBILE MENU DRAWER ═══ */}
       {menuOpen && (
         <>
-          <div style={drawerOverlay} onClick={() => setMenuOpen(false)} />
+          <div style={drawerOverlay} onClick={() => setMenuOpen(false)} role="presentation" aria-hidden="true" />
           <div className="mobile-drawer" style={drawerStyle}>
             <div style={drawerHeader}>
               <span style={{ fontSize: '1rem', fontWeight: 700 }}>Menu</span>
-              <button onClick={() => setMenuOpen(false)} style={drawerClose}>✕</button>
+              <button onClick={() => setMenuOpen(false)} style={drawerClose} aria-label="Fechar menu">✕</button>
             </div>
             {ALL_NAV.map((item) => {
               const active = isActive(item.path);
