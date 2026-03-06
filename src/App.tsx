@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { AppProviders } from './app/providers/AppProviders';
 import { AppRouter } from './app/router/AppRouter';
+import { MCOIntlProvider } from './i18n';
 import { startReactionEngine, stopReactionEngine } from '@modules/ai';
 import { initOfflineListeners } from '@modules/offline';
 import { initErrorCapture } from '@modules/monitoramento';
@@ -43,8 +44,10 @@ export function App() {
   }, []);
 
   return (
-    <AppProviders>
-      <AppRouter />
-    </AppProviders>
+    <MCOIntlProvider>
+      <AppProviders>
+        <AppRouter />
+      </AppProviders>
+    </MCOIntlProvider>
   );
 }
