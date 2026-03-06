@@ -7,7 +7,6 @@
  */
 
 import {
-  requisitosDaFase,
   requisitosObrigatorios,
   FASE_LABELS,
   type RequisitoFase,
@@ -120,7 +119,6 @@ export function calcularStatusProjeto(projeto: ProjetoMelhoria): StatusProjeto {
 
 function calcularBloqueio(projeto: ProjetoMelhoria): BloqueioFase {
   const fase = projeto.faseAtual;
-  const todosRequisitos = requisitosDaFase(fase);
   const obrigatorios = requisitosObrigatorios(fase);
 
   const evidenciaIds = new Set(projeto.evidencias.map((e) => e.requisitoId));

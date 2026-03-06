@@ -99,7 +99,7 @@ export function gerarMensagemCobranca(params: {
   destinatario: DestinatarioCobranca;
   projetoNome: string;
 }): string {
-  const { nome, requisitoDesc, diasAtraso, nivel, destinatario, projetoNome } = params;
+  const { nome, requisitoDesc, diasAtraso, nivel, destinatario: _destinatario, projetoNome } = params;
   const firstName = nome.split(' ')[0];
 
   switch (nivel) {

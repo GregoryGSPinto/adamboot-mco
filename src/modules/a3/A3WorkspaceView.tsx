@@ -32,7 +32,7 @@ import { gerarDicaPasso, mensagemBloqueioAvanco } from '@modules/ai/pedagogicalF
 
 export function A3WorkspaceView() {
   const { status } = useProjectContext();
-  const { projeto, bloqueio } = status;
+  const { projeto, bloqueio: _bloqueio } = status;
   const [showBloqueio, setShowBloqueio] = useState<string | null>(null);
 
   // Extrair dados do projeto para validação

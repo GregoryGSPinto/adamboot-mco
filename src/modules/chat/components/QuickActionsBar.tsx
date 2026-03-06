@@ -10,7 +10,7 @@
  */
 
 import { useState } from 'react';
-import { getQuickActions, type QuickAction } from '../quickActions';
+import { getQuickActions } from '../quickActions';
 
 interface QuickActionsBarProps {
   faseAtual: number;

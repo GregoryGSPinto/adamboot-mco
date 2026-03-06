@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useState, useCallback, useRef } from 'react';
 import { requisitosDaFase, FASE_LABELS, TOTAL_FASES } from '@shared/engine';
-import type { StatusProjeto, EvidenciaCumprida, RequisitoPendente, RequisitoFase, AcaoProjeto } from '@shared/engine';
+import type { StatusProjeto, EvidenciaCumprida, RequisitoPendente, AcaoProjeto } from '@shared/engine';
 import { dispatchNudge } from '@modules/chat/nudgeBus';
 import { useCumprirRequisito, useRemoverEvidencia, useAdicionarAcao, useRemoverAcao, useAvancarFaseProjeto } from '@modules/projeto';
 
@@ -17,7 +17,7 @@ import { useCumprirRequisito, useRemoverEvidencia, useAdicionarAcao, useRemoverA
  * Recebe StatusProjeto e renderiza tudo.
  */
 export function CadernoView({ status }: { status: StatusProjeto }) {
-  const { projeto, faseLabel, bloqueio, diasRestantes, risco } = status;
+  const { projeto, faseLabel, bloqueio, diasRestantes } = status;
   const lider = projeto.membros.find((m) => m.papel === 'lider');
   const facilitador = projeto.membros.find((m) => m.papel === 'facilitador');
   const membros = projeto.membros.filter((m) => m.papel === 'membro');
@@ -270,7 +270,7 @@ function PhaseRequisitos({ projetoId, fase, evidencias }: {
                 {req.descricao}
               </div>
               <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.125rem' }}>
-                <span style={metaTag}>{req.responsavel}</span>
+                <span style={metaTag}>{req.responsavelTipo}</span>
                 {req.obrigatorio && <span style={{ ...metaTag, color: 'var(--sev-critica)' }}>obrigatório</span>}
                 {ev && <span style={{ ...metaTag, color: 'var(--vale-green)' }}>{ev.dataRegistro}</span>}
               </div>

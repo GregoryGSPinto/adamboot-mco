@@ -1,7 +1,6 @@
 import {
   useMutation,
   useQueryClient,
-  UseMutationOptions,
   UseMutationResult,
 } from '@tanstack/react-query';
 import { ConcurrencyConflictError, ApiError } from '@shared/errors';

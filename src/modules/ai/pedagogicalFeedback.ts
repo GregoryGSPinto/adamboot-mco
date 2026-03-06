@@ -10,7 +10,7 @@
  *   🔴 BLOQUEIO — impede avanço, exige correção
  */
 
-import type { SeveridadeValidacao, ResultadoValidacao } from './a3Validator';
+import type { ResultadoValidacao } from './a3Validator';
 
 // ════════════════════════════════════
 // ORIENTAÇÕES POR PASSO

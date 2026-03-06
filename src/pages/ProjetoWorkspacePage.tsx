@@ -5,7 +5,6 @@ import { ProjectProvider, useProjectContext } from '@modules/projeto';
 import { registerProject } from '@modules/ai';
 import { computeLeaderFocus } from '@modules/mission/computeLeaderFocus';
 import { MissionItemRow } from '@modules/mission/components/MissionItemRow';
-import { CadernoView } from '@modules/caderno';
 import { ConversaProjeto } from '@modules/conversa';
 import { subscribeNudges } from '@modules/chat/nudgeBus';
 import { useEnviarMensagem } from '@modules/conversa';
@@ -143,7 +142,7 @@ function TabMissao() {
     );
   }
 
-  const { mainAlert, focus } = computeLeaderFocus([missionGroup]);
+  const { mainAlert, focus: _focus } = computeLeaderFocus([missionGroup]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -163,16 +162,6 @@ function TabMissao() {
       ))}
     </div>
   );
-}
-
-// ════════════════════════════════════
-// TAB: CADERNO
-// Lê status do contexto → passa para CadernoView puro
-// ════════════════════════════════════
-
-function TabCaderno() {
-  const { status } = useProjectContext();
-  return <CadernoView status={status} />;
 }
 
 // ════════════════════════════════════

@@ -19,10 +19,8 @@
  * Em produção: backend gera .pptx real via pptxgenjs.
  */
 
-import { FASE_LABELS } from '@shared/engine';
-import type { ProjetoMelhoria, StatusProjeto } from '@shared/engine';
-import type { Resultado } from '@modules/verificacao';
-import { getResultados, compararAntesDepois } from '@modules/verificacao';
+import type { StatusProjeto } from '@shared/engine';
+import { getResultados } from '@modules/verificacao';
 
 // ════════════════════════════════════
 // TYPES

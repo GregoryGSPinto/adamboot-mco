@@ -16,7 +16,7 @@ import { useEnviarMensagem } from '@modules/conversa';
  * a mensagem aparece automaticamente aqui.
  */
 export function ChatPage() {
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
   const { data: projetos, isLoading } = useProjetos();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 

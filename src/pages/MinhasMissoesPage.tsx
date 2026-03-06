@@ -286,7 +286,7 @@ export function MinhasMissoesPage() {
             <span style={badgeStyle(priorityColor(item.priority))}>
               {priorityLabel(item.priority)}
             </span>
-            {item.daysLate > 0 && (
+            {(item.daysLate ?? 0) > 0 && (
               <span style={{ color: '#dc2626', fontWeight: 600 }}>
                 {item.daysLate}d atrasado
               </span>

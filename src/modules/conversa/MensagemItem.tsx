@@ -1,7 +1,6 @@
 import type React from 'react';
 import { useCallback, useRef } from 'react';
 import type { MensagemProjeto } from '@shared/api/mock-conversa';
-import { FASE_LABELS } from '@shared/engine';
 import { requisitosDaFase } from '@shared/engine/requisitos-masp';
 
 interface Props {

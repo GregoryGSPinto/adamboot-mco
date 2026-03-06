@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ApiService } from '@shared/api';
 import { mockDb } from '@shared/api/mock-db';
 import { isDevAuth } from '@app/auth/dev-auth';
-import type { CicloDto, CriarCicloDto, AvancarFaseDto } from '@shared/dto';
+import type { CicloDto, AvancarFaseDto } from '@shared/dto';
 
 const api = new ApiService<CicloDto>('/ciclos-melhoria');
 

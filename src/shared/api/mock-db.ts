@@ -2,7 +2,6 @@ import type {
   EventoDto,
   CicloDto,
   CriarEventoDto,
-  CriarCicloDto,
   FaseCiclo,
   EvidenciaDto,
 } from '@shared/dto';

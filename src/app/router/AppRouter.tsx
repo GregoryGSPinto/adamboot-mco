@@ -1,69 +1,63 @@
+import React, { Suspense } from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
-import { AppLayout } from '@shared/components';
+import { AppLayout, ErrorBoundary } from '@shared/components';
 import { ProtectedRoute } from '@shared/components';
 import { HomePage } from './pages/HomePage';
-import { MissaoPage } from '../../pages/MissaoPage';
-import { ProjetoPage } from '../../pages/ProjetoPage';
-import { ProjetoWorkspacePage } from '../../pages/ProjetoWorkspacePage';
-import { ChatPage } from '../../pages/ChatPage';
-import { BibliotecaPage } from '../../pages/BibliotecaPage';
-import { PerfilPage } from '../../pages/PerfilPage';
-import { ApresentacaoProjetoPage } from '../../pages/ApresentacaoProjetoPage';
-import { NotasPage } from '../../pages/NotasPage';
-import { AdminPage } from '../../pages/AdminPage';
-import { AcervoPage } from '../../pages/AcervoPage';
-import { AuditoriaPage } from '../../pages/AuditoriaPage';
-import { MinhasMissoesPage } from '../../pages/MinhasMissoesPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
-/**
- * Roteamento MCO.
- *
- * /                → Login (fullscreen, SEM AppLayout)
- * /missao          → Dashboard (radar do líder)
- * /projeto         → Processos (seletor de caderno)
- * /projeto/:id     → Workspace do projeto
- * /notas           → Notas operacionais
- * /apresentacao    → Indicadores (apresentação editável)
- * /chat            → Conversa
- * /library         → Documentos
- * /perfil          → Configurações
- * /admin           → Administração do sistema
- * /acervo          → Gestão de conhecimento
- * /auditoria       → Log de auditoria
- * /minhas-missoes  → Visão do membro
- */
+// Lazy-loaded pages
+const MissaoPage = React.lazy(() => import('../../pages/MissaoPage').then(m => ({ default: m.MissaoPage })));
+const ProjetoPage = React.lazy(() => import('../../pages/ProjetoPage').then(m => ({ default: m.ProjetoPage })));
+const ProjetoWorkspacePage = React.lazy(() => import('../../pages/ProjetoWorkspacePage').then(m => ({ default: m.ProjetoWorkspacePage })));
+const ChatPage = React.lazy(() => import('../../pages/ChatPage').then(m => ({ default: m.ChatPage })));
+const BibliotecaPage = React.lazy(() => import('../../pages/BibliotecaPage').then(m => ({ default: m.BibliotecaPage })));
+const PerfilPage = React.lazy(() => import('../../pages/PerfilPage').then(m => ({ default: m.PerfilPage })));
+const ApresentacaoProjetoPage = React.lazy(() => import('../../pages/ApresentacaoProjetoPage').then(m => ({ default: m.ApresentacaoProjetoPage })));
+const NotasPage = React.lazy(() => import('../../pages/NotasPage').then(m => ({ default: m.NotasPage })));
+const AdminPage = React.lazy(() => import('../../pages/AdminPage').then(m => ({ default: m.AdminPage })));
+const AcervoPage = React.lazy(() => import('../../pages/AcervoPage').then(m => ({ default: m.AcervoPage })));
+const AuditoriaPage = React.lazy(() => import('../../pages/AuditoriaPage').then(m => ({ default: m.AuditoriaPage })));
+const MinhasMissoesPage = React.lazy(() => import('../../pages/MinhasMissoesPage').then(m => ({ default: m.MinhasMissoesPage })));
+
+function PageLoader() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+      <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--vale-teal)', animation: 'pulse-step 1s ease-in-out infinite', marginRight: 8 }} />
+      Carregando...
+    </div>
+  );
+}
+
 export function AppRouter() {
   return (
     <Routes>
-      {/* Login — fullscreen, sem shell */}
       <Route path="/" element={<HomePage />} />
 
-      {/* App — com shell (header, nav, footer) */}
       <Route element={<AppShell />}>
-        <Route path="/missao" element={<ProtectedRoute><MissaoPage /></ProtectedRoute>} />
-        <Route path="/projeto" element={<ProtectedRoute><ProjetoPage /></ProtectedRoute>} />
-        <Route path="/projeto/:id" element={<ProtectedRoute><ProjetoWorkspacePage /></ProtectedRoute>} />
-        <Route path="/notas" element={<ProtectedRoute><NotasPage /></ProtectedRoute>} />
-        <Route path="/apresentacao" element={<ProtectedRoute><ApresentacaoProjetoPage /></ProtectedRoute>} />
-        <Route path="/chat" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
-        <Route path="/library" element={<ProtectedRoute><BibliotecaPage /></ProtectedRoute>} />
-        <Route path="/perfil" element={<ProtectedRoute><PerfilPage /></ProtectedRoute>} />
-        <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
-        <Route path="/acervo" element={<ProtectedRoute><AcervoPage /></ProtectedRoute>} />
-        <Route path="/auditoria" element={<ProtectedRoute><AuditoriaPage /></ProtectedRoute>} />
-        <Route path="/minhas-missoes" element={<ProtectedRoute><MinhasMissoesPage /></ProtectedRoute>} />
+        <Route path="/missao" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><MissaoPage /></Suspense></ProtectedRoute>} />
+        <Route path="/projeto" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><ProjetoPage /></Suspense></ProtectedRoute>} />
+        <Route path="/projeto/:id" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><ProjetoWorkspacePage /></Suspense></ProtectedRoute>} />
+        <Route path="/notas" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><NotasPage /></Suspense></ProtectedRoute>} />
+        <Route path="/apresentacao" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><ApresentacaoProjetoPage /></Suspense></ProtectedRoute>} />
+        <Route path="/chat" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><ChatPage /></Suspense></ProtectedRoute>} />
+        <Route path="/library" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><BibliotecaPage /></Suspense></ProtectedRoute>} />
+        <Route path="/perfil" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><PerfilPage /></Suspense></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute requiredRoles={['admin', 'coordenador']}><Suspense fallback={<PageLoader />}><AdminPage /></Suspense></ProtectedRoute>} />
+        <Route path="/acervo" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><AcervoPage /></Suspense></ProtectedRoute>} />
+        <Route path="/auditoria" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><AuditoriaPage /></Suspense></ProtectedRoute>} />
+        <Route path="/minhas-missoes" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><MinhasMissoesPage /></Suspense></ProtectedRoute>} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
 }
 
-/** Layout wrapper — AppLayout + Outlet para nested routes */
 function AppShell() {
   return (
     <AppLayout>
-      <Outlet />
+      <ErrorBoundary>
+        <Outlet />
+      </ErrorBoundary>
     </AppLayout>
   );
 }

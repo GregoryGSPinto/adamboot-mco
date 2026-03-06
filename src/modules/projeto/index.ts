@@ -8,7 +8,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { mockProjetosDb } from '@shared/api/mock-projetos';
 import { calcularStatusProjeto } from '@shared/engine';
-import type { StatusProjeto, ProjetoMelhoria } from '@shared/engine';
+import type { StatusProjeto } from '@shared/engine';
 import { dispatchDomainEvent } from '@modules/core/domainEvents';
 
 export const projetoKeys = {

@@ -75,10 +75,8 @@ interface ScheduledIntervention {
 
 const SILENCE_WINDOW_MS = 2 * 60_000;   // 2 min de silêncio para poder falar
 const MAX_DEFERS = 10;                    // máx reagendamentos (≈20min)
-const IMMEDIATE_EVENTS = new Set([        // esses ignoram a janela (são resposta direta)
-  'requirement_completed',
-  'phase_advanced',
-]);
+// IMMEDIATE_EVENTS kept for reference: requirement_completed, phase_advanced
+// These event types bypass the silence window (handled via `immediate` param in scheduleIntervention).
 
 // ════════════════════════════════════
 // MENSAGENS POR PERFIL
@@ -531,6 +529,14 @@ async function runPeriodicChecks(): Promise<void> {
       memory.delete(projectId);
     }
   }
+
+  // Cleanup inactive projects (>30 days without events)
+  const CLEANUP_THRESHOLD = 30 * 24 * 3600_000;
+  for (const [projectId, mem] of memory.entries()) {
+    if (Date.now() - mem.lastEventAt > CLEANUP_THRESHOLD) {
+      memory.delete(projectId);
+    }
+  }
 }
 
 // ── Inatividade ──
@@ -668,6 +674,7 @@ function getAverageOtherPhaseDuration(mem: ProjectMemory): number {
 }
 
 function pick<T>(arr: T[]): T {
+  if (arr.length === 0) throw new Error('pick() called on empty array');
   return arr[Math.floor(Math.random() * arr.length)];
 }
 

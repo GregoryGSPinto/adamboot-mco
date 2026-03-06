@@ -19,7 +19,6 @@ import {
   marcarPresenca,
   registrarDecisao,
   criarTarefaRapida,
-  gerarAta,
   type Reuniao,
   type AtaGerada,
 } from '@modules/reuniao';
@@ -100,11 +99,6 @@ const btnPrimary: React.CSSProperties = {
 const btnDanger: React.CSSProperties = {
   ...btnPrimary,
   background: '#dc2626',
-};
-
-const btnGreen: React.CSSProperties = {
-  ...btnPrimary,
-  background: 'var(--vale-green)',
 };
 
 const miniBtn: React.CSSProperties = {

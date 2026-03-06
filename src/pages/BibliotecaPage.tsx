@@ -163,7 +163,7 @@ function PhaseDetail({ projetoId, fase, evidencias }: {
                 {req.descricao}
               </div>
               <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.125rem' }}>
-                <span style={reqTag}>{req.responsavel}</span>
+                <span style={reqTag}>{req.responsavelTipo}</span>
                 {req.obrigatorio && <span style={{ ...reqTag, color: 'var(--sev-critica)' }}>obrigatório</span>}
                 {ev && <span style={{ ...reqTag, color: 'var(--vale-green)' }}>{ev.dataRegistro}</span>}
               </div>

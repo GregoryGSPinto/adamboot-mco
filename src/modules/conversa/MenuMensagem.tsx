@@ -1,7 +1,6 @@
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { requisitosDaFase, FASE_LABELS } from '@shared/engine';
-import type { RequisitoFase } from '@shared/engine';
 
 interface Props {
   mensagemId: string;
@@ -26,7 +25,7 @@ export function MenuMensagem({
   mensagemId,
   fase,
   ehDecisao,
-  temAnexo,
+  temAnexo: _,
   posX,
   posY,
   onClose,

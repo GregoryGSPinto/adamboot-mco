@@ -51,8 +51,6 @@ export function validarProblema(texto: string): ResultadoValidacao {
     };
   }
 
-  const t = texto.toLowerCase();
-
   // Verificar se contém número/indicador
   const temNumero = /\d+/.test(texto);
   const temIndicador = /(vezes|%|porcento|eventos|ocorrências|horas|minutos|dias|reais|r\$|km|ton|unidades)/i.test(texto);
@@ -114,7 +112,6 @@ export function validarMeta(texto: string): ResultadoValidacao {
     };
   }
 
-  const t = texto.toLowerCase();
   const problemas: string[] = [];
 
   // M - Mensurável
@@ -245,7 +242,7 @@ const ACOES_FRACAS = [
 
 export function validarContramedida(
   contramedida: string,
-  causaRaiz?: string,
+  _causaRaiz?: string,
 ): ResultadoValidacao {
   if (!contramedida || contramedida.trim().length < 10) {
     return {

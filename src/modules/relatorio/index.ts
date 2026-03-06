@@ -136,7 +136,7 @@ export function gerarRelatorio(
   if (config.incluirEvidencias && projeto.evidencias.length > 0) {
     linhas.push('─── EVIDÊNCIAS REGISTRADAS ───');
     projeto.evidencias.forEach((e) => {
-      linhas.push(`  ✓ ${e.requisitoId} — por ${config.anonimizar ? '***' : e.userId} em ${e.dataRegistro}`);
+      linhas.push(`  ✓ ${e.requisitoId} — por ${config.anonimizar ? '***' : e.preenchidoPor} em ${e.dataRegistro}`);
     });
     linhas.push('');
   }
@@ -185,7 +185,7 @@ export function exportarCSV(status: StatusProjeto): string {
   // Evidências cumpridas
   projeto.evidencias.forEach((e) => {
     const faseNum = parseInt(e.requisitoId.split('_')[0].replace('F', ''));
-    linhas.push(`${faseNum},${e.requisitoId},Cumprido,${e.userId},${e.dataRegistro}`);
+    linhas.push(`${faseNum},${e.requisitoId},Cumprido,${e.preenchidoPor},${e.dataRegistro}`);
   });
 
   // Pendentes

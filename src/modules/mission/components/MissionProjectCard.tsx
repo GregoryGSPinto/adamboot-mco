@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { MissionGroup } from '../types';
-import { priorityWeight } from '../priority';
+
 
 interface Props {
   group: MissionGroup;

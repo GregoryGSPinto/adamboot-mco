@@ -167,7 +167,7 @@ export function exportarDadosUsuario(userId: string, userName: string): Exportac
 /**
  * Verificar itens com retenção expirada.
  */
-export function verificarRetencao(config: RetencaoConfig = RETENCAO_DEFAULT): {
+export function verificarRetencao(_config: RetencaoConfig = RETENCAO_DEFAULT): {
   projetosExpirados: number;
   logsExpirados: number;
 } {

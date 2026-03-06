@@ -9,7 +9,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { mockConversaDb } from '@shared/api/mock-conversa';
-import type { MensagemProjeto, Anexo } from '@shared/api/mock-conversa';
+import type { Anexo } from '@shared/api/mock-conversa';
 import { dispatchDomainEvent } from '@modules/core/domainEvents';
 
 export type { MensagemProjeto, Anexo, TipoMensagem } from '@shared/api/mock-conversa';

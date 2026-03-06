@@ -1,5 +1,5 @@
 import type React from 'react';
-import { ReactNode, useState, useRef, useEffect, useCallback } from 'react';
+import { ReactNode, useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@app/auth';
 import { useAppStore } from '@shared/hooks/use-app-store';
