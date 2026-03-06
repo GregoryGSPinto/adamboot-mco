@@ -4,6 +4,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 
 export default defineConfig({
+  define: {
+    'import.meta.env.VITE_DEV_AUTH': JSON.stringify(process.env.VITE_DEV_AUTH ?? 'true'),
+  },
   plugins: [
     react(),
     VitePWA({
