@@ -133,7 +133,7 @@ function PhaseDetail({ projetoId, fase, evidencias }: {
     if (done) {
       if (confirm(`Remover evidência de "${req.descricao}"?`)) removerEv.mutate(req.id);
     } else {
-      cumprirReq.mutate({ requisitoId: req.id, userId: 'arttrens-001' });
+      cumprirReq.mutate({ requisitoId: req.id, userId: 'demo-user-001' });
     }
   }, [evidenciaIds, cumprirReq, removerEv]);
 

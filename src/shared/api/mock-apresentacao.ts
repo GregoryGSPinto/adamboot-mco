@@ -31,9 +31,10 @@ export interface ApresentacaoData {
   footerEvento: string;
 }
 
+/** Seed data de exemplo — nome do grupo e dados sao ficticios para demo. */
 function criarSeed(): ApresentacaoData {
   return {
-    titulo: 'ArtTrens',
+    titulo: 'ArtTrens', // seed data: nome do grupo de exemplo
     subtitulo: 'ENCONTRO DE MELHORIA CONTÍNUA · CCQ',
     area: 'Ferrovia EFVM',
     consultora: 'Julia',

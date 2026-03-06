@@ -327,9 +327,9 @@ function TabVerificacao() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
         <div />
-        <RelatorioExport status={status} userId="arttrens-001" />
+        <RelatorioExport status={status} userId="demo-user-001" />
       </div>
-      <VerificacaoPanel projectId={status.projeto.id} userId="arttrens-001" />
+      <VerificacaoPanel projectId={status.projeto.id} userId="demo-user-001" />
     </div>
   );
 }

@@ -75,7 +75,7 @@ export function ApresentacaoProjetoPage() {
       <style>{apCSS}</style>
 
       {/* BG */}
-      <div style={{ position: 'fixed', inset: 0, backgroundImage: 'url(/assets/gvs-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.08, pointerEvents: 'none' }} />
+      <div style={{ position: 'fixed', inset: 0, background: 'radial-gradient(ellipse at center, rgba(0,158,153,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
       {/* ── EDIT TOGGLE ── */}
       <div style={editBar}>
@@ -224,8 +224,8 @@ export function ApresentacaoProjetoPage() {
 
         {/* ═══ FOOTER ═══ */}
         <footer className="ap-reveal" style={{ textAlign: 'center', padding: '2rem 0', borderTop: `1px solid ${P.border}` }}>
-          <img src="/assets/gvs-logo.png" alt="GVS" style={{ height: 40, filter: 'brightness(0) invert(1)', opacity: 0.4, marginBottom: '0.75rem' }} />
-          <div style={{ fontSize: '0.6875rem', color: P.muted }}>GVS ArtTrens · CCQ Ferrovia EFVM · Vale S.A.</div>
+          <div style={{ fontSize: '1.125rem', fontWeight: 900, color: P.teal, opacity: 0.4, marginBottom: '0.75rem' }}>MCO</div>
+          <div style={{ fontSize: '0.6875rem', color: P.muted }}>Melhoria Continua Operacional · CCQ · Vale S.A.</div>
           <div style={{ fontSize: '0.75rem', color: P.gold, marginTop: '0.25rem' }}>
             {editMode ? <input value={data.footerEvento} onChange={(e) => update({ footerEvento: e.target.value })} style={{ ...editInput, textAlign: 'center' }} /> : data.footerEvento}
           </div>

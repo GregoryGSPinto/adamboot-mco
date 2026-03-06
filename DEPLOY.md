@@ -63,5 +63,5 @@ npm run typecheck    # verificacao de tipos
 ## Credenciais de Demonstracao
 
 Com `VITE_DEV_AUTH=true`:
-- Email: `ccq@arttrens.com`
-- Senha: `art123`
+- Email: `demo@mco.vale.com`
+- Senha: `mco2026`

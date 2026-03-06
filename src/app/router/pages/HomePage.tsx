@@ -34,8 +34,7 @@ export function HomePage() {
       <div className={`login-card ${shake ? 'login-shake' : ''}`} style={card}>
         {/* Logo */}
         <div style={logoRow}>
-          <img src="/assets/gvs-logo.png" alt="GVS" className="gvs-header-logo" style={logoImg} />
-          <span style={logoText}>MCO</span>
+          <span style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--vale-teal)' }}>MCO</span>
         </div>
 
         {/* Error */}
@@ -50,7 +49,7 @@ export function HomePage() {
         <div style={field}>
           <label style={label}>E-mail</label>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={onKey}
-            placeholder="ccq@arttrens.com" autoComplete="email" autoFocus style={input} className="login-input" />
+            placeholder="demo@mco.vale.com" autoComplete="email" autoFocus style={input} className="login-input" />
         </div>
 
         {/* Senha */}
@@ -70,7 +69,7 @@ export function HomePage() {
           {loading ? <span className="login-spinner" /> : 'Entrar'}
         </button>
 
-        <p style={footer}>GVS ArtTrens · CCQ Ferrovia · Vale S.A.</p>
+        <p style={footer}>MCO · Melhoria Continua Operacional · Vale S.A.</p>
       </div>
     </div>
   );
@@ -103,11 +102,6 @@ const card: React.CSSProperties = {
 const logoRow: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   gap: '0.625rem', marginBottom: '2rem',
-};
-const logoImg: React.CSSProperties = { height: 32, width: 'auto' };
-const logoText: React.CSSProperties = {
-  fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.04em',
-  color: 'var(--vale-teal-light)',
 };
 const errorBox: React.CSSProperties = {
   display: 'flex', alignItems: 'center', gap: '0.5rem',

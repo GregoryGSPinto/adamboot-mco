@@ -259,7 +259,7 @@ export function extrairDadosApresentacao(status: StatusProjeto): DadosApresentac
   }));
 
   return {
-    nomeGrupo: 'ArtTrens CCQ',
+    nomeGrupo: 'Grupo CCQ',
     unidade: 'Supervisão CSI — Ferrovia',
     participantes: projeto.membros.map((m) => ({ nome: m.nome, papel: m.papel })),
     contexto: `Projeto iniciado em ${new Date(projeto.dataInicio).toLocaleDateString('pt-BR')} para resolver: ${projeto.titulo}.`,

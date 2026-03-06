@@ -252,7 +252,7 @@ function PhaseRequisitos({ projetoId, fase, evidencias }: {
                 if (done) {
                   if (confirm(`Remover evidência: "${req.descricao}"?`)) removerEv.mutate(req.id);
                 } else {
-                  cumprirReq.mutate({ requisitoId: req.id, userId: 'arttrens-001' });
+                  cumprirReq.mutate({ requisitoId: req.id, userId: 'demo-user-001' });
                 }
               }}
               style={{
@@ -372,7 +372,7 @@ function AvancoItem({ pend, projectId }: { pend: RequisitoPendente; projectId: s
   }, [pend, projectId]);
 
   const handleMark = useCallback(() => {
-    cumprirReq.mutate({ requisitoId: pend.requisito.id, userId: 'arttrens-001' });
+    cumprirReq.mutate({ requisitoId: pend.requisito.id, userId: 'demo-user-001' });
   }, [pend, cumprirReq]);
 
   return (

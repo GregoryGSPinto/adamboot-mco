@@ -2,21 +2,21 @@
  * Autenticação local para demonstração.
  *
  * Credenciais fixas para acesso ao sistema:
- *   email: ccq@arttrens.com
- *   senha: art123
+ *   email: demo@mco.vale.com
+ *   senha: mco2026
  *
  * Em produção → Azure AD via MSAL.
  */
 
 export const DEV_CREDENTIALS = {
-  email: 'ccq@arttrens.com',
-  password: 'art123',
+  email: 'demo@mco.vale.com',
+  password: 'mco2026',
 };
 
 export const devUser = {
-  id: 'arttrens-001',
-  name: 'GVS ArtTrens',
-  email: 'ccq@arttrens.com',
+  id: 'demo-user-001',
+  name: 'Usuario Demo',
+  email: 'demo@mco.vale.com',
   roles: ['lider', 'membro'],
 };
 

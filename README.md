@@ -103,8 +103,8 @@ npm run preview
 ### Credenciais de Demo
 
 Com `VITE_DEV_AUTH=true` (padrao):
-- Email: `ccq@arttrens.com`
-- Senha: `art123`
+- Email: `demo@mco.vale.com`
+- Senha: `mco2026`
 
 ---
 

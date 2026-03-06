@@ -68,8 +68,8 @@ export function AppLayout({ children }: Props) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
-      {/* GVS Watermark */}
-      <div className="gvs-watermark" style={globalWatermark} />
+      {/* Background Watermark */}
+      <div style={globalWatermark} />
 
       {/* Brand bar */}
       <div style={brandBar} />
@@ -78,8 +78,7 @@ export function AppLayout({ children }: Props) {
       <header className="frost mco-header" style={headerStyle}>
         {/* Left: [LOGO] MCO */}
         <Link to="/" style={logoLink}>
-          <img src="/assets/gvs-logo.png" alt="GVS" className="gvs-header-logo" style={logoImg} />
-          <span style={logoText}>MCO</span>
+          <span style={{ fontSize: '1.125rem', fontWeight: 900, color: 'var(--vale-teal)', letterSpacing: '-0.03em' }}>MCO</span>
         </Link>
 
         {/* Center: Desktop nav (4 visible + Mais ▼) */}
@@ -243,7 +242,7 @@ export function AppLayout({ children }: Props) {
 
 const globalWatermark: React.CSSProperties = {
   position: 'fixed', inset: 0,
-  backgroundImage: 'url(/assets/gvs-bg.jpg)', backgroundRepeat: 'no-repeat',
+  backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center', backgroundSize: 'cover',
   opacity: 0.06, pointerEvents: 'none', zIndex: 0,
 };
@@ -259,11 +258,6 @@ const headerStyle: React.CSSProperties = {
 const logoLink: React.CSSProperties = {
   display: 'flex', alignItems: 'center', gap: '0.5rem',
   textDecoration: 'none', flexShrink: 0,
-};
-const logoImg: React.CSSProperties = { height: 28, width: 'auto', opacity: 0.85 };
-const logoText: React.CSSProperties = {
-  fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.03em',
-  color: 'var(--vale-teal-light)', lineHeight: 1,
 };
 const desktopNav: React.CSSProperties = {
   display: 'flex', gap: '2px', position: 'absolute',

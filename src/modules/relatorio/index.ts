@@ -82,7 +82,7 @@ export function gerarRelatorio(
   linhas.push(sep);
   linhas.push(`Projeto: ${projeto.titulo}`);
   linhas.push(`Número: ${gerarNumeroProjeto(projeto.dataInicio, 1)}`);
-  linhas.push(`Grupo: ArtTrens CCQ`);
+  linhas.push(`Grupo: Grupo CCQ`);
   linhas.push(`Líder: ${projeto.liderId}`);
   linhas.push(`Fase atual: ${projeto.faseAtual}/${TOTAL_FASES} — ${FASE_LABELS[projeto.faseAtual]}`);
   linhas.push(`Status: ${projeto.status}`);
@@ -162,7 +162,7 @@ export function gerarRelatorio(
     id: `rel-${Date.now()}`,
     projectId: projeto.id,
     projectName: projeto.titulo,
-    grupoNome: 'ArtTrens CCQ',
+    grupoNome: 'Grupo CCQ',
     numeroAutomatico: gerarNumeroProjeto(projeto.dataInicio, 1),
     versao,
     geradoEm: new Date().toISOString(),

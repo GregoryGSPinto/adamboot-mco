@@ -7,7 +7,7 @@ import { devUser, isDevAuth, devLogin, devLogout, isDevAuthenticated } from './d
 /**
  * Hook de autenticação.
  *
- * DEV  → login com credenciais (ccq@arttrens.com / art123)
+ * DEV  → login com credenciais (demo@mco.vale.com / mco2026)
  * PROD → Azure AD via MSAL
  */
 export function useAuth() {
