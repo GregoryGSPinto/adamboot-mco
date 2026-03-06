@@ -922,5 +922,41 @@ a:hover { color: var(--vale-cyan); }
 }
 
 /* ════════════════════════════════════
+   DESIGN SYSTEM ANIMATIONS
+   ════════════════════════════════════ */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes modal-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modal-scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes toast-slide-in {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.card-hoverable {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card-hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* ════════════════════════════════════
    DROPDOWN (desktop Mais ▼)
    ════════════════════════════════════ */

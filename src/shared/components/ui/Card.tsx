@@ -5,6 +5,7 @@ type Variant = 'default' | 'highlighted' | 'glass';
 
 interface Props {
   variant?: Variant;
+  hoverable?: boolean;
   children: ReactNode;
   style?: React.CSSProperties;
   onClick?: () => void;
@@ -27,17 +28,20 @@ const variantStyles: Record<Variant, React.CSSProperties> = {
   },
 };
 
-export function Card({ variant = 'default', children, style, onClick }: Props) {
+export function Card({ variant = 'default', hoverable = false, children, style, onClick }: Props) {
+  const isClickable = !!onClick || hoverable;
+
   return (
     <div
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
+      className={hoverable ? 'card-hoverable' : undefined}
       style={{
         borderRadius: radii.lg,
         padding: '1.25rem',
         transition: `all ${transitions.normal}`,
-        cursor: onClick ? 'pointer' : undefined,
+        cursor: isClickable ? 'pointer' : undefined,
         ...variantStyles[variant],
         ...style,
       }}

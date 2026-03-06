@@ -1,14 +1,17 @@
 import type { ReactNode } from 'react';
 import { fontSizes, fontWeights, spacing } from '@shared/design/tokens';
+import { Button } from './Button';
 
 interface Props {
   icon?: ReactNode;
   title: string;
   description?: string;
   action?: ReactNode;
+  actionLabel?: string;
+  onAction?: () => void;
 }
 
-export function EmptyState({ icon, title, description, action }: Props) {
+export function EmptyState({ icon, title, description, action, actionLabel, onAction }: Props) {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center',
@@ -32,6 +35,9 @@ export function EmptyState({ icon, title, description, action }: Props) {
         </p>
       )}
       {action && <div>{action}</div>}
+      {!action && actionLabel && onAction && (
+        <Button variant="primary" onClick={onAction}>{actionLabel}</Button>
+      )}
     </div>
   );
 }

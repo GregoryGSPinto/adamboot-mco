@@ -380,5 +380,17 @@
   "comum.avancar": "Avançar",
   "comum.carregando": "Carregando...",
   "comum.semResultados": "Nenhum resultado encontrado.",
-  "comum.obrigatorio": "Campo obrigatório"
+  "comum.obrigatorio": "Campo obrigatório",
+
+  "login.email": "E-mail",
+  "login.senha": "Senha",
+  "login.entrar": "Entrar",
+  "login.ocultarSenha": "Ocultar senha",
+  "login.mostrarSenha": "Mostrar senha",
+  "login.footer": "MCO · Melhoria Continua Operacional · Vale S.A.",
+  "login.emailPlaceholder": "demo@mco.vale.com",
+  "login.senhaPlaceholder": "••••••",
+
+  "nav.abrirMenu": "Abrir menu de navegação",
+  "nav.fecharMenu": "Fechar menu"
 }

@@ -380,5 +380,17 @@
   "comum.avancar": "Next",
   "comum.carregando": "Loading...",
   "comum.semResultados": "No results found.",
-  "comum.obrigatorio": "Required field"
+  "comum.obrigatorio": "Required field",
+
+  "login.email": "Email",
+  "login.senha": "Password",
+  "login.entrar": "Sign in",
+  "login.ocultarSenha": "Hide password",
+  "login.mostrarSenha": "Show password",
+  "login.footer": "MCO · Operational Continuous Improvement · Vale S.A.",
+  "login.emailPlaceholder": "demo@mco.vale.com",
+  "login.senhaPlaceholder": "••••••",
+
+  "nav.abrirMenu": "Open navigation menu",
+  "nav.fecharMenu": "Close menu"
 }

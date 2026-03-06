@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { radii, fontSizes, fontWeights, transitions } from '@shared/design/tokens';
+import { radii, fontSizes, fontWeights, transitions, teal } from '@shared/design/tokens';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
@@ -14,14 +14,15 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<Variant, React.CSSProperties> = {
   primary: {
-    background: 'var(--vale-teal)',
+    background: `linear-gradient(135deg, ${teal[600]}, ${teal[500]})`,
     color: '#fff',
     border: 'none',
+    boxShadow: `0 2px 8px rgba(0,158,153,0.25)`,
   },
   secondary: {
     background: 'transparent',
-    color: 'var(--vale-teal-light)',
-    border: '1px solid var(--vale-teal)',
+    color: teal[500],
+    border: `1px solid ${teal[600]}`,
   },
   ghost: {
     background: 'transparent',
@@ -29,9 +30,10 @@ const variantStyles: Record<Variant, React.CSSProperties> = {
     border: '1px solid var(--border-default)',
   },
   danger: {
-    background: '#e53935',
+    background: 'linear-gradient(135deg, #dc2626, #ef4444)',
     color: '#fff',
     border: 'none',
+    boxShadow: '0 2px 8px rgba(239,68,68,0.25)',
   },
 };
 
@@ -65,7 +67,7 @@ export function Button({
         borderRadius: radii.md,
         fontWeight: fontWeights.semibold,
         cursor: isDisabled ? 'not-allowed' : 'pointer',
-        opacity: isDisabled ? 0.6 : 1,
+        opacity: isDisabled ? 0.5 : 1,
         transition: `all ${transitions.normal}`,
         fontFamily: 'inherit',
         lineHeight: 1.4,
@@ -75,7 +77,13 @@ export function Button({
         ...style,
       }}
     >
-      {loading ? <span style={{ display: 'inline-block', width: 14, height: 14, border: '2px solid currentColor', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }} /> : icon}
+      {loading ? (
+        <span style={{
+          display: 'inline-block', width: 14, height: 14,
+          border: '2px solid currentColor', borderTopColor: 'transparent',
+          borderRadius: '50%', animation: 'spin 0.6s linear infinite',
+        }} />
+      ) : icon}
       {children}
     </button>
   );

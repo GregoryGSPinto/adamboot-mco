@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
-import { radii, fontSizes, fontWeights } from '@shared/design/tokens';
+import { radii, fontSizes, fontWeights, severity, status } from '@shared/design/tokens';
 
-type Variant = 'default' | 'success' | 'warning' | 'danger' | 'info' | 'teal';
+type Variant = 'default' | 'success' | 'warning' | 'danger' | 'info' | 'teal'
+  | 'critica' | 'alta' | 'media' | 'baixa'
+  | 'ok' | 'aviso' | 'bloqueio';
 
 interface Props {
   variant?: Variant;
@@ -10,12 +12,21 @@ interface Props {
 }
 
 const variantStyles: Record<Variant, React.CSSProperties> = {
-  default: { background: 'rgba(255,255,255,0.08)', color: 'var(--text-secondary)' },
-  success: { background: 'rgba(105,190,40,0.15)', color: '#69be28' },
-  warning: { background: 'rgba(242,201,76,0.15)', color: '#f2c94c' },
-  danger: { background: 'rgba(229,57,53,0.15)', color: '#e53935' },
-  info: { background: 'rgba(0,176,240,0.15)', color: '#00b0f0' },
-  teal: { background: 'rgba(0,158,153,0.15)', color: '#00c4b4' },
+  default:  { background: 'rgba(255,255,255,0.08)', color: 'var(--text-secondary)' },
+  success:  { background: 'rgba(105,190,40,0.15)', color: '#69be28' },
+  warning:  { background: 'rgba(237,177,17,0.15)', color: '#edb111' },
+  danger:   { background: 'rgba(239,68,68,0.15)', color: '#ef4444' },
+  info:     { background: 'rgba(0,176,202,0.15)', color: '#00b0ca' },
+  teal:     { background: 'rgba(0,158,153,0.15)', color: '#009e99' },
+  // Severity
+  critica:  { background: severity.critica.bg, color: severity.critica.fg },
+  alta:     { background: severity.alta.bg, color: severity.alta.fg },
+  media:    { background: severity.media.bg, color: severity.media.fg },
+  baixa:    { background: severity.baixa.bg, color: severity.baixa.fg },
+  // Status
+  ok:       { background: status.ok.bg, color: status.ok.fg },
+  aviso:    { background: status.aviso.bg, color: status.aviso.fg },
+  bloqueio: { background: status.bloqueio.bg, color: status.bloqueio.fg },
 };
 
 export function Badge({ variant = 'default', children, style }: Props) {

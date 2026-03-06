@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useCallback } from 'react';
+import { ReactNode, useEffect, useCallback, useRef } from 'react';
 import { radii, shadows, zIndex } from '@shared/design/tokens';
 
 interface Props {
@@ -10,6 +10,8 @@ interface Props {
 }
 
 export function Modal({ open, onClose, title, children, width = 480 }: Props) {
+  const contentRef = useRef<HTMLDivElement>(null);
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') onClose();
   }, [onClose]);
@@ -18,6 +20,8 @@ export function Modal({ open, onClose, title, children, width = 480 }: Props) {
     if (!open) return;
     document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
+    // Focus trap: focus the content on open
+    contentRef.current?.focus();
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
@@ -34,6 +38,7 @@ export function Modal({ open, onClose, title, children, width = 480 }: Props) {
       style={{
         position: 'fixed', inset: 0, zIndex: zIndex.modal,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
+        animation: 'modal-backdrop-in 0.2s ease',
       }}
     >
       {/* Backdrop */}
@@ -46,18 +51,24 @@ export function Modal({ open, onClose, title, children, width = 480 }: Props) {
         }}
       />
       {/* Content */}
-      <div style={{
-        position: 'relative',
-        background: 'var(--bg-surface)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: radii.xl,
-        boxShadow: shadows.xl,
-        width: '90vw',
-        maxWidth: width,
-        maxHeight: '85vh',
-        overflow: 'auto',
-        padding: '1.5rem',
-      }}>
+      <div
+        ref={contentRef}
+        tabIndex={-1}
+        style={{
+          position: 'relative',
+          background: 'var(--bg-surface)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: radii.xl,
+          boxShadow: shadows.xl,
+          width: '90vw',
+          maxWidth: width,
+          maxHeight: '85vh',
+          overflow: 'auto',
+          padding: '1.5rem',
+          outline: 'none',
+          animation: 'modal-scale-in 0.2s ease',
+        }}
+      >
         {title && (
           <div style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
