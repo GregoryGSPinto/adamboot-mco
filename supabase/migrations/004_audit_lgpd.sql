@@ -1,5 +1,5 @@
 -- ============================================================
--- 004_audit_lgpd_cobranca.sql
+-- 004_audit_lgpd.sql
 -- Trilha de auditoria, LGPD, historico de fases,
 -- indexes compostos, triggers, RLS
 -- ============================================================

@@ -29,10 +29,10 @@ CREATE INDEX idx_reunioes_projeto ON reunioes(projeto_id);
 CREATE INDEX idx_reunioes_data ON reunioes(data_hora);
 
 -- ============================
--- REUNIAO_PARTICIPANTES
+-- REUNIAO_PRESENCAS
 -- ============================
 
-CREATE TABLE reuniao_participantes (
+CREATE TABLE reuniao_presencas (
   id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   reuniao_id  UUID NOT NULL REFERENCES reunioes(id) ON DELETE CASCADE,
   usuario_id  UUID NOT NULL REFERENCES profiles(id),
