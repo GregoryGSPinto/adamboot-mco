@@ -20,7 +20,11 @@ export const devUser = {
   roles: ['lider', 'membro'],
 };
 
-export const isDevAuth = import.meta.env.VITE_DEV_AUTH === 'true';
+/**
+ * Dev auth is active unless explicitly disabled.
+ * Set VITE_DEV_AUTH=false to use Azure AD (MSAL).
+ */
+export const isDevAuth = import.meta.env.VITE_DEV_AUTH !== 'false';
 
 // ── Session (in-memory, resets on refresh) ──
 
