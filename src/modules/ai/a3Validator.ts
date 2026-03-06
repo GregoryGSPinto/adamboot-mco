@@ -237,7 +237,7 @@ const ACOES_FRACAS = [
   'cobrar mais',
   'ficar atento',
   'chamar atenção',
-  'DDS',
+  'dds',
 ];
 
 export function validarContramedida(
