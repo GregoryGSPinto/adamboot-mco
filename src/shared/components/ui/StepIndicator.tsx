@@ -22,6 +22,7 @@ export function StepIndicator({ steps, onStepClick }: Props) {
           alignItems: 'flex-start',
           gap: 0,
           width: '100%',
+          overflowX: 'auto',
         }}
       >
         {steps.map((step, i) => {
@@ -149,13 +150,6 @@ export function StepIndicator({ steps, onStepClick }: Props) {
           );
         })}
       </div>
-
-      {/* Vertical layout for mobile via inline style tag */}
-      <style>{`
-        @media (max-width: 480px) {
-          /* StepIndicator mobile override handled by parent if needed */
-        }
-      `}</style>
     </>
   );
 }
