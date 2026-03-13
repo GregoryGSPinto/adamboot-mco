@@ -51,11 +51,7 @@ export function RelatorioExport({ status, userId }: RelatorioExportProps) {
 
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
-      <button
-        onClick={() => setShowMenu(!showMenu)}
-        style={btnStyle}
-        title="Exportar relatório"
-      >
+      <button onClick={() => setShowMenu(!showMenu)} style={btnStyle} title="Exportar relatório">
         📄 Exportar
       </button>
 
@@ -63,15 +59,17 @@ export function RelatorioExport({ status, userId }: RelatorioExportProps) {
         <div style={menuStyle}>
           <div style={menuHeaderStyle}>
             <span style={{ fontWeight: 600, fontSize: '13px' }}>Exportar relatório</span>
-            <button onClick={() => setShowMenu(false)} style={closeBtnStyle}>✕</button>
+            <button onClick={() => setShowMenu(false)} style={closeBtnStyle}>
+              ✕
+            </button>
           </div>
 
           <label style={checkRowStyle}>
             <input
               type="checkbox"
               checked={anonimizar}
-              onChange={(e) => setAnonimizar(e.target.checked)}
-              style={{ accentColor: 'var(--vale-teal)' }}
+              onChange={e => setAnonimizar(e.target.checked)}
+              style={{ accentColor: 'var(--btn-primary-bg)' }}
             />
             <span style={{ fontSize: '12px' }}>Anonimizar nomes (LGPD)</span>
           </label>

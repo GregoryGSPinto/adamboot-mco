@@ -42,7 +42,7 @@ const sectionTitle: React.CSSProperties = {
 
 const cardStyle: React.CSSProperties = {
   background: 'var(--surface-primary)',
-  border: '1px solid var(--border-subtle)',
+  border: '1px solid var(--border)',
   borderRadius: 12,
   padding: 16,
   marginBottom: 12,
@@ -53,7 +53,7 @@ const checkRow: React.CSSProperties = {
   alignItems: 'center',
   gap: 12,
   padding: '8px 0',
-  borderBottom: '1px solid var(--border-subtle)',
+  borderBottom: '1px solid var(--border)',
   minHeight: 48,
 };
 
@@ -75,7 +75,7 @@ const inputStyle: React.CSSProperties = {
   width: '100%',
   padding: 10,
   borderRadius: 8,
-  border: '1px solid var(--border-default)',
+  border: '1px solid var(--border)',
   background: 'var(--surface-secondary)',
   color: 'var(--text-primary)',
   fontSize: '0.9rem',
@@ -87,7 +87,7 @@ const btnPrimary: React.CSSProperties = {
   padding: '10px 20px',
   borderRadius: 8,
   border: 'none',
-  background: 'var(--vale-teal)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontWeight: 600,
   fontSize: '0.9rem',
@@ -105,7 +105,7 @@ const miniBtn: React.CSSProperties = {
   padding: '6px 12px',
   borderRadius: 6,
   border: 'none',
-  background: 'var(--vale-teal)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontWeight: 600,
   fontSize: '0.8rem',
@@ -120,12 +120,12 @@ const listItem: React.CSSProperties = {
   padding: '6px 0',
   fontSize: '0.85rem',
   color: 'var(--text-primary)',
-  borderBottom: '1px solid var(--border-subtle)',
+  borderBottom: '1px solid var(--border)',
 };
 
 const ataBox: React.CSSProperties = {
   background: 'var(--surface-secondary)',
-  border: '1px solid var(--border-default)',
+  border: '1px solid var(--border)',
   borderRadius: 8,
   padding: 16,
   fontFamily: 'var(--font-mono)',
@@ -138,7 +138,7 @@ const ataBox: React.CSSProperties = {
 };
 
 const activeBanner: React.CSSProperties = {
-  background: 'var(--vale-teal)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   borderRadius: 12,
   padding: 16,
@@ -160,9 +160,7 @@ export function ReuniaoPanel({ status }: Props) {
   const { user } = useAuth();
   const { projeto } = status;
 
-  const [reuniao, setReuniao] = useState<Reuniao | null>(
-    () => getReuniaoAtiva(projeto.id),
-  );
+  const [reuniao, setReuniao] = useState<Reuniao | null>(() => getReuniaoAtiva(projeto.id));
   const [ata, setAta] = useState<AtaGerada | null>(null);
 
   // Forms
@@ -179,7 +177,7 @@ export function ReuniaoPanel({ status }: Props) {
       projectId: projeto.id,
       projectName: projeto.titulo,
       faseAtual: projeto.faseAtual,
-      membros: projeto.membros.map((m) => ({ id: m.id, nome: m.nome, papel: m.papel })),
+      membros: projeto.membros.map(m => ({ id: m.id, nome: m.nome, papel: m.papel })),
       userId: user.id,
       userName: user.name,
     });
@@ -204,7 +202,7 @@ export function ReuniaoPanel({ status }: Props) {
   // ── Tarefa rápida ──
   function handleTarefa() {
     if (!reuniao || !tarefaDesc.trim() || !tarefaResp) return;
-    const membro = projeto.membros.find((m) => m.id === tarefaResp);
+    const membro = projeto.membros.find(m => m.id === tarefaResp);
     criarTarefaRapida(reuniao.id, {
       descricao: tarefaDesc.trim(),
       responsavelId: tarefaResp,
@@ -260,7 +258,12 @@ export function ReuniaoPanel({ status }: Props) {
           📋 Copiar Ata
         </button>
         <button
-          style={{ ...btnPrimary, marginTop: 8, background: 'var(--surface-tertiary)', color: 'var(--text-primary)' }}
+          style={{
+            ...btnPrimary,
+            marginTop: 8,
+            background: 'var(--surface-tertiary)',
+            color: 'var(--text-primary)',
+          }}
           onClick={() => setAta(null)}
         >
           ← Voltar
@@ -270,7 +273,7 @@ export function ReuniaoPanel({ status }: Props) {
   }
 
   // ═══ REUNIÃO ATIVA ═══
-  const presentes = reuniao!.participantes.filter((p) => p.presente).length;
+  const presentes = reuniao!.participantes.filter(p => p.presente).length;
   const total = reuniao!.participantes.length;
 
   return (
@@ -289,12 +292,12 @@ export function ReuniaoPanel({ status }: Props) {
       {/* Presença */}
       <h4 style={sectionTitle}>Presença</h4>
       <div style={cardStyle}>
-        {reuniao!.participantes.map((p) => (
+        {reuniao!.participantes.map(p => (
           <div key={p.userId} style={checkRow}>
             <input
               type="checkbox"
               checked={p.presente}
-              onChange={(e) => handlePresenca(p.userId, e.target.checked)}
+              onChange={e => handlePresenca(p.userId, e.target.checked)}
               style={{ width: 22, height: 22, cursor: 'pointer' }}
             />
             <span style={checkLabel}>{p.nome}</span>
@@ -304,13 +307,11 @@ export function ReuniaoPanel({ status }: Props) {
       </div>
 
       {/* Decisões */}
-      <h4 style={sectionTitle}>
-        Decisões ({reuniao!.decisoes.length})
-      </h4>
+      <h4 style={sectionTitle}>Decisões ({reuniao!.decisoes.length})</h4>
       <div style={cardStyle}>
         {reuniao!.decisoes.map((d, i) => (
           <div key={d.id} style={listItem}>
-            <span style={{ fontWeight: 700, color: 'var(--vale-gold)' }}>{i + 1}.</span>
+            <span style={{ fontWeight: 700, color: 'var(--accent-yellow)' }}>{i + 1}.</span>
             <span>{d.texto}</span>
           </div>
         ))}
@@ -320,17 +321,17 @@ export function ReuniaoPanel({ status }: Props) {
             style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
             placeholder="Registrar decisão..."
             value={decisaoText}
-            onChange={(e) => setDecisaoText(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleDecisao()}
+            onChange={e => setDecisaoText(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleDecisao()}
           />
-          <button style={miniBtn} onClick={handleDecisao}>+</button>
+          <button style={miniBtn} onClick={handleDecisao}>
+            +
+          </button>
         </div>
       </div>
 
       {/* Tarefas rápidas */}
-      <h4 style={sectionTitle}>
-        Tarefas ({reuniao!.tarefas.length})
-      </h4>
+      <h4 style={sectionTitle}>Tarefas ({reuniao!.tarefas.length})</h4>
       <div style={cardStyle}>
         {reuniao!.tarefas.map((t, i) => (
           <div key={t.id} style={listItem}>
@@ -344,24 +345,26 @@ export function ReuniaoPanel({ status }: Props) {
           style={inputStyle}
           placeholder="Descrição da tarefa..."
           value={tarefaDesc}
-          onChange={(e) => setTarefaDesc(e.target.value)}
+          onChange={e => setTarefaDesc(e.target.value)}
         />
         <div style={{ display: 'flex', gap: 8 }}>
           <select
             style={{ ...inputStyle, flex: 1 }}
             value={tarefaResp}
-            onChange={(e) => setTarefaResp(e.target.value)}
+            onChange={e => setTarefaResp(e.target.value)}
           >
             <option value="">Responsável...</option>
-            {projeto.membros.map((m) => (
-              <option key={m.id} value={m.id}>{m.nome}</option>
+            {projeto.membros.map(m => (
+              <option key={m.id} value={m.id}>
+                {m.nome}
+              </option>
             ))}
           </select>
           <input
             type="date"
             style={{ ...inputStyle, flex: 1 }}
             value={tarefaPrazo}
-            onChange={(e) => setTarefaPrazo(e.target.value)}
+            onChange={e => setTarefaPrazo(e.target.value)}
           />
         </div>
         <button style={{ ...miniBtn, width: '100%' }} onClick={handleTarefa}>
@@ -375,7 +378,7 @@ export function ReuniaoPanel({ status }: Props) {
         style={{ ...inputStyle, minHeight: 60 }}
         placeholder="Observações gerais da reunião..."
         value={obsFinais}
-        onChange={(e) => setObsFinais(e.target.value)}
+        onChange={e => setObsFinais(e.target.value)}
       />
 
       {/* Finalizar */}

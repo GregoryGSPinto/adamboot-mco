@@ -41,7 +41,7 @@ export function EPICheckDialog({
   const [checkedEPIs, setCheckedEPIs] = useState<Set<string>>(new Set());
 
   const toggleEPI = (item: string) => {
-    setCheckedEPIs((prev) => {
+    setCheckedEPIs(prev => {
       const next = new Set(prev);
       if (next.has(item)) next.delete(item);
       else next.add(item);
@@ -78,9 +78,7 @@ export function EPICheckDialog({
             <strong style={{ color: zc.text, fontSize: '14px' }}>
               Zona {zona.zona.toUpperCase()}
             </strong>
-            <p style={{ margin: '4px 0 0', fontSize: '12px', color: zc.text }}>
-              {zona.mensagem}
-            </p>
+            <p style={{ margin: '4px 0 0', fontSize: '12px', color: zc.text }}>{zona.mensagem}</p>
           </div>
         </div>
 
@@ -90,9 +88,7 @@ export function EPICheckDialog({
             <p style={{ fontSize: '14px', fontWeight: 600, color: '#c62828' }}>
               📷 Câmera bloqueada nesta área
             </p>
-            <p style={{ fontSize: '12px', color: '#666' }}>
-              Registre apenas texto nesta zona.
-            </p>
+            <p style={{ fontSize: '12px', color: '#666' }}>Registre apenas texto nesta zona.</p>
             <button onClick={onCancel} style={btnPrimaryStyle}>
               Entendi
             </button>
@@ -106,13 +102,13 @@ export function EPICheckDialog({
               Confirme seus EPIs:
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {EPI_ITENS.map((item) => (
+              {EPI_ITENS.map(item => (
                 <label key={item} style={epiRowStyle}>
                   <input
                     type="checkbox"
                     checked={checkedEPIs.has(item)}
                     onChange={() => toggleEPI(item)}
-                    style={{ width: '20px', height: '20px', accentColor: 'var(--vale-teal)' }}
+                    style={{ width: '20px', height: '20px', accentColor: 'var(--btn-primary-bg)' }}
                   />
                   <span style={{ fontSize: '14px' }}>{item}</span>
                 </label>
@@ -208,7 +204,7 @@ const btnPrimaryStyle: React.CSSProperties = {
   padding: '12px',
   border: 'none',
   borderRadius: '10px',
-  background: 'var(--vale-teal, #007e7a)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontSize: '14px',
   fontWeight: 600,

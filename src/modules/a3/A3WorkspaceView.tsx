@@ -40,7 +40,7 @@ export function A3WorkspaceView() {
     // Tentar extrair dados do projeto real
     // Em mock, usa campos do projeto existente
     const descricao = projeto.titulo;
-    const acoes = projeto.acoes?.map((a) => a.descricao) ?? [];
+    const acoes = projeto.acoes?.map(a => a.descricao) ?? [];
     return {
       problema: descricao,
       meta: undefined, // será preenchido pelo formulário
@@ -90,11 +90,13 @@ export function A3WorkspaceView() {
   const handleSelectFase = (fase: number) => {
     const check = podAcessarPasso(fase, a3Dados);
     if (!check.podeAcessar) {
-      setShowBloqueio(check.motivoBloqueio ?? `Passo ${fase} bloqueado. Complete o passo anterior.`);
+      setShowBloqueio(
+        check.motivoBloqueio ?? `Passo ${fase} bloqueado. Complete o passo anterior.`
+      );
     }
   };
 
-  const temBloqueios = validacoes.some((v) => v.severidade === 'bloqueio');
+  const temBloqueios = validacoes.some(v => v.severidade === 'bloqueio');
 
   return (
     <div style={containerStyle}>
@@ -108,9 +110,7 @@ export function A3WorkspaceView() {
               <div style={systemSubStyle}>Sistema de Melhoria Contínua — A3 / MASP / PDCA</div>
             </div>
           </div>
-          <div style={projectIdStyle}>
-            {projeto.id.slice(0, 8).toUpperCase()}
-          </div>
+          <div style={projectIdStyle}>{projeto.id.slice(0, 8).toUpperCase()}</div>
         </div>
       </div>
 
@@ -124,11 +124,7 @@ export function A3WorkspaceView() {
 
       {/* ═══ STEP ORIENTATION ═══ */}
       {dica.pergunta && (
-        <StepOrientation
-          pergunta={dica.pergunta}
-          dica={dica.dica}
-          cuidado={dica.cuidado}
-        />
+        <StepOrientation pergunta={dica.pergunta} dica={dica.dica} cuidado={dica.cuidado} />
       )}
 
       {/* ═══ VALIDAÇÃO FEEDBACK ═══ */}
@@ -142,19 +138,25 @@ export function A3WorkspaceView() {
         <div style={projectCardHeader}>
           <h2 style={projectTitleStyle}>{projeto.titulo}</h2>
           <div style={projectMetaRow}>
-            <span style={metaChipStyle}>
-              📋 {FASE_LABELS[projeto.faseAtual]}
-            </span>
-            <span style={metaChipStyle}>
-              ⏱ {status.diasRestantes}d restantes
-            </span>
-            <span style={{
-              ...metaChipStyle,
-              background: status.risco === 'CRITICO' ? 'rgba(229,57,53,0.1)' :
-                          status.risco === 'ALTO' ? 'rgba(237,177,17,0.1)' : 'rgba(105,190,40,0.1)',
-              color: status.risco === 'CRITICO' ? '#c62828' :
-                     status.risco === 'ALTO' ? '#8a6d00' : '#2d7a0a',
-            }}>
+            <span style={metaChipStyle}>📋 {FASE_LABELS[projeto.faseAtual]}</span>
+            <span style={metaChipStyle}>⏱ {status.diasRestantes}d restantes</span>
+            <span
+              style={{
+                ...metaChipStyle,
+                background:
+                  status.risco === 'CRITICO'
+                    ? 'rgba(229,57,53,0.1)'
+                    : status.risco === 'ALTO'
+                      ? 'rgba(237,177,17,0.1)'
+                      : 'rgba(105,190,40,0.1)',
+                color:
+                  status.risco === 'CRITICO'
+                    ? '#c62828'
+                    : status.risco === 'ALTO'
+                      ? '#8a6d00'
+                      : '#2d7a0a',
+              }}
+            >
               {status.risco}
             </span>
           </div>
@@ -162,10 +164,12 @@ export function A3WorkspaceView() {
 
         {/* Barra de progresso fina */}
         <div style={progressBarBg}>
-          <div style={{
-            ...progressBarFill,
-            width: `${Math.round(((projeto.faseAtual - 1) / TOTAL_FASES) * 100)}%`,
-          }} />
+          <div
+            style={{
+              ...progressBarFill,
+              width: `${Math.round(((projeto.faseAtual - 1) / TOTAL_FASES) * 100)}%`,
+            }}
+          />
         </div>
       </div>
 
@@ -176,11 +180,7 @@ export function A3WorkspaceView() {
 
       {/* ═══ BARRA DE AÇÃO INFERIOR ═══ */}
       <div style={actionBarStyle}>
-        {projeto.faseAtual > 1 && (
-          <button style={btnSecondaryStyle}>
-            ← Passo anterior
-          </button>
-        )}
+        {projeto.faseAtual > 1 && <button style={btnSecondaryStyle}>← Passo anterior</button>}
         <div style={{ flex: 1 }} />
         <button
           onClick={handleTentarAvancar}
@@ -197,10 +197,7 @@ export function A3WorkspaceView() {
 
       {/* ═══ BLOQUEIO MODAL ═══ */}
       {showBloqueio && (
-        <BloqueioAvanco
-          mensagem={showBloqueio}
-          onDismiss={() => setShowBloqueio(null)}
-        />
+        <BloqueioAvanco mensagem={showBloqueio} onDismiss={() => setShowBloqueio(null)} />
       )}
     </div>
   );
@@ -218,7 +215,7 @@ const containerStyle: React.CSSProperties = {
 };
 
 const systemHeaderStyle: React.CSSProperties = {
-  background: 'var(--a3-header-bg, #1e2128)',
+  background: 'var(--bg-secondary)',
   borderRadius: '12px 12px 0 0',
   padding: '12px 16px',
   marginBottom: '0',
@@ -238,7 +235,7 @@ const systemTitleStyle: React.CSSProperties = {
 
 const systemIconStyle: React.CSSProperties = {
   fontSize: '20px',
-  color: 'var(--a3-active, #00b3ad)',
+  color: 'var(--accent-green)',
   fontWeight: 700,
 };
 
@@ -270,7 +267,7 @@ const projectIdStyle: React.CSSProperties = {
 
 const projectCardStyle: React.CSSProperties = {
   background: 'var(--surface-0, #fff)',
-  border: '1px solid var(--border-subtle, #e5e7eb)',
+  border: '1px solid var(--border)',
   borderRadius: '10px',
   padding: '16px',
   marginBottom: '12px',
@@ -317,7 +314,7 @@ const progressBarBg: React.CSSProperties = {
 
 const progressBarFill: React.CSSProperties = {
   height: '100%',
-  background: 'linear-gradient(90deg, var(--vale-teal, #007e7a), var(--a3-active, #00b3ad))',
+  background: 'var(--btn-primary-bg)',
   borderRadius: '2px',
   transition: 'width 0.5s ease',
 };
@@ -332,7 +329,7 @@ const actionBarStyle: React.CSSProperties = {
   alignItems: 'center',
   gap: '8px',
   padding: '12px 0',
-  borderTop: '1px solid var(--border-subtle, #e5e7eb)',
+  borderTop: '1px solid var(--border)',
   marginTop: '12px',
 };
 
@@ -340,7 +337,7 @@ const btnPrimaryStyle: React.CSSProperties = {
   padding: '10px 20px',
   border: 'none',
   borderRadius: '8px',
-  background: 'var(--vale-teal, #007e7a)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontSize: '13px',
   fontWeight: 600,

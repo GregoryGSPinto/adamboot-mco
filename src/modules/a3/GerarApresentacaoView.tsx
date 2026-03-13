@@ -53,9 +53,7 @@ export function GerarApresentacaoView() {
       <div style={headerStyle}>
         <div>
           <h3 style={titleStyle}>📽️ Gerar Apresentação</h3>
-          <p style={subtitleStyle}>
-            Monta automaticamente os slides seguindo a metodologia A3.
-          </p>
+          <p style={subtitleStyle}>Monta automaticamente os slides seguindo a metodologia A3.</p>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           <button onClick={handleGerar} style={btnPrimaryStyle}>
@@ -69,11 +67,7 @@ export function GerarApresentacaoView() {
         </div>
       </div>
 
-      {exportado && (
-        <div style={successBanner}>
-          ✅ Apresentação exportada com sucesso.
-        </div>
-      )}
+      {exportado && <div style={successBanner}>✅ Apresentação exportada com sucesso.</div>}
 
       {/* Slide info */}
       {!slides && (
@@ -91,7 +85,7 @@ export function GerarApresentacaoView() {
       {/* Slides preview */}
       {slides && (
         <div style={slidesGridStyle}>
-          {slides.map((slide) => (
+          {slides.map(slide => (
             <SlideCard key={slide.numero} slide={slide} />
           ))}
         </div>
@@ -110,27 +104,33 @@ function SlideCard({ slide }: { slide: SlideData }) {
   const isDark = isCapa || isConclusao;
 
   return (
-    <div style={{
-      ...slideCardStyle,
-      background: isDark ? 'var(--a3-header-bg, #1e2128)' : 'var(--surface-0, #fff)',
-    }}>
+    <div
+      style={{
+        ...slideCardStyle,
+        background: isDark ? 'var(--bg-secondary)' : 'var(--surface-0, #fff)',
+      }}
+    >
       {/* Slide number badge */}
       <div style={slideNumberStyle}>{slide.numero}</div>
 
       {/* Title */}
-      <h4 style={{
-        ...slideTitleStyle,
-        color: isDark ? '#fff' : 'var(--text-primary)',
-        fontSize: isCapa ? '18px' : '14px',
-      }}>
+      <h4
+        style={{
+          ...slideTitleStyle,
+          color: isDark ? '#fff' : 'var(--text-primary)',
+          fontSize: isCapa ? '18px' : '14px',
+        }}
+      >
         {slide.titulo}
       </h4>
 
       {slide.subtitulo && (
-        <p style={{
-          ...slideSubtitleStyle,
-          color: isDark ? 'var(--a3-active, #00b3ad)' : 'var(--vale-teal, #007e7a)',
-        }}>
+        <p
+          style={{
+            ...slideSubtitleStyle,
+            color: isDark ? 'var(--accent-green)' : 'var(--btn-primary-bg)',
+          }}
+        >
           {slide.subtitulo}
         </p>
       )}
@@ -143,11 +143,7 @@ function SlideCard({ slide }: { slide: SlideData }) {
       </div>
 
       {/* Notes */}
-      {slide.notas && (
-        <div style={slideNotesStyle}>
-          📌 {slide.notas}
-        </div>
-      )}
+      {slide.notas && <div style={slideNotesStyle}>📌 {slide.notas}</div>}
     </div>
   );
 }
@@ -159,26 +155,38 @@ function SlideConteudoItem({ item, isDark }: { item: SlideConteudo; isDark: bool
   switch (item.tipo) {
     case 'texto':
       return (
-        <p style={{
-          fontSize: item.destaque ? '14px' : '12px',
-          fontWeight: item.destaque ? 700 : 400,
-          color: item.destaque ? (isDark ? '#fff' : 'var(--vale-teal)') : textColor,
-          margin: '4px 0',
-          lineHeight: 1.4,
-        }}>
-          {item.destaque && '▸ '}{item.valor}
+        <p
+          style={{
+            fontSize: item.destaque ? '14px' : '12px',
+            fontWeight: item.destaque ? 700 : 400,
+            color: item.destaque ? (isDark ? '#fff' : 'var(--btn-primary-bg)') : textColor,
+            margin: '4px 0',
+            lineHeight: 1.4,
+          }}
+        >
+          {item.destaque && '▸ '}
+          {item.valor}
         </p>
       );
 
     case 'indicador':
       return (
         <div style={indicadorStyle}>
-          <span style={{ fontSize: '10px', color: mutedColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <span
+            style={{
+              fontSize: '10px',
+              color: mutedColor,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+            }}
+          >
             {item.label}
           </span>
           <span style={{ fontSize: '14px', fontWeight: 700, color: textColor }}>
             {item.valor}
-            {item.unidade && <span style={{ fontSize: '11px', color: mutedColor }}> {item.unidade}</span>}
+            {item.unidade && (
+              <span style={{ fontSize: '11px', color: mutedColor }}> {item.unidade}</span>
+            )}
           </span>
         </div>
       );
@@ -187,7 +195,9 @@ function SlideConteudoItem({ item, isDark }: { item: SlideConteudo; isDark: bool
       return (
         <div style={{ paddingLeft: '8px' }}>
           {item.itens.map((it, i) => (
-            <p key={i} style={{ fontSize: '12px', color: textColor, margin: '2px 0' }}>• {it}</p>
+            <p key={i} style={{ fontSize: '12px', color: textColor, margin: '2px 0' }}>
+              • {it}
+            </p>
           ))}
         </div>
       );
@@ -197,9 +207,13 @@ function SlideConteudoItem({ item, isDark }: { item: SlideConteudo; isDark: bool
         <div style={comparacaoStyle}>
           <span style={{ fontSize: '11px', color: mutedColor }}>{item.label}:</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: '#e53935' }}>{item.antes}</span>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: '#e53935' }}>
+              {item.antes}
+            </span>
             <span style={{ fontSize: '14px', color: mutedColor }}>→</span>
-            <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--a3-done, #69be28)' }}>{item.depois}</span>
+            <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--accent-green)' }}>
+              {item.depois}
+            </span>
           </div>
         </div>
       );
@@ -211,7 +225,12 @@ function SlideConteudoItem({ item, isDark }: { item: SlideConteudo; isDark: bool
             <thead>
               <tr>
                 {item.headers.map((h, i) => (
-                  <th key={i} style={{ ...thStyle, color: isDark ? '#fff' : 'var(--text-primary)' }}>{h}</th>
+                  <th
+                    key={i}
+                    style={{ ...thStyle, color: isDark ? '#fff' : 'var(--text-primary)' }}
+                  >
+                    {h}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -219,7 +238,9 @@ function SlideConteudoItem({ item, isDark }: { item: SlideConteudo; isDark: bool
               {item.rows.map((row, ri) => (
                 <tr key={ri}>
                   {row.map((cell, ci) => (
-                    <td key={ci} style={{ ...tdStyle, color: textColor }}>{cell}</td>
+                    <td key={ci} style={{ ...tdStyle, color: textColor }}>
+                      {cell}
+                    </td>
                   ))}
                 </tr>
               ))}
@@ -229,11 +250,7 @@ function SlideConteudoItem({ item, isDark }: { item: SlideConteudo; isDark: bool
       );
 
     case 'placeholder_foto':
-      return (
-        <div style={placeholderFotoStyle}>
-          📷 {item.legenda}
-        </div>
-      );
+      return <div style={placeholderFotoStyle}>📷 {item.legenda}</div>;
 
     default:
       return null;
@@ -274,7 +291,7 @@ const btnPrimaryStyle: React.CSSProperties = {
   padding: '10px 18px',
   border: 'none',
   borderRadius: '8px',
-  background: 'var(--vale-teal, #007e7a)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontSize: '13px',
   fontWeight: 600,
@@ -300,7 +317,7 @@ const successBanner: React.CSSProperties = {
   borderRadius: '8px',
   fontSize: '13px',
   fontWeight: 500,
-  color: 'var(--a3-done, #2d7a0a)',
+  color: 'var(--accent-green)',
 };
 
 const emptyStateStyle: React.CSSProperties = {
@@ -318,7 +335,7 @@ const slidesGridStyle: React.CSSProperties = {
 };
 
 const slideCardStyle: React.CSSProperties = {
-  border: '1px solid var(--border-subtle, #e5e7eb)',
+  border: '1px solid var(--border)',
   borderRadius: '10px',
   padding: '16px',
   position: 'relative',

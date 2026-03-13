@@ -458,7 +458,7 @@ const focusRowStyle: React.CSSProperties = {
   gap: 8,
   padding: '8px 12px',
   background: 'var(--bg-primary)',
-  border: '1px solid var(--border-subtle)',
+  border: '1px solid var(--border)',
   borderLeft: '3px solid',
   borderRadius: 6,
   fontSize: 14,

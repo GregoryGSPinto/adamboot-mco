@@ -85,7 +85,9 @@ export function ImpedimentoForm({
         <div style={headerStyle}>
           <span style={{ fontSize: '20px' }}>🚧</span>
           <h3 style={{ margin: 0, fontSize: '16px' }}>Registrar impedimento</h3>
-          <button onClick={onClose} style={closeBtn}>✕</button>
+          <button onClick={onClose} style={closeBtn}>
+            ✕
+          </button>
         </div>
 
         {/* Tipo */}
@@ -98,9 +100,9 @@ export function ImpedimentoForm({
                 onClick={() => setTipo(key)}
                 style={{
                   ...tagStyle,
-                  background: tipo === key ? 'var(--vale-teal, #007e7a)' : 'var(--surface-1, #f0f0f0)',
+                  background: tipo === key ? 'var(--btn-primary-bg)' : 'var(--surface-1, #f0f0f0)',
                   color: tipo === key ? '#fff' : 'var(--text-primary, #333)',
-                  borderColor: tipo === key ? 'var(--vale-teal)' : 'transparent',
+                  borderColor: tipo === key ? 'var(--btn-primary-bg)' : 'transparent',
                 }}
               >
                 {label}
@@ -114,7 +116,7 @@ export function ImpedimentoForm({
           <label style={labelStyle}>O que está impedindo?</label>
           <textarea
             value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
+            onChange={e => setDescricao(e.target.value)}
             placeholder="Descreva brevemente o impedimento..."
             rows={3}
             style={textareaStyle}
@@ -220,7 +222,7 @@ const btnPrimaryStyle: React.CSSProperties = {
   padding: '12px',
   border: 'none',
   borderRadius: '10px',
-  background: 'var(--vale-teal, #007e7a)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontSize: '14px',
   fontWeight: 600,

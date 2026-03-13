@@ -33,7 +33,9 @@ export function AvancarFaseForm({ cicloId, faseAtual, faseNumero, onSuccess }: P
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
-        Fase atual: <span style={{ color: 'var(--vale-teal-light)', fontWeight: 600 }}>{faseAtual}</span> ({faseNumero}/8)
+        Fase atual:{' '}
+        <span style={{ color: 'var(--accent-green)', fontWeight: 600 }}>{faseAtual}</span> (
+        {faseNumero}/8)
       </p>
 
       <div className="field">
@@ -46,13 +48,16 @@ export function AvancarFaseForm({ cicloId, faseAtual, faseNumero, onSuccess }: P
         />
       </div>
 
-      <button type="submit" disabled={isPending} className="btn btn-primary" style={{ width: '100%' }}>
+      <button
+        type="submit"
+        disabled={isPending}
+        className="btn btn-primary"
+        style={{ width: '100%' }}
+      >
         {isPending ? 'Processando...' : 'Avançar Fase →'}
       </button>
 
-      {sucesso && (
-        <div className="toast toast-success">Fase avançada com sucesso!</div>
-      )}
+      {sucesso && <div className="toast toast-success">Fase avançada com sucesso!</div>}
 
       {isError && (
         <p className="field-error" style={{ marginTop: '0.5rem' }}>

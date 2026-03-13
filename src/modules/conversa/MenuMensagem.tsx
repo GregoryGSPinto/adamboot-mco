@@ -59,9 +59,12 @@ export function MenuMensagem({
       {/* Responder */}
       <button
         style={itemStyle}
-        onClick={() => { onResponder(mensagemId); onClose(); }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-hover)')}
-        onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+        onClick={() => {
+          onResponder(mensagemId);
+          onClose();
+        }}
+        onMouseEnter={e => (e.currentTarget.style.background = 'var(--hover-bg)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
       >
         <span style={iconStyle}>↩</span>
         Responder
@@ -70,9 +73,12 @@ export function MenuMensagem({
       {/* Marcar/Desmarcar decisão */}
       <button
         style={itemStyle}
-        onClick={() => { onMarcarDecisao(mensagemId); onClose(); }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-hover)')}
-        onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+        onClick={() => {
+          onMarcarDecisao(mensagemId);
+          onClose();
+        }}
+        onMouseEnter={e => (e.currentTarget.style.background = 'var(--hover-bg)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
       >
         <span style={iconStyle}>{ehDecisao ? '✗' : '✔'}</span>
         {ehDecisao ? 'Remover decisão' : 'Marcar como decisão'}
@@ -84,13 +90,16 @@ export function MenuMensagem({
         Vincular à Fase {fase} — {FASE_LABELS[fase]}
       </div>
       <div style={{ maxHeight: 180, overflowY: 'auto' }}>
-        {requisitos.map((req) => (
+        {requisitos.map(req => (
           <button
             key={req.id}
             style={{ ...itemStyle, fontSize: '0.75rem' }}
-            onClick={() => { onVincularRequisito(mensagemId, req.id); onClose(); }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-hover)')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+            onClick={() => {
+              onVincularRequisito(mensagemId, req.id);
+              onClose();
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'var(--hover-bg)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
           >
             <span style={{ ...iconStyle, fontSize: '0.6875rem' }}>
               {TIPO_ICON[req.tipoValidacao] ?? '📎'}
@@ -110,8 +119,8 @@ export function MenuMensagem({
           }
           onClose();
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-hover)')}
-        onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+        onMouseEnter={e => (e.currentTarget.style.background = 'var(--hover-bg)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
       >
         <span style={iconStyle}>📋</span>
         Copiar
@@ -133,12 +142,12 @@ const menuStyle: React.CSSProperties = {
   position: 'fixed',
   zIndex: 500,
   width: 240,
-  background: 'var(--bg-elevated)',
-  border: '1px solid var(--border-default)',
-  borderRadius: 'var(--radius-md)',
+  background: 'var(--bg-secondary)',
+  border: '1px solid var(--border)',
+  borderRadius: '6px',
   boxShadow: 'var(--shadow-lg)',
   padding: '0.375rem 0',
-  backdropFilter: 'blur(12px)',
+  backdropFilter: 'none',
 };
 
 const itemStyle: React.CSSProperties = {
@@ -150,12 +159,12 @@ const itemStyle: React.CSSProperties = {
   background: 'transparent',
   border: 'none',
   color: 'var(--text-primary)',
-  fontFamily: 'var(--font-body)',
+  fontFamily: 'var(--font-family)',
   fontSize: '0.8125rem',
   fontWeight: 500,
   cursor: 'pointer',
   textAlign: 'left',
-  transition: 'background var(--duration-fast)',
+  transition: 'background 0.1s',
   borderRadius: 0,
 };
 
@@ -168,7 +177,7 @@ const iconStyle: React.CSSProperties = {
 
 const dividerStyle: React.CSSProperties = {
   height: 1,
-  background: 'var(--border-subtle)',
+  background: 'var(--border)',
   margin: '0.25rem 0',
 };
 

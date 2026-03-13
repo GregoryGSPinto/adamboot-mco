@@ -9,10 +9,10 @@ interface Props {
 }
 
 const PRIORITY_STYLE: Record<MissionPriority, { cor: string; bg: string; label: string }> = {
-  CRITICAL: { cor: 'var(--sev-critica)', bg: 'var(--glow-red)', label: 'CRÍTICO' },
-  HIGH:     { cor: '#f97316', bg: 'rgba(249,115,22,0.12)', label: 'ALTO' },
-  MEDIUM:   { cor: 'var(--vale-gold)', bg: 'var(--glow-gold)', label: 'MÉDIO' },
-  LOW:      { cor: 'var(--vale-gray-light)', bg: 'rgba(116,118,120,0.12)', label: 'BAIXO' },
+  CRITICAL: { cor: 'var(--sev-critica)', bg: 'var(--accent-red-subtle)', label: 'CRÍTICO' },
+  HIGH: { cor: '#f97316', bg: 'rgba(249,115,22,0.12)', label: 'ALTO' },
+  MEDIUM: { cor: 'var(--accent-yellow)', bg: 'var(--accent-yellow-subtle)', label: 'MÉDIO' },
+  LOW: { cor: 'var(--text-muted)', bg: 'rgba(116,118,120,0.12)', label: 'BAIXO' },
 };
 
 const ROLE_LABEL: Record<string, string> = {
@@ -45,7 +45,14 @@ export function MissionItemRow({ item }: Props) {
   return (
     <div style={{ ...rowStyle, borderLeftColor: style.cor }}>
       {/* Header: responsável + atraso + botão cobrar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '0.25rem',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span style={{ ...roleBadge, background: style.bg, color: style.cor }}>
             {ROLE_LABEL[item.responsibleRole] ?? item.responsibleRole}
@@ -54,9 +61,7 @@ export function MissionItemRow({ item }: Props) {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
           {item.daysLate != null && item.daysLate > 0 && (
-            <span style={{ ...lateBadge, color: style.cor }}>
-              {item.daysLate}d atrasado
-            </span>
+            <span style={{ ...lateBadge, color: style.cor }}>{item.daysLate}d atrasado</span>
           )}
           <span style={{ ...priorityDot, background: style.cor }} />
 
@@ -89,12 +94,12 @@ export function MissionItemRow({ item }: Props) {
 }
 
 const rowStyle: React.CSSProperties = {
-  background: 'var(--bg-card)',
-  border: '1px solid var(--border-subtle)',
+  background: 'var(--bg-primary)',
+  border: '1px solid var(--border)',
   borderLeft: '3px solid',
-  borderRadius: 'var(--radius-sm)',
+  borderRadius: '6px',
   padding: '0.75rem 1rem',
-  transition: 'border-color var(--duration-fast)',
+  transition: 'border-color 0.1s',
 };
 
 const roleBadge: React.CSSProperties = {
@@ -103,7 +108,7 @@ const roleBadge: React.CSSProperties = {
   textTransform: 'uppercase',
   letterSpacing: '0.06em',
   padding: '0.1rem 0.4rem',
-  borderRadius: 'var(--radius-full)',
+  borderRadius: '9999px',
 };
 
 const nameStyle: React.CSSProperties = {
@@ -127,22 +132,22 @@ const priorityDot: React.CSSProperties = {
 const nudgeBtn: React.CSSProperties = {
   width: 32,
   height: 32,
-  borderRadius: 'var(--radius-sm)',
-  border: '1px solid var(--border-default)',
-  background: 'var(--bg-elevated)',
+  borderRadius: '6px',
+  border: '1px solid var(--border)',
+  background: 'var(--bg-secondary)',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: '0.875rem',
   flexShrink: 0,
-  transition: 'all var(--duration-fast)',
+  transition: 'all 0.1s',
 };
 
 const sentLabel: React.CSSProperties = {
   fontSize: '0.625rem',
   fontWeight: 600,
-  color: 'var(--vale-green)',
+  color: 'var(--accent-green)',
   whiteSpace: 'nowrap',
 };
 
@@ -163,10 +168,10 @@ const reqCode: React.CSSProperties = {
   fontSize: '0.5625rem',
   fontFamily: 'var(--font-mono)',
   fontWeight: 600,
-  color: 'var(--vale-teal-light)',
-  background: 'var(--glow-teal)',
+  color: 'var(--accent-green)',
+  background: 'var(--accent-green-subtle)',
   padding: '0.1rem 0.375rem',
-  borderRadius: 'var(--radius-full)',
+  borderRadius: '9999px',
 };
 
 const reqDesc: React.CSSProperties = {

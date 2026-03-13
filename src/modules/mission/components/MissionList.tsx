@@ -15,13 +15,13 @@ interface Props {
  */
 export function MissionList({ group }: Props) {
   const sorted = [...group.items].sort(
-    (a, b) => priorityWeight(b.priority) - priorityWeight(a.priority),
+    (a, b) => priorityWeight(b.priority) - priorityWeight(a.priority)
   );
 
   if (sorted.length === 0) {
     return (
       <div style={emptyStyle}>
-        <span style={{ color: 'var(--vale-green)', fontSize: '1.25rem' }}>✓</span>
+        <span style={{ color: 'var(--accent-green)', fontSize: '1.25rem' }}>✓</span>
         <span style={{ color: 'var(--text-muted)', fontSize: '0.8125rem' }}>
           Todos os requisitos cumpridos. Pronto para avançar.
         </span>
@@ -35,7 +35,7 @@ export function MissionList({ group }: Props) {
         <span>Pendências — {group.phaseName}</span>
         <span style={countBadge}>{sorted.length}</span>
       </div>
-      {sorted.map((item) => (
+      {sorted.map(item => (
         <MissionItemRow key={item.id} item={item} />
       ))}
     </div>
@@ -55,9 +55,9 @@ const headerStyle: React.CSSProperties = {
 };
 
 const countBadge: React.CSSProperties = {
-  background: 'var(--bg-input)',
+  background: 'var(--bg-secondary)',
   padding: '0.1rem 0.5rem',
-  borderRadius: 'var(--radius-full)',
+  borderRadius: '9999px',
   fontSize: '0.6875rem',
   fontFamily: 'var(--font-mono)',
   fontWeight: 700,

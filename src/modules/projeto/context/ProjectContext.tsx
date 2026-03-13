@@ -56,7 +56,7 @@ export function ProjectProvider({ projectId, children }: ProviderProps) {
   // Qualquer ação em qualquer aba dispara evento →
   // provider recarrega → todas as views atualizam.
   useEffect(() => {
-    const unsub = subscribeDomainEvents((event) => {
+    const unsub = subscribeDomainEvents(event => {
       if (event.projectId === projectId) {
         refetch();
       }
@@ -77,9 +77,7 @@ export function ProjectProvider({ projectId, children }: ProviderProps) {
   // Erro
   if (isError || !status) {
     return (
-      <div style={{ padding: '2rem', color: 'var(--text-muted)' }}>
-        Projeto não encontrado.
-      </div>
+      <div style={{ padding: '2rem', color: 'var(--text-muted)' }}>Projeto não encontrado.</div>
     );
   }
 
@@ -94,11 +92,7 @@ export function ProjectProvider({ projectId, children }: ProviderProps) {
     isLoading,
   };
 
-  return (
-    <ProjectContext.Provider value={value}>
-      {children}
-    </ProjectContext.Provider>
-  );
+  return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>;
 }
 
 // ════════════════════════════════════
@@ -117,7 +111,7 @@ export function useProjectContext(): ProjectContextValue {
   if (!ctx) {
     throw new Error(
       'useProjectContext() chamado fora do ProjectProvider. ' +
-      'Envolva o componente em <ProjectProvider projectId="...">'
+        'Envolva o componente em <ProjectProvider projectId="...">'
     );
   }
   return ctx;
@@ -139,6 +133,6 @@ const pulseStyle: React.CSSProperties = {
   width: 8,
   height: 8,
   borderRadius: '50%',
-  background: 'var(--vale-teal)',
+  background: 'var(--btn-primary-bg)',
   animation: 'pulse-step 1s ease-in-out infinite',
 };

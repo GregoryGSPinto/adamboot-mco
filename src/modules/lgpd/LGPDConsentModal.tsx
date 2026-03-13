@@ -55,8 +55,8 @@ export function LGPDConsentModal({ userId, userName, onAccept }: LGPDConsentModa
           <input
             type="checkbox"
             checked={checked}
-            onChange={(e) => setChecked(e.target.checked)}
-            style={{ width: '20px', height: '20px', accentColor: 'var(--vale-teal, #007e7a)' }}
+            onChange={e => setChecked(e.target.checked)}
+            style={{ width: '20px', height: '20px', accentColor: 'var(--btn-primary-bg)' }}
           />
           <span style={{ fontSize: '14px' }}>
             Li e aceito os termos acima (v{VERSAO_TERMO_ATUAL})
@@ -100,7 +100,14 @@ export function ImageUseWarning({
         <p style={{ fontSize: '13px', lineHeight: '1.5', color: 'var(--text-secondary, #555)' }}>
           Ao anexar uma foto, você confirma que:
         </p>
-        <ul style={{ fontSize: '13px', lineHeight: '1.6', paddingLeft: '20px', color: 'var(--text-secondary, #555)' }}>
+        <ul
+          style={{
+            fontSize: '13px',
+            lineHeight: '1.6',
+            paddingLeft: '20px',
+            color: 'var(--text-secondary, #555)',
+          }}
+        >
           <li>A imagem não contém informações pessoais sensíveis</li>
           <li>Pessoas na imagem foram informadas</li>
           <li>Uso exclusivo para fins do projeto CCQ</li>
@@ -181,7 +188,7 @@ const btnStyle: React.CSSProperties = {
   padding: '12px',
   border: 'none',
   borderRadius: '10px',
-  background: 'var(--vale-teal, #007e7a)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontSize: '14px',
   fontWeight: 600,

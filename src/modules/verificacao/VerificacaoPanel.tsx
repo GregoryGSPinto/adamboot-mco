@@ -65,9 +65,11 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
       observacao: confirmacao || '',
     });
     setConfirmacao(null);
-    alert(result.aprovado
-      ? '✅ Problema eliminado — pronto para padronizar!'
-      : '⚠️ Meta não atingida em todos indicadores. Revise as ações.');
+    alert(
+      result.aprovado
+        ? '✅ Problema eliminado — pronto para padronizar!'
+        : '⚠️ Meta não atingida em todos indicadores. Revise as ações.'
+    );
   };
 
   return (
@@ -85,13 +87,13 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
           <div style={rowStyle}>
             <input
               value={indicador}
-              onChange={(e) => setIndicador(e.target.value)}
+              onChange={e => setIndicador(e.target.value)}
               placeholder="Indicador (ex: Tempo de parada)"
               style={inputStyle}
             />
             <input
               value={unidade}
-              onChange={(e) => setUnidade(e.target.value)}
+              onChange={e => setUnidade(e.target.value)}
               placeholder="Unidade (min, %, R$)"
               style={{ ...inputStyle, maxWidth: '100px' }}
             />
@@ -99,7 +101,7 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
           <div style={rowStyle}>
             <input
               value={antes}
-              onChange={(e) => setAntes(e.target.value)}
+              onChange={e => setAntes(e.target.value)}
               placeholder="Antes"
               type="number"
               style={inputStyle}
@@ -107,20 +109,24 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
             <span style={{ fontSize: '18px', color: '#999' }}>→</span>
             <input
               value={depois}
-              onChange={(e) => setDepois(e.target.value)}
+              onChange={e => setDepois(e.target.value)}
               placeholder="Depois"
               type="number"
               style={inputStyle}
             />
             <input
               value={meta}
-              onChange={(e) => setMeta(e.target.value)}
+              onChange={e => setMeta(e.target.value)}
               placeholder="Meta"
               type="number"
               style={{ ...inputStyle, maxWidth: '80px' }}
             />
           </div>
-          <button onClick={handleSubmit} disabled={!indicador || !antes || !depois} style={saveBtnStyle}>
+          <button
+            onClick={handleSubmit}
+            disabled={!indicador || !antes || !depois}
+            style={saveBtnStyle}
+          >
             Salvar resultado
           </button>
         </div>
@@ -133,7 +139,7 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
         </p>
       )}
 
-      {resultados.map((r) => {
+      {resultados.map(r => {
         const comp = compararAntesDepois(r);
         const isPositive = comp.variacao < 0; // redução = bom
         const barWidth = Math.min(Math.abs(comp.variacao), 100);
@@ -146,10 +152,11 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
                 style={{
                   fontSize: '13px',
                   fontWeight: 700,
-                  color: isPositive ? 'var(--vale-green, #69be28)' : '#e53935',
+                  color: isPositive ? 'var(--accent-green)' : '#e53935',
                 }}
               >
-                {comp.variacao > 0 ? '+' : ''}{comp.variacao}%
+                {comp.variacao > 0 ? '+' : ''}
+                {comp.variacao}%
               </span>
             </div>
 
@@ -162,7 +169,13 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
               <span style={{ fontSize: '20px', color: '#ccc' }}>→</span>
               <div style={valueBoxStyle}>
                 <span style={{ fontSize: '11px', color: '#999' }}>DEPOIS</span>
-                <span style={{ fontSize: '18px', fontWeight: 700, color: isPositive ? 'var(--vale-green)' : '#e53935' }}>
+                <span
+                  style={{
+                    fontSize: '18px',
+                    fontWeight: 700,
+                    color: isPositive ? 'var(--accent-green)' : '#e53935',
+                  }}
+                >
                   {comp.depois}
                 </span>
                 <span style={{ fontSize: '11px', color: '#999' }}>{r.unidade}</span>
@@ -170,10 +183,17 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
               {comp.meta != null && (
                 <div style={valueBoxStyle}>
                   <span style={{ fontSize: '11px', color: '#999' }}>META</span>
-                  <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--vale-teal)' }}>
+                  <span
+                    style={{ fontSize: '18px', fontWeight: 700, color: 'var(--btn-primary-bg)' }}
+                  >
                     {comp.meta}
                   </span>
-                  <span style={{ fontSize: '11px', color: comp.atingiuMeta ? 'var(--vale-green)' : '#e53935' }}>
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      color: comp.atingiuMeta ? 'var(--accent-green)' : '#e53935',
+                    }}
+                  >
                     {comp.atingiuMeta ? '✅ Atingida' : '❌ Não atingida'}
                   </span>
                 </div>
@@ -186,7 +206,7 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
                 style={{
                   ...barFillStyle,
                   width: `${barWidth}%`,
-                  background: isPositive ? 'var(--vale-green, #69be28)' : '#e53935',
+                  background: isPositive ? 'var(--accent-green)' : '#e53935',
                 }}
               />
             </div>
@@ -205,13 +225,16 @@ export function VerificacaoPanel({ projectId, userId }: VerificacaoPanelProps) {
             <div style={formStyle}>
               <textarea
                 value={confirmacao}
-                onChange={(e) => setConfirmacao(e.target.value)}
+                onChange={e => setConfirmacao(e.target.value)}
                 placeholder="Observação sobre a eliminação..."
                 rows={2}
                 style={{ ...inputStyle, resize: 'none' }}
               />
               <div style={{ display: 'flex', gap: '8px' }}>
-                <button onClick={() => setConfirmacao(null)} style={{ ...saveBtnStyle, background: '#999' }}>
+                <button
+                  onClick={() => setConfirmacao(null)}
+                  style={{ ...saveBtnStyle, background: '#999' }}
+                >
                   Cancelar
                 </button>
                 <button onClick={handleConfirmar} style={saveBtnStyle}>
@@ -242,10 +265,10 @@ const headerStyle: React.CSSProperties = {
 
 const addBtnStyle: React.CSSProperties = {
   padding: '6px 14px',
-  border: '1px solid var(--vale-teal, #007e7a)',
+  border: '1px solid var(--btn-primary-bg)',
   borderRadius: '8px',
   background: 'transparent',
-  color: 'var(--vale-teal)',
+  color: 'var(--btn-primary-bg)',
   fontSize: '13px',
   fontWeight: 600,
   cursor: 'pointer',
@@ -282,7 +305,7 @@ const saveBtnStyle: React.CSSProperties = {
   padding: '10px',
   border: 'none',
   borderRadius: '8px',
-  background: 'var(--vale-teal, #007e7a)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontSize: '13px',
   fontWeight: 600,
@@ -330,10 +353,10 @@ const barFillStyle: React.CSSProperties = {
 const confirmBtnStyle: React.CSSProperties = {
   width: '100%',
   padding: '12px',
-  border: '2px solid var(--vale-green, #69be28)',
+  border: '2px solid var(--accent-green)',
   borderRadius: '10px',
   background: 'transparent',
-  color: 'var(--vale-green)',
+  color: 'var(--accent-green)',
   fontSize: '14px',
   fontWeight: 600,
   cursor: 'pointer',

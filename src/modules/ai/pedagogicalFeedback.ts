@@ -40,7 +40,8 @@ export const ORIENTACOES_A3: OrientacaoPasso[] = [
       'Sem número (apenas adjetivos: grave, crítico)',
       'Escopo vago (sem local, sem período)',
     ],
-    exemploBom: '90% dos eventos com maquinista de viagem acontecem ao assumir e vistoriar a locomotiva.',
+    exemploBom:
+      '90% dos eventos com maquinista de viagem acontecem ao assumir e vistoriar a locomotiva.',
     exemploRuim: 'Há risco operacional na via permanente.',
   },
   {
@@ -73,7 +74,8 @@ export const ORIENTACOES_A3: OrientacaoPasso[] = [
     passo: 4,
     titulo: 'Analisar Causa Raiz',
     perguntaGuia: 'Por que o problema acontece? (5x Por quê?)',
-    criterioAprovacao: 'Causa sistêmica identificada via 5 Porquês ou Ishikawa. NÃO pode ser erro humano.',
+    criterioAprovacao:
+      'Causa sistêmica identificada via 5 Porquês ou Ishikawa. NÃO pode ser erro humano.',
     errosComuns: [
       'Parar no primeiro "por quê"',
       'Culpar pessoa: "falta de atenção"',
@@ -113,11 +115,7 @@ export const ORIENTACOES_A3: OrientacaoPasso[] = [
     titulo: 'Verificar Resultado',
     perguntaGuia: 'O processo melhorou? A meta foi atingida?',
     criterioAprovacao: 'Comparação antes/depois com dados. Evidência fotográfica.',
-    errosComuns: [
-      'Sem dados de comparação',
-      'Sem evidência visual',
-      'Declarar sucesso sem medir',
-    ],
+    errosComuns: ['Sem dados de comparação', 'Sem evidência visual', 'Declarar sucesso sem medir'],
     exemploBom: 'Antes: 10 erros/mês. Depois: 0 erros em 30 visitas. Meta atingida ✅',
     exemploRuim: 'O processo melhorou bastante.',
   },
@@ -143,31 +141,28 @@ export const ORIENTACOES_A3: OrientacaoPasso[] = [
 /**
  * Gerar mensagem de coaching baseada no passo atual e validações.
  */
-export function gerarFeedbackPedagogico(
-  passo: number,
-  validacoes: ResultadoValidacao[],
-): string[] {
-  const orientacao = ORIENTACOES_A3.find((o) => o.passo === passo);
+export function gerarFeedbackPedagogico(passo: number, validacoes: ResultadoValidacao[]): string[] {
+  const orientacao = ORIENTACOES_A3.find(o => o.passo === passo);
   if (!orientacao) return [];
 
   const mensagens: string[] = [];
 
   // Bloqueios primeiro
-  const bloqueios = validacoes.filter((v) => v.severidade === 'bloqueio');
-  bloqueios.forEach((b) => {
+  const bloqueios = validacoes.filter(v => v.severidade === 'bloqueio');
+  bloqueios.forEach(b => {
     mensagens.push(`🔴 ${b.mensagem}`);
     if (b.dicaCorrecao) mensagens.push(`   💡 ${b.dicaCorrecao}`);
   });
 
   // Avisos
-  const avisos = validacoes.filter((v) => v.severidade === 'aviso');
-  avisos.forEach((a) => {
+  const avisos = validacoes.filter(v => v.severidade === 'aviso');
+  avisos.forEach(a => {
     mensagens.push(`🟡 ${a.mensagem}`);
     if (a.dicaCorrecao) mensagens.push(`   💡 ${a.dicaCorrecao}`);
   });
 
   // Se tudo ok, mensagem positiva
-  const todosOk = validacoes.every((v) => v.severidade === 'ok');
+  const todosOk = validacoes.every(v => v.severidade === 'ok');
   if (todosOk && validacoes.length > 0) {
     mensagens.push(`🟢 Passo ${passo} validado. Pode avançar.`);
   }
@@ -184,7 +179,7 @@ export function gerarDicaPasso(passo: number): {
   dica: string;
   cuidado: string;
 } {
-  const o = ORIENTACOES_A3.find((x) => x.passo === passo);
+  const o = ORIENTACOES_A3.find(x => x.passo === passo);
   if (!o) return { pergunta: '', dica: '', cuidado: '' };
 
   return {
@@ -198,7 +193,7 @@ export function gerarDicaPasso(passo: number): {
  * Gerar mensagem quando o usuário tenta avançar mas não pode.
  */
 export function mensagemBloqueioAvanco(passo: number): string {
-  const o = ORIENTACOES_A3.find((x) => x.passo === passo);
+  const o = ORIENTACOES_A3.find(x => x.passo === passo);
   if (!o) return 'Complete o passo atual antes de avançar.';
 
   const erros = o.errosComuns;
@@ -213,7 +208,7 @@ export function mensagemBloqueioAvanco(passo: number): string {
  */
 export function feedbackInstantaneo(
   campo: 'problema' | 'meta' | 'causa_raiz' | 'contramedida',
-  texto: string,
+  texto: string
 ): { cor: string; icone: string; msg: string } | null {
   if (!texto || texto.length < 5) return null;
 
@@ -222,18 +217,19 @@ export function feedbackInstantaneo(
 
   if (campo === 'problema') {
     if (!/\d/.test(texto)) {
-      return { cor: 'var(--vale-gold)', icone: '⚠', msg: 'Inclua um número' };
+      return { cor: 'var(--accent-yellow)', icone: '⚠', msg: 'Inclua um número' };
     }
-    return { cor: 'var(--vale-green)', icone: '✓', msg: 'Mensurável' };
+    return { cor: 'var(--accent-green)', icone: '✓', msg: 'Mensurável' };
   }
 
   if (campo === 'meta') {
     const temNum = /\d/.test(texto);
     const temPrazo = /(até|antes|data|\d{2}\/)/i.test(texto);
-    if (!temNum && !temPrazo) return { cor: 'var(--vale-gold)', icone: '⚠', msg: 'Falta número e prazo' };
-    if (!temNum) return { cor: 'var(--vale-gold)', icone: '⚠', msg: 'Falta número' };
-    if (!temPrazo) return { cor: 'var(--vale-gold)', icone: '⚠', msg: 'Falta prazo' };
-    return { cor: 'var(--vale-green)', icone: '✓', msg: 'SMART' };
+    if (!temNum && !temPrazo)
+      return { cor: 'var(--accent-yellow)', icone: '⚠', msg: 'Falta número e prazo' };
+    if (!temNum) return { cor: 'var(--accent-yellow)', icone: '⚠', msg: 'Falta número' };
+    if (!temPrazo) return { cor: 'var(--accent-yellow)', icone: '⚠', msg: 'Falta prazo' };
+    return { cor: 'var(--accent-green)', icone: '✓', msg: 'SMART' };
   }
 
   if (campo === 'causa_raiz') {
@@ -241,13 +237,14 @@ export function feedbackInstantaneo(
     for (const p of proibidas) {
       if (t.includes(p)) return { cor: '#e53935', icone: '✕', msg: `"${p}" não é causa raiz` };
     }
-    return { cor: 'var(--vale-green)', icone: '✓', msg: 'Sistêmica' };
+    return { cor: 'var(--accent-green)', icone: '✓', msg: 'Sistêmica' };
   }
 
   if (campo === 'contramedida') {
     const fracas = ['retreinar', 'conscientizar', 'orientar', 'DDS'];
     for (const f of fracas) {
-      if (t.includes(f)) return { cor: 'var(--vale-gold)', icone: '⚠', msg: `"${f}" é ação fraca` };
+      if (t.includes(f))
+        return { cor: 'var(--accent-yellow)', icone: '⚠', msg: `"${f}" é ação fraca` };
     }
     return null;
   }

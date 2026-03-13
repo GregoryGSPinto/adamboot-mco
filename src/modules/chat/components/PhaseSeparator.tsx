@@ -35,7 +35,7 @@ const containerStyle: React.CSSProperties = {
 const lineStyle: React.CSSProperties = {
   flex: 1,
   height: 1,
-  background: 'linear-gradient(90deg, transparent, var(--border-default), transparent)',
+  background: 'var(--border)',
 };
 
 const badgeStyle: React.CSSProperties = {
@@ -43,8 +43,8 @@ const badgeStyle: React.CSSProperties = {
   alignItems: 'center',
   gap: '0.5rem',
   padding: '0.375rem 1rem',
-  borderRadius: 'var(--radius-full)',
-  background: 'var(--glow-teal)',
+  borderRadius: '9999px',
+  background: 'var(--accent-green-subtle)',
   border: '1px solid rgba(0,126,122,0.2)',
   flexShrink: 0,
 };
@@ -52,7 +52,7 @@ const badgeStyle: React.CSSProperties = {
 const numStyle: React.CSSProperties = {
   fontSize: '0.625rem',
   fontWeight: 700,
-  color: 'var(--vale-teal-light)',
+  color: 'var(--accent-green)',
   textTransform: 'uppercase',
   letterSpacing: '0.08em',
   fontFamily: 'var(--font-mono)',
@@ -61,5 +61,5 @@ const numStyle: React.CSSProperties = {
 const labelStyle: React.CSSProperties = {
   fontSize: '0.75rem',
   fontWeight: 600,
-  color: 'var(--vale-teal-light)',
+  color: 'var(--accent-green)',
 };

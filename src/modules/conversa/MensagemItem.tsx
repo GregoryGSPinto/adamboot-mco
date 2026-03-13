@@ -24,21 +24,27 @@ interface Props {
 export function MensagemItem({ msg, isOwn, replyTo, onContextMenu }: Props) {
   const longPressTimer = useRef<ReturnType<typeof setTimeout>>();
 
-  const handleContextMenu = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    if (msg.tipo !== 'sistema') {
-      onContextMenu(msg.id, e.clientX, e.clientY);
-    }
-  }, [msg.id, msg.tipo, onContextMenu]);
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      if (msg.tipo !== 'sistema') {
+        onContextMenu(msg.id, e.clientX, e.clientY);
+      }
+    },
+    [msg.id, msg.tipo, onContextMenu]
+  );
 
   // Long press for mobile
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (msg.tipo === 'sistema') return;
-    longPressTimer.current = setTimeout(() => {
-      const touch = e.touches[0];
-      onContextMenu(msg.id, touch.clientX, touch.clientY);
-    }, 500);
-  }, [msg.id, msg.tipo, onContextMenu]);
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (msg.tipo === 'sistema') return;
+      longPressTimer.current = setTimeout(() => {
+        const touch = e.touches[0];
+        onContextMenu(msg.id, touch.clientX, touch.clientY);
+      }, 500);
+    },
+    [msg.id, msg.tipo, onContextMenu]
+  );
 
   const handleTouchEnd = useCallback(() => {
     if (longPressTimer.current) clearTimeout(longPressTimer.current);
@@ -80,10 +86,14 @@ export function MensagemItem({ msg, isOwn, replyTo, onContextMenu }: Props) {
       <div
         style={{
           ...bubbleBase,
-          background: isOwn ? 'var(--glow-teal)' : 'var(--bg-card)',
-          borderColor: msg.ehDecisao ? 'var(--vale-gold)' : isOwn ? 'rgba(0,126,122,0.2)' : 'var(--border-subtle)',
+          background: isOwn ? 'var(--accent-green-subtle)' : 'var(--bg-primary)',
+          borderColor: msg.ehDecisao
+            ? 'var(--accent-yellow)'
+            : isOwn
+              ? 'rgba(0,126,122,0.2)'
+              : 'var(--border)',
           borderLeftWidth: msg.ehDecisao ? 3 : 1,
-          borderLeftColor: msg.ehDecisao ? 'var(--vale-gold)' : undefined,
+          borderLeftColor: msg.ehDecisao ? 'var(--accent-yellow)' : undefined,
           maxWidth: '80%',
           minWidth: 120,
         }}
@@ -96,50 +106,71 @@ export function MensagemItem({ msg, isOwn, replyTo, onContextMenu }: Props) {
         )}
 
         {/* Autor (só para mensagens de outros) */}
-        {!isOwn && (
-          <div style={autorStyle}>
-            {msg.autorNome}
-          </div>
-        )}
+        {!isOwn && <div style={autorStyle}>{msg.autorNome}</div>}
 
         {/* Reply preview */}
         {replyTo && (
           <div style={replyBox}>
             <span style={{ fontWeight: 600, fontSize: '0.6875rem' }}>{replyTo.autorNome}</span>
-            <span style={{ fontSize: '0.75rem', opacity: 0.8, display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <span
+              style={{
+                fontSize: '0.75rem',
+                opacity: 0.8,
+                display: 'block',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {replyTo.texto?.slice(0, 80) ?? '📷 Foto'}
             </span>
           </div>
         )}
 
         {/* Imagens */}
-        {msg.anexos.filter(a => a.tipo === 'imagem').map(anx => (
-          <div key={anx.id} style={imageContainer}>
-            {/* Placeholder image with camera icon — em produção seria <img src={anx.thumbUrl}> */}
-            <div style={imagePlaceholder}>
-              <span style={{ fontSize: '2rem', opacity: 0.4 }}>📷</span>
-              <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>{anx.nome}</span>
-              <span style={{ fontSize: '0.5625rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                {(anx.tamanho / 1_000_000).toFixed(1)} MB
-              </span>
-            </div>
-          </div>
-        ))}
-
-        {/* Arquivos não-imagem */}
-        {msg.anexos.filter(a => a.tipo !== 'imagem').map(anx => (
-          <div key={anx.id} style={fileAttachment}>
-            <span style={{ fontSize: '1.25rem' }}>
-              {anx.tipo === 'pdf' ? '📄' : '📊'}
-            </span>
-            <div>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 500 }}>{anx.nome}</div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                {(anx.tamanho / 1_000_000).toFixed(1)} MB
+        {msg.anexos
+          .filter(a => a.tipo === 'imagem')
+          .map(anx => (
+            <div key={anx.id} style={imageContainer}>
+              {/* Placeholder image with camera icon — em produção seria <img src={anx.thumbUrl}> */}
+              <div style={imagePlaceholder}>
+                <span style={{ fontSize: '2rem', opacity: 0.4 }}>📷</span>
+                <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
+                  {anx.nome}
+                </span>
+                <span
+                  style={{
+                    fontSize: '0.5625rem',
+                    color: 'var(--text-muted)',
+                    fontFamily: 'var(--font-mono)',
+                  }}
+                >
+                  {(anx.tamanho / 1_000_000).toFixed(1)} MB
+                </span>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+
+        {/* Arquivos não-imagem */}
+        {msg.anexos
+          .filter(a => a.tipo !== 'imagem')
+          .map(anx => (
+            <div key={anx.id} style={fileAttachment}>
+              <span style={{ fontSize: '1.25rem' }}>{anx.tipo === 'pdf' ? '📄' : '📊'}</span>
+              <div>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 500 }}>{anx.nome}</div>
+                <div
+                  style={{
+                    fontSize: '0.625rem',
+                    color: 'var(--text-muted)',
+                    fontFamily: 'var(--font-mono)',
+                  }}
+                >
+                  {(anx.tamanho / 1_000_000).toFixed(1)} MB
+                </div>
+              </div>
+            </div>
+          ))}
 
         {/* Texto */}
         {msg.texto && (
@@ -156,9 +187,7 @@ export function MensagemItem({ msg, isOwn, replyTo, onContextMenu }: Props) {
         )}
 
         {/* Hora */}
-        <div style={horaStyle}>
-          {hora}
-        </div>
+        <div style={horaStyle}>{hora}</div>
       </div>
     </div>
   );
@@ -170,11 +199,11 @@ export function MensagemItem({ msg, isOwn, replyTo, onContextMenu }: Props) {
 
 const bubbleBase: React.CSSProperties = {
   border: '1px solid',
-  borderRadius: 'var(--radius-md)',
+  borderRadius: '6px',
   padding: '0.5rem 0.75rem',
   position: 'relative',
   cursor: 'default',
-  transition: 'border-color var(--duration-fast)',
+  transition: 'border-color 0.1s',
 };
 
 const decisaoBadge: React.CSSProperties = {
@@ -183,25 +212,25 @@ const decisaoBadge: React.CSSProperties = {
   gap: '0.375rem',
   fontSize: '0.5625rem',
   fontWeight: 700,
-  color: 'var(--vale-gold)',
+  color: 'var(--accent-yellow)',
   textTransform: 'uppercase',
   letterSpacing: '0.08em',
   marginBottom: '0.375rem',
   paddingBottom: '0.375rem',
-  borderBottom: '1px solid var(--glow-gold)',
+  borderBottom: '1px solid var(--accent-yellow-subtle)',
 };
 
 const autorStyle: React.CSSProperties = {
   fontSize: '0.6875rem',
   fontWeight: 700,
-  color: 'var(--vale-cyan)',
+  color: 'var(--accent-blue)',
   marginBottom: '0.125rem',
 };
 
 const replyBox: React.CSSProperties = {
-  background: 'var(--bg-input)',
-  borderLeft: '2px solid var(--vale-teal)',
-  borderRadius: '0 var(--radius-xs) var(--radius-xs) 0',
+  background: 'var(--bg-secondary)',
+  borderLeft: '2px solid var(--btn-primary-bg)',
+  borderRadius: '0 6px 6px 0',
   padding: '0.25rem 0.5rem',
   marginBottom: '0.375rem',
   maxWidth: '100%',
@@ -210,7 +239,7 @@ const replyBox: React.CSSProperties = {
 
 const imageContainer: React.CSSProperties = {
   marginBottom: '0.375rem',
-  borderRadius: 'var(--radius-sm)',
+  borderRadius: '6px',
   overflow: 'hidden',
 };
 
@@ -218,14 +247,14 @@ const imagePlaceholder: React.CSSProperties = {
   width: '100%',
   minWidth: 180,
   height: 160,
-  background: 'var(--bg-input)',
-  borderRadius: 'var(--radius-sm)',
+  background: 'var(--bg-secondary)',
+  borderRadius: '6px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   gap: '0.25rem',
-  border: '1px dashed var(--border-default)',
+  border: '1px dashed var(--border)',
 };
 
 const fileAttachment: React.CSSProperties = {
@@ -233,8 +262,8 @@ const fileAttachment: React.CSSProperties = {
   alignItems: 'center',
   gap: '0.625rem',
   padding: '0.5rem 0.625rem',
-  background: 'var(--bg-input)',
-  borderRadius: 'var(--radius-sm)',
+  background: 'var(--bg-secondary)',
+  borderRadius: '6px',
   marginBottom: '0.375rem',
 };
 
@@ -244,10 +273,10 @@ const requisitoTag: React.CSSProperties = {
   gap: '0.25rem',
   fontSize: '0.625rem',
   fontWeight: 600,
-  color: 'var(--vale-green)',
-  background: 'var(--glow-green)',
+  color: 'var(--accent-green)',
+  background: 'var(--accent-green-subtle)',
   padding: '0.15rem 0.5rem',
-  borderRadius: 'var(--radius-full)',
+  borderRadius: '9999px',
   marginTop: '0.375rem',
   border: '1px solid rgba(105,190,40,0.2)',
 };
@@ -273,9 +302,9 @@ const sistemaBox: React.CSSProperties = {
   fontSize: '0.75rem',
   color: 'var(--text-muted)',
   fontStyle: 'italic',
-  background: 'var(--bg-elevated)',
+  background: 'var(--bg-secondary)',
   padding: '0.375rem 1rem',
-  borderRadius: 'var(--radius-full)',
+  borderRadius: '9999px',
   maxWidth: '85%',
   textAlign: 'center',
 };

@@ -40,7 +40,11 @@ export function ChatBubble({ message, isOwn, onMarkDecision }: Props) {
 
   return (
     <div
-      style={{ display: 'flex', justifyContent: isOwn ? 'flex-end' : 'flex-start', padding: '2px 0' }}
+      style={{
+        display: 'flex',
+        justifyContent: isOwn ? 'flex-end' : 'flex-start',
+        padding: '2px 0',
+      }}
       onContextMenu={handleContextMenu}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -49,21 +53,21 @@ export function ChatBubble({ message, isOwn, onMarkDecision }: Props) {
       <div
         style={{
           ...bubbleStyle,
-          background: isOwn ? 'var(--glow-teal)' : 'var(--bg-card)',
-          borderColor: message.isDecision ? 'var(--vale-gold)' : isOwn ? 'rgba(0,126,122,0.2)' : 'var(--border-subtle)',
+          background: isOwn ? 'var(--accent-green-subtle)' : 'var(--bg-primary)',
+          borderColor: message.isDecision
+            ? 'var(--accent-yellow)'
+            : isOwn
+              ? 'rgba(0,126,122,0.2)'
+              : 'var(--border)',
           borderLeftWidth: message.isDecision ? 3 : 1,
-          borderLeftColor: message.isDecision ? 'var(--vale-gold)' : undefined,
+          borderLeftColor: message.isDecision ? 'var(--accent-yellow)' : undefined,
         }}
       >
         {/* Decision badge */}
-        {message.isDecision && (
-          <div style={decisionBadge}>✔ DECISÃO DO GRUPO</div>
-        )}
+        {message.isDecision && <div style={decisionBadge}>✔ DECISÃO DO GRUPO</div>}
 
         {/* Author */}
-        {!isOwn && (
-          <div style={authorStyle}>{message.authorName}</div>
-        )}
+        {!isOwn && <div style={authorStyle}>{message.authorName}</div>}
 
         {/* Image */}
         {message.imageUrl && (
@@ -82,9 +86,7 @@ export function ChatBubble({ message, isOwn, onMarkDecision }: Props) {
 
         {/* Linked requirement */}
         {message.linkedRequirementCode && (
-          <div style={reqTag}>
-            📎 {message.linkedRequirementCode}
-          </div>
+          <div style={reqTag}>📎 {message.linkedRequirementCode}</div>
         )}
 
         {/* Time */}
@@ -93,11 +95,8 @@ export function ChatBubble({ message, isOwn, onMarkDecision }: Props) {
 
       {/* Context menu */}
       {showMenu && (
-        <div
-          style={menuOverlay}
-          onClick={() => setShowMenu(false)}
-        >
-          <div style={menuBox} onClick={(e) => e.stopPropagation()}>
+        <div style={menuOverlay} onClick={() => setShowMenu(false)}>
+          <div style={menuBox} onClick={e => e.stopPropagation()}>
             <button
               style={menuBtn}
               onClick={() => {
@@ -116,7 +115,7 @@ export function ChatBubble({ message, isOwn, onMarkDecision }: Props) {
 
 const bubbleStyle: React.CSSProperties = {
   border: '1px solid',
-  borderRadius: 'var(--radius-md)',
+  borderRadius: '6px',
   padding: '0.5rem 0.75rem',
   maxWidth: '80%',
   minWidth: 120,
@@ -126,18 +125,18 @@ const bubbleStyle: React.CSSProperties = {
 const decisionBadge: React.CSSProperties = {
   fontSize: '0.5625rem',
   fontWeight: 700,
-  color: 'var(--vale-gold)',
+  color: 'var(--accent-yellow)',
   textTransform: 'uppercase',
   letterSpacing: '0.08em',
   marginBottom: '0.375rem',
   paddingBottom: '0.375rem',
-  borderBottom: '1px solid var(--glow-gold)',
+  borderBottom: '1px solid var(--accent-yellow-subtle)',
 };
 
 const authorStyle: React.CSSProperties = {
   fontSize: '0.6875rem',
   fontWeight: 700,
-  color: 'var(--vale-cyan)',
+  color: 'var(--accent-blue)',
   marginBottom: '0.125rem',
 };
 
@@ -145,14 +144,14 @@ const imagePlaceholder: React.CSSProperties = {
   width: '100%',
   minWidth: 180,
   height: 160,
-  background: 'var(--bg-input)',
-  borderRadius: 'var(--radius-sm)',
+  background: 'var(--bg-secondary)',
+  borderRadius: '6px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   gap: '0.25rem',
-  border: '1px dashed var(--border-default)',
+  border: '1px dashed var(--border)',
   marginBottom: '0.375rem',
 };
 
@@ -162,10 +161,10 @@ const reqTag: React.CSSProperties = {
   gap: '0.25rem',
   fontSize: '0.625rem',
   fontWeight: 600,
-  color: 'var(--vale-green)',
-  background: 'var(--glow-green)',
+  color: 'var(--accent-green)',
+  background: 'var(--accent-green-subtle)',
   padding: '0.15rem 0.5rem',
-  borderRadius: 'var(--radius-full)',
+  borderRadius: '9999px',
   marginTop: '0.375rem',
   border: '1px solid rgba(105,190,40,0.2)',
 };
@@ -189,9 +188,9 @@ const menuOverlay: React.CSSProperties = {
 };
 
 const menuBox: React.CSSProperties = {
-  background: 'var(--bg-elevated)',
-  border: '1px solid var(--border-default)',
-  borderRadius: 'var(--radius-md)',
+  background: 'var(--bg-secondary)',
+  border: '1px solid var(--border)',
+  borderRadius: '6px',
   padding: '0.375rem 0',
   boxShadow: 'var(--shadow-lg)',
   minWidth: 200,
@@ -204,7 +203,7 @@ const menuBtn: React.CSSProperties = {
   background: 'none',
   border: 'none',
   color: 'var(--text-primary)',
-  fontFamily: 'var(--font-body)',
+  fontFamily: 'var(--font-family)',
   fontSize: '0.8125rem',
   fontWeight: 500,
   cursor: 'pointer',

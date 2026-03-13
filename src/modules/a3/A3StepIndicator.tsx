@@ -53,10 +53,10 @@ export function A3StepIndicator({
                   style={{
                     ...connectorStyle,
                     background: isDone
-                      ? 'var(--a3-done, #69be28)'
+                      ? 'var(--accent-green)'
                       : isActive
-                      ? 'var(--a3-active, #007e7a)'
-                      : 'var(--a3-locked, #3a3f47)',
+                        ? 'var(--accent-green)'
+                        : 'var(--border)',
                   }}
                 />
               )}
@@ -68,13 +68,11 @@ export function A3StepIndicator({
                 style={{
                   ...stepCircleStyle,
                   background: isDone
-                    ? 'var(--a3-done, #69be28)'
+                    ? 'var(--accent-green)'
                     : isActive
-                    ? 'var(--a3-active, #007e7a)'
-                    : 'var(--a3-locked, #3a3f47)',
-                  border: isActive
-                    ? '2px solid var(--a3-active-border, #00b3ad)'
-                    : '2px solid transparent',
+                      ? 'var(--accent-green)'
+                      : 'var(--border)',
+                  border: isActive ? '2px solid var(--accent-green)' : '2px solid transparent',
                   cursor: isLocked ? 'not-allowed' : 'pointer',
                   opacity: isLocked ? 0.4 : 1,
                   transform: isActive ? 'scale(1.15)' : 'scale(1)',
@@ -89,10 +87,10 @@ export function A3StepIndicator({
                 style={{
                   ...stepLabelStyle,
                   color: isActive
-                    ? 'var(--a3-active, #007e7a)'
+                    ? 'var(--accent-green)'
                     : isDone
-                    ? 'var(--a3-done, #69be28)'
-                    : 'var(--text-muted, #6b7280)',
+                      ? 'var(--accent-green)'
+                      : 'var(--text-muted, #6b7280)',
                   fontWeight: isActive ? 700 : 400,
                 }}
               >
@@ -111,7 +109,7 @@ export function A3StepIndicator({
 // ════════════════════════════════════
 
 const containerStyle: React.CSSProperties = {
-  background: 'var(--a3-header-bg, #1e2128)',
+  background: 'var(--bg-secondary)',
   borderRadius: '12px',
   padding: '14px 16px 12px',
   marginBottom: '16px',
@@ -129,7 +127,7 @@ const systemTagStyle: React.CSSProperties = {
   fontWeight: 700,
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
-  color: 'var(--a3-active, #00b3ad)',
+  color: 'var(--accent-green)',
   background: 'rgba(0, 179, 173, 0.12)',
   padding: '3px 8px',
   borderRadius: '4px',

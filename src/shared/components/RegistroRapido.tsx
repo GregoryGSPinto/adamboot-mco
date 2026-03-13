@@ -77,7 +77,7 @@ const fabStyle: React.CSSProperties = {
   height: '56px',
   borderRadius: '28px',
   border: 'none',
-  background: 'var(--vale-teal, #007e7a)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontSize: '24px',
   display: 'flex',

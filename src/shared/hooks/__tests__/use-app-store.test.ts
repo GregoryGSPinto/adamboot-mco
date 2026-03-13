@@ -16,9 +16,9 @@ describe('useAppStore', () => {
     vi.clearAllMocks();
   });
 
-  it('deve ter tema inicial dark', () => {
+  it('deve ter tema inicial light', () => {
     const store = useAppStore.getState();
-    expect(store.theme).toBe('dark');
+    expect(store.theme).toBe('light');
   });
 
   it('deve alternar tema', () => {
@@ -26,7 +26,7 @@ describe('useAppStore', () => {
       useAppStore.getState().toggleTheme();
     });
 
-    expect(useAppStore.getState().theme).toBe('light');
+    expect(useAppStore.getState().theme).toBe('dark');
   });
 
   it('deve definir tema específico', () => {

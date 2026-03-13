@@ -37,25 +37,31 @@ export function InputOperacional({
   const fileInputGalleryRef = useRef<HTMLInputElement>(null);
   const fileInputDocsRef = useRef<HTMLInputElement>(null);
 
-  const handleFotoSelecionada = useCallback(async (file: File) => {
-    setUploading(true);
-    try {
-      const anexo = await onUploadFoto(file.name);
-      setFotoPreview(anexo);
-      // Focar no texto para legenda opcional
-      setTimeout(() => inputRef.current?.focus(), 100);
-    } catch {
-      // silently fail — production would show toast
-    } finally {
-      setUploading(false);
-    }
-  }, [onUploadFoto]);
+  const handleFotoSelecionada = useCallback(
+    async (file: File) => {
+      setUploading(true);
+      try {
+        const anexo = await onUploadFoto(file.name);
+        setFotoPreview(anexo);
+        // Focar no texto para legenda opcional
+        setTimeout(() => inputRef.current?.focus(), 100);
+      } catch {
+        // silently fail — production would show toast
+      } finally {
+        setUploading(false);
+      }
+    },
+    [onUploadFoto]
+  );
 
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) handleFotoSelecionada(file);
-    e.target.value = ''; // reset para permitir mesmo arquivo
-  }, [handleFotoSelecionada]);
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) handleFotoSelecionada(file);
+      e.target.value = ''; // reset para permitir mesmo arquivo
+    },
+    [handleFotoSelecionada]
+  );
 
   const handleEnviar = useCallback(() => {
     const trimmed = texto.trim();
@@ -68,12 +74,15 @@ export function InputOperacional({
     inputRef.current?.focus();
   }, [texto, fotoPreview, onEnviar, onCancelReply]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleEnviar();
-    }
-  }, [handleEnviar]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleEnviar();
+      }
+    },
+    [handleEnviar]
+  );
 
   const handleRemoveFoto = useCallback(() => {
     setFotoPreview(null);
@@ -88,18 +97,22 @@ export function InputOperacional({
       {replyTo && (
         <div style={replyBarStyle}>
           <div style={{ flex: 1, overflow: 'hidden' }}>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--vale-cyan)' }}>
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--accent-blue)' }}>
               Respondendo a {replyTo.autorNome}
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <div
+              style={{
+                fontSize: '0.75rem',
+                color: 'var(--text-secondary)',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {replyTo.texto?.slice(0, 60) ?? '📷 Foto'}
             </div>
           </div>
-          <button
-            onClick={onCancelReply}
-            style={replyCloseBtn}
-            aria-label="Cancelar resposta"
-          >
+          <button onClick={onCancelReply} style={replyCloseBtn} aria-label="Cancelar resposta">
             ✕
           </button>
         </div>
@@ -179,7 +192,7 @@ export function InputOperacional({
           <textarea
             ref={inputRef}
             value={texto}
-            onChange={(e) => setTexto(e.target.value)}
+            onChange={e => setTexto(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={fotoPreview ? 'Legenda (opcional)...' : 'Mensagem curta...'}
             rows={1}
@@ -195,7 +208,7 @@ export function InputOperacional({
           style={{
             ...sendBtnStyle,
             opacity: hasContent ? 1 : 0.3,
-            background: hasContent ? 'var(--vale-teal)' : 'var(--bg-input)',
+            background: hasContent ? 'var(--btn-primary-bg)' : 'var(--bg-secondary)',
           }}
           aria-label="Enviar"
         >
@@ -211,8 +224,8 @@ export function InputOperacional({
 // ════════════════════════════════════
 
 const wrapperStyle: React.CSSProperties = {
-  borderTop: '1px solid var(--border-subtle)',
-  background: 'var(--bg-surface)',
+  borderTop: '1px solid var(--border)',
+  background: 'var(--bg-primary)',
 };
 
 const replyBarStyle: React.CSSProperties = {
@@ -220,17 +233,18 @@ const replyBarStyle: React.CSSProperties = {
   alignItems: 'center',
   gap: '0.5rem',
   padding: '0.5rem 0.875rem',
-  background: 'var(--bg-elevated)',
-  borderLeft: '3px solid var(--vale-teal)',
+  background: 'var(--bg-secondary)',
+  borderLeft: '3px solid var(--btn-primary-bg)',
   margin: '0.5rem 0.75rem 0',
-  borderRadius: '0 var(--radius-sm) var(--radius-sm) 0',
+  borderRadius: '0 6px 6px 0',
 };
 
 const replyCloseBtn: React.CSSProperties = {
-  width: 24, height: 24,
+  width: 24,
+  height: 24,
   borderRadius: '50%',
   border: 'none',
-  background: 'var(--bg-input)',
+  background: 'var(--bg-secondary)',
   color: 'var(--text-muted)',
   cursor: 'pointer',
   fontSize: '0.75rem',
@@ -246,9 +260,9 @@ const fotoPreviewBar: React.CSSProperties = {
   gap: '0.5rem',
   padding: '0.5rem 0.875rem',
   margin: '0.5rem 0.75rem 0',
-  background: 'var(--glow-green)',
+  background: 'var(--accent-green-subtle)',
   border: '1px solid rgba(105,190,40,0.2)',
-  borderRadius: 'var(--radius-sm)',
+  borderRadius: '6px',
 };
 
 const fotoPreviewThumb: React.CSSProperties = {
@@ -256,7 +270,7 @@ const fotoPreviewThumb: React.CSSProperties = {
   alignItems: 'center',
   gap: '0.5rem',
   flex: 1,
-  color: 'var(--vale-green)',
+  color: 'var(--accent-green)',
 };
 
 const fotoRemoveBtn: React.CSSProperties = {
@@ -274,9 +288,10 @@ const uploadingBar: React.CSSProperties = {
 };
 
 const uploadingDot: React.CSSProperties = {
-  width: 8, height: 8,
+  width: 8,
+  height: 8,
   borderRadius: '50%',
-  background: 'var(--vale-cyan)',
+  background: 'var(--accent-blue)',
   animation: 'pulse-step 1s ease-in-out infinite',
 };
 
@@ -288,22 +303,24 @@ const inputRow: React.CSSProperties = {
 };
 
 const cameraBtnStyle: React.CSSProperties = {
-  width: 48, height: 48,
-  borderRadius: 'var(--radius-md)',
-  border: '2px solid var(--vale-teal)',
-  background: 'var(--glow-teal)',
+  width: 48,
+  height: 48,
+  borderRadius: '6px',
+  border: '2px solid var(--btn-primary-bg)',
+  background: 'var(--accent-green-subtle)',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-  transition: 'all var(--duration-fast)',
+  transition: 'all 0.1s',
 };
 
 const clipBtnStyle: React.CSSProperties = {
-  width: 36, height: 36,
-  borderRadius: 'var(--radius-sm)',
-  border: '1px solid var(--border-default)',
+  width: 36,
+  height: 36,
+  borderRadius: '6px',
+  border: '1px solid var(--border)',
   background: 'transparent',
   cursor: 'pointer',
   display: 'flex',
@@ -311,7 +328,7 @@ const clipBtnStyle: React.CSSProperties = {
   justifyContent: 'center',
   flexShrink: 0,
   fontSize: '1rem',
-  transition: 'all var(--duration-fast)',
+  transition: 'all 0.1s',
 };
 
 const textWrapperStyle: React.CSSProperties = {
@@ -324,29 +341,30 @@ const textAreaStyle: React.CSSProperties = {
   minHeight: 40,
   maxHeight: 100,
   padding: '0.5rem 0.75rem',
-  background: 'var(--bg-input)',
-  border: '1px solid var(--border-default)',
-  borderRadius: 'var(--radius-md)',
+  background: 'var(--bg-secondary)',
+  border: '1px solid var(--border)',
+  borderRadius: '6px',
   color: 'var(--text-primary)',
-  fontFamily: 'var(--font-body)',
+  fontFamily: 'var(--font-family)',
   fontSize: '0.875rem',
   lineHeight: 1.4,
   resize: 'none',
   outline: 'none',
-  transition: 'border-color var(--duration-fast)',
+  transition: 'border-color 0.1s',
   overflow: 'hidden',
 };
 
 const sendBtnStyle: React.CSSProperties = {
-  width: 44, height: 44,
+  width: 44,
+  height: 44,
   borderRadius: '50%',
   border: 'none',
-  color: 'var(--text-on-brand)',
+  color: '#ffffff',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-  transition: 'all var(--duration-normal) var(--ease-out)',
+  transition: 'all 0.15s ease',
   boxShadow: 'var(--shadow-sm)',
 };

@@ -28,9 +28,7 @@ export function FeedbackItem({ validacao }: FeedbackItemProps) {
     <div style={{ ...itemStyle, borderLeftColor: config.borderColor, background: config.bg }}>
       <div style={itemHeaderStyle}>
         <span style={{ fontSize: '16px' }}>{config.icon}</span>
-        <span style={{ ...itemMsgStyle, color: config.textColor }}>
-          {validacao.mensagem}
-        </span>
+        <span style={{ ...itemMsgStyle, color: config.textColor }}>{validacao.mensagem}</span>
       </div>
       {validacao.dicaCorrecao && (
         <div style={dicaStyle}>
@@ -58,7 +56,13 @@ export function FeedbackBanner({ validacoes, mensagemVazia }: FeedbackBannerProp
   if (validacoes.length === 0 && mensagemVazia) {
     return (
       <div style={bannerContainerStyle}>
-        <div style={{ ...itemStyle, borderLeftColor: '#9ca3af', background: 'var(--surface-1, #f5f5f5)' }}>
+        <div
+          style={{
+            ...itemStyle,
+            borderLeftColor: '#9ca3af',
+            background: 'var(--surface-1, #f5f5f5)',
+          }}
+        >
           <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{mensagemVazia}</span>
         </div>
       </div>
@@ -125,8 +129,8 @@ export function StepOrientation({ pergunta, dica, cuidado }: StepOrientationProp
         <span>{pergunta}</span>
       </div>
       <div style={orientationExamplesStyle}>
-        <span style={{ color: 'var(--a3-done, #69be28)', fontSize: '12px' }}>{dica}</span>
-        <span style={{ color: 'var(--vale-gold, #edb111)', fontSize: '12px' }}>{cuidado}</span>
+        <span style={{ color: 'var(--accent-green)', fontSize: '12px' }}>{dica}</span>
+        <span style={{ color: 'var(--accent-yellow)', fontSize: '12px' }}>{cuidado}</span>
       </div>
     </div>
   );
@@ -162,19 +166,25 @@ export function BloqueioAvanco({ mensagem, onDismiss }: BloqueioAvancoProps) {
 // CONFIG
 // ════════════════════════════════════
 
-const SEVERIDADE_CONFIG: Record<SeveridadeValidacao, {
-  icon: string; bg: string; borderColor: string; textColor: string;
-}> = {
+const SEVERIDADE_CONFIG: Record<
+  SeveridadeValidacao,
+  {
+    icon: string;
+    bg: string;
+    borderColor: string;
+    textColor: string;
+  }
+> = {
   ok: {
     icon: '✅',
     bg: 'rgba(105, 190, 40, 0.06)',
-    borderColor: 'var(--a3-done, #69be28)',
-    textColor: 'var(--a3-done, #2d7a0a)',
+    borderColor: 'var(--accent-green)',
+    textColor: 'var(--accent-green)',
   },
   aviso: {
     icon: '⚠️',
     bg: 'rgba(237, 177, 17, 0.06)',
-    borderColor: 'var(--vale-gold, #edb111)',
+    borderColor: 'var(--accent-yellow)',
     textColor: '#8a6d00',
   },
   bloqueio: {
@@ -237,7 +247,7 @@ const inlineStyle: React.CSSProperties = {
 };
 
 const orientationStyle: React.CSSProperties = {
-  background: 'var(--a3-header-bg, #1e2128)',
+  background: 'var(--bg-secondary)',
   borderRadius: '10px',
   padding: '14px 16px',
   marginBottom: '12px',
@@ -298,7 +308,7 @@ const bloqueioBtn: React.CSSProperties = {
   padding: '12px 24px',
   border: 'none',
   borderRadius: '10px',
-  background: 'var(--vale-teal, #007e7a)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontSize: '14px',
   fontWeight: 600,

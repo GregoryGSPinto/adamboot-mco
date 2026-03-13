@@ -12,7 +12,12 @@
 
 import { useState, useEffect } from 'react';
 import { subscribeOffline, getOfflineState, type OfflineState } from '@modules/offline';
-import { getSystemMode, subscribeSystemMode, getAvisosManutencao, type SystemMode } from '@modules/continuidade';
+import {
+  getSystemMode,
+  subscribeSystemMode,
+  getAvisosManutencao,
+  type SystemMode,
+} from '@modules/continuidade';
 
 export function SyncIndicator() {
   const [state, setState] = useState<OfflineState>(getOfflineState());
@@ -21,7 +26,10 @@ export function SyncIndicator() {
   useEffect(() => {
     const unsub1 = subscribeOffline(setState);
     const unsub2 = subscribeSystemMode(setMode);
-    return () => { unsub1(); unsub2(); };
+    return () => {
+      unsub1();
+      unsub2();
+    };
   }, []);
 
   const notices = getAvisosManutencao();
@@ -35,15 +43,15 @@ export function SyncIndicator() {
   if (mode === 'manutencao') {
     dot = '🔧';
     label = 'Manutenção';
-    color = 'var(--vale-gold, #edb111)';
+    color = 'var(--accent-yellow)';
   } else if (mode === 'readonly') {
     dot = '🔒';
     label = 'Somente leitura';
-    color = 'var(--vale-gold, #edb111)';
+    color = 'var(--accent-yellow)';
   } else if (mode === 'degradado') {
     dot = '⚡';
     label = 'Modo degradado';
-    color = 'var(--vale-gold, #edb111)';
+    color = 'var(--accent-yellow)';
   } else if (!state.isOnline) {
     dot = '●';
     label = 'Offline';
@@ -51,7 +59,7 @@ export function SyncIndicator() {
   } else if (state.syncStatus === 'syncing') {
     dot = '●';
     label = `Sincronizando (${state.queueLength})`;
-    color = 'var(--vale-gold, #edb111)';
+    color = 'var(--accent-yellow)';
   } else if (state.syncStatus === 'error') {
     dot = '●';
     label = `Erro sync (${state.queueLength})`;
@@ -59,11 +67,11 @@ export function SyncIndicator() {
   } else if (state.queueLength > 0) {
     dot = '●';
     label = `${state.queueLength} pendente${state.queueLength > 1 ? 's' : ''}`;
-    color = 'var(--vale-gold, #edb111)';
+    color = 'var(--accent-yellow)';
   } else {
     dot = '●';
     label = 'Online';
-    color = 'var(--vale-green, #69be28)';
+    color = 'var(--accent-green)';
   }
 
   return (
@@ -71,11 +79,7 @@ export function SyncIndicator() {
       <span style={{ color, fontSize: '10px', lineHeight: 1 }}>{dot}</span>
       <span style={{ ...labelStyle, color }}>{label}</span>
 
-      {hasNotice && (
-        <div style={noticeStyle}>
-          🔧 {notices[0].mensagem}
-        </div>
-      )}
+      {hasNotice && <div style={noticeStyle}>🔧 {notices[0].mensagem}</div>}
     </div>
   );
 }
@@ -105,7 +109,7 @@ const noticeStyle: React.CSSProperties = {
   right: 0,
   marginTop: '4px',
   padding: '8px 12px',
-  background: 'var(--vale-gold, #edb111)',
+  background: 'var(--accent-yellow)',
   color: '#000',
   borderRadius: '8px',
   fontSize: '12px',
