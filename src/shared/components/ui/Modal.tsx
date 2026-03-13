@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useCallback, useRef } from 'react';
-import { radii, shadows, zIndex } from '@shared/design/tokens';
+import { radii, fontSizes, fontWeights, zIndex } from '@shared/design/tokens';
 
 interface Props {
   open: boolean;
@@ -12,15 +12,17 @@ interface Props {
 export function Modal({ open, onClose, title, children, width = 480 }: Props) {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') onClose();
-  }, [onClose]);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    },
+    [onClose]
+  );
 
   useEffect(() => {
     if (!open) return;
     document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
-    // Focus trap: focus the content on open
     contentRef.current?.focus();
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
@@ -36,18 +38,21 @@ export function Modal({ open, onClose, title, children, width = 480 }: Props) {
       aria-modal="true"
       aria-label={title}
       style={{
-        position: 'fixed', inset: 0, zIndex: zIndex.modal,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        animation: 'modal-backdrop-in 0.2s ease',
+        position: 'fixed',
+        inset: 0,
+        zIndex: zIndex.modal,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       {/* Backdrop */}
       <div
         onClick={onClose}
         style={{
-          position: 'absolute', inset: 0,
-          background: 'rgba(0,0,0,0.6)',
-          backdropFilter: 'blur(4px)',
+          position: 'absolute',
+          inset: 0,
+          background: 'var(--bg-overlay)',
         }}
       />
       {/* Content */}
@@ -56,35 +61,53 @@ export function Modal({ open, onClose, title, children, width = 480 }: Props) {
         tabIndex={-1}
         style={{
           position: 'relative',
-          background: 'var(--bg-surface)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: radii.xl,
-          boxShadow: shadows.xl,
+          background: 'var(--bg-primary)',
+          border: '1px solid var(--border)',
+          borderRadius: radii.md,
           width: '90vw',
           maxWidth: width,
           maxHeight: '85vh',
           overflow: 'auto',
-          padding: '1.5rem',
+          padding: 16,
           outline: 'none',
-          animation: 'modal-scale-in 0.2s ease',
         }}
       >
         {title && (
-          <div style={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            marginBottom: '1rem', paddingBottom: '0.75rem',
-            borderBottom: '1px solid var(--border-subtle)',
-          }}>
-            <h2 style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700 }}>{title}</h2>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 16,
+              paddingBottom: 12,
+              borderBottom: '1px solid var(--border)',
+            }}
+          >
+            <h2
+              style={{
+                margin: 0,
+                fontSize: fontSizes.base,
+                fontWeight: fontWeights.semibold,
+                color: 'var(--text-primary)',
+              }}
+            >
+              {title}
+            </h2>
             <button
               onClick={onClose}
               aria-label="Close"
               style={{
-                width: 32, height: 32, borderRadius: radii.md,
-                border: '1px solid var(--border-default)',
-                background: 'var(--bg-input)', color: 'var(--text-muted)',
-                cursor: 'pointer', display: 'flex', alignItems: 'center',
-                justifyContent: 'center', fontSize: '0.875rem',
+                width: 32,
+                height: 32,
+                borderRadius: radii.md,
+                border: '1px solid var(--border)',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-muted)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: fontSizes.sm,
               }}
             >
               ✕

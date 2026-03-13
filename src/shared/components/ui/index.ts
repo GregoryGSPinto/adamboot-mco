@@ -6,3 +6,6 @@ export { Modal } from './Modal';
 export { Skeleton } from './Skeleton';
 export { ToastProvider, useToast } from './Toast';
 export { EmptyState } from './EmptyState';
+export { Table } from './Table';
+export { ProgressBar } from './ProgressBar';
+export { StepIndicator } from './StepIndicator';

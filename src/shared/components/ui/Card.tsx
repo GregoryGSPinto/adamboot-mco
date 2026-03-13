@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { radii, shadows, transitions } from '@shared/design/tokens';
+import { radii, transitions } from '@shared/design/tokens';
 
-type Variant = 'default' | 'highlighted' | 'glass';
+type Variant = 'default' | 'highlighted';
 
 interface Props {
   variant?: Variant;
@@ -13,18 +13,12 @@ interface Props {
 
 const variantStyles: Record<Variant, React.CSSProperties> = {
   default: {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--border-subtle)',
+    background: 'var(--bg-primary)',
+    border: '1px solid var(--border)',
   },
   highlighted: {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--vale-teal)',
-    boxShadow: shadows.glow.teal,
-  },
-  glass: {
-    background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    backdropFilter: 'blur(12px)',
+    background: 'var(--bg-primary)',
+    border: '1px solid var(--accent-blue)',
   },
 };
 
@@ -36,11 +30,24 @@ export function Card({ variant = 'default', hoverable = false, children, style, 
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
-      className={hoverable ? 'card-hoverable' : undefined}
+      onMouseEnter={
+        isClickable
+          ? e => {
+              e.currentTarget.style.background = 'var(--hover-bg)';
+            }
+          : undefined
+      }
+      onMouseLeave={
+        isClickable
+          ? e => {
+              e.currentTarget.style.background = 'var(--bg-primary)';
+            }
+          : undefined
+      }
       style={{
-        borderRadius: radii.lg,
-        padding: '1.25rem',
-        transition: `all ${transitions.normal}`,
+        borderRadius: radii.md,
+        padding: 16,
+        transition: `background ${transitions.fast}`,
         cursor: isClickable ? 'pointer' : undefined,
         ...variantStyles[variant],
         ...style,

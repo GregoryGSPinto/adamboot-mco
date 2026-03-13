@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { radii, fontSizes, fontWeights, transitions, teal } from '@shared/design/tokens';
+import { radii, fontSizes, fontWeights, transitions } from '@shared/design/tokens';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
@@ -14,33 +14,31 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<Variant, React.CSSProperties> = {
   primary: {
-    background: `linear-gradient(135deg, ${teal[600]}, ${teal[500]})`,
-    color: '#fff',
+    background: 'var(--btn-primary-bg)',
+    color: 'var(--btn-primary-text)',
     border: 'none',
-    boxShadow: `0 2px 8px rgba(0,158,153,0.25)`,
   },
   secondary: {
     background: 'transparent',
-    color: teal[500],
-    border: `1px solid ${teal[600]}`,
+    color: 'var(--text-primary)',
+    border: '1px solid var(--border)',
+  },
+  danger: {
+    background: 'var(--accent-red)',
+    color: '#ffffff',
+    border: 'none',
   },
   ghost: {
     background: 'transparent',
     color: 'var(--text-secondary)',
-    border: '1px solid var(--border-default)',
-  },
-  danger: {
-    background: 'linear-gradient(135deg, #dc2626, #ef4444)',
-    color: '#fff',
-    border: 'none',
-    boxShadow: '0 2px 8px rgba(239,68,68,0.25)',
+    border: '1px solid transparent',
   },
 };
 
 const sizeStyles: Record<Size, React.CSSProperties> = {
-  sm: { padding: '0.375rem 0.75rem', fontSize: fontSizes.sm },
-  md: { padding: '0.5rem 1.25rem', fontSize: fontSizes.base },
-  lg: { padding: '0.625rem 1.75rem', fontSize: fontSizes.md },
+  sm: { height: 28, padding: '0 12px', fontSize: fontSizes.sm },
+  md: { height: 32, padding: '0 16px', fontSize: fontSizes.sm },
+  lg: { height: 36, padding: '0 16px', fontSize: fontSizes.sm },
 };
 
 export function Button({
@@ -51,6 +49,8 @@ export function Button({
   children,
   disabled,
   style,
+  onMouseEnter,
+  onMouseLeave,
   ...rest
 }: Props) {
   const isDisabled = disabled || loading;
@@ -59,6 +59,31 @@ export function Button({
     <button
       {...rest}
       disabled={isDisabled}
+      onMouseEnter={e => {
+        if (!isDisabled) {
+          const target = e.currentTarget;
+          if (variant === 'primary') {
+            target.style.background = 'var(--btn-primary-hover)';
+          } else if (variant === 'danger') {
+            target.style.filter = 'brightness(0.95)';
+          } else if (variant === 'secondary') {
+            target.style.background = 'var(--hover-bg)';
+          } else if (variant === 'ghost') {
+            target.style.background = 'var(--hover-bg)';
+            target.style.borderColor = 'var(--border)';
+          }
+        }
+        onMouseEnter?.(e);
+      }}
+      onMouseLeave={e => {
+        const target = e.currentTarget;
+        target.style.background = variantStyles[variant].background as string;
+        target.style.filter = '';
+        if (variant === 'ghost') {
+          target.style.borderColor = 'transparent';
+        }
+        onMouseLeave?.(e);
+      }}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -68,9 +93,9 @@ export function Button({
         fontWeight: fontWeights.semibold,
         cursor: isDisabled ? 'not-allowed' : 'pointer',
         opacity: isDisabled ? 0.5 : 1,
-        transition: `all ${transitions.normal}`,
+        transition: `background ${transitions.fast}, border-color ${transitions.fast}, filter ${transitions.fast}`,
         fontFamily: 'inherit',
-        lineHeight: 1.4,
+        lineHeight: 1,
         whiteSpace: 'nowrap',
         ...variantStyles[variant],
         ...sizeStyles[size],
@@ -78,12 +103,20 @@ export function Button({
       }}
     >
       {loading ? (
-        <span style={{
-          display: 'inline-block', width: 14, height: 14,
-          border: '2px solid currentColor', borderTopColor: 'transparent',
-          borderRadius: '50%', animation: 'spin 0.6s linear infinite',
-        }} />
-      ) : icon}
+        <span
+          style={{
+            display: 'inline-block',
+            width: 14,
+            height: 14,
+            border: '2px solid currentColor',
+            borderTopColor: 'transparent',
+            borderRadius: '50%',
+            animation: 'spin 0.6s linear infinite',
+          }}
+        />
+      ) : (
+        icon
+      )}
       {children}
     </button>
   );
