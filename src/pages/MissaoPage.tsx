@@ -10,32 +10,32 @@ import { MissionProjectCard } from '@modules/mission/components/MissionProjectCa
 import { MissionList } from '@modules/mission/components/MissionList';
 import { MEMBROS } from '@shared/api/mock-projetos';
 
-const URGENCIA_ICON: Record<string, string> = {
-  critico: '🔴',
-  urgente: '🟠',
-  atencao: '🟡',
-  info: '🔵',
+const URGENCIA_LABEL: Record<string, string> = {
+  critico: 'Critico',
+  urgente: 'Urgente',
+  atencao: 'Atencao',
+  info: 'Info',
 };
 
-const FOCUS_COLORS: Record<MissionPriority, { cor: string; bg: string }> = {
-  CRITICAL: { cor: 'var(--sev-critica)', bg: 'var(--glow-red)' },
-  HIGH: { cor: '#f97316', bg: 'rgba(249,115,22,0.12)' },
-  MEDIUM: { cor: 'var(--vale-gold)', bg: 'var(--glow-gold)' },
-  LOW: { cor: 'var(--vale-gray-light)', bg: 'rgba(116,118,120,0.12)' },
+const FOCUS_BORDER_COLORS: Record<MissionPriority, string> = {
+  CRITICAL: 'var(--accent-red)',
+  HIGH: 'var(--sev-alta)',
+  MEDIUM: 'var(--accent-yellow)',
+  LOW: 'var(--text-muted)',
 };
 
 /**
- * MINHA MISSÃO — o coração do sistema.
+ * MINHA MISSAO — GitHub-minimal flat design.
  *
  * Usa useMission() que alimenta a engine MASP.
- * O líder abre e sabe:
+ * O lider abre e sabe:
  *   - Quem cobrar
- *   - O que está travado
+ *   - O que esta travado
  *   - Quanto tempo resta
  *
- * 3 níveis de drill-down:
+ * 3 niveis de drill-down:
  *   1. Cards de projeto (radar geral)
- *   2. Lista de pendências (expandido)
+ *   2. Lista de pendencias (expandido)
  *   3. Workspace do projeto (/projeto/:id)
  */
 export function MissaoPage() {
@@ -47,25 +47,31 @@ export function MissaoPage() {
   const addProjeto = useAdicionarProjeto();
   const removeProjeto = useRemoverProjeto();
 
-  // ─── Loading ───
+  // Loading
   if (isLoading) {
     return (
       <div style={loadingStyle}>
-        <div
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            background: 'var(--vale-teal)',
-            animation: 'pulse-step 1s ease-in-out infinite',
-          }}
-        />
-        Carregando projetos...
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          style={{ animation: 'spin 0.8s linear infinite' }}
+          fill="none"
+        >
+          <circle cx="8" cy="8" r="6" stroke="var(--border)" strokeWidth="2" />
+          <path
+            d="M14 8a6 6 0 00-6-6"
+            stroke="var(--text-secondary)"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+        <span>Carregando projetos...</span>
       </div>
     );
   }
 
-  // Ordenar: CRITICO/ALTO primeiro, depois resto
+  // Sort: CRITICO/ALTO first
   const sorted = [...groups].sort((a, b) => {
     const riskOrder: Record<string, number> = {
       CRITICO: 5,
@@ -94,35 +100,28 @@ export function MissaoPage() {
     setExpandedId(expandedId === projectId ? null : projectId);
   };
 
-  // ═══ LEADER FOCUS — cobranças imediatas ═══
+  // Leader focus
   const { mainAlert, focus } = computeLeaderFocus(sorted);
 
   return (
-    <div className="fade-in">
-      {/* ═══ HEADER ═══ */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          marginBottom: '1.25rem',
-        }}
-      >
+    <div style={{ fontFamily: 'var(--font-family)' }}>
+      {/* HEADER */}
+      <div style={headerStyle}>
         <div>
-          <h1 style={titleStyle}>Minha Missão</h1>
+          <h1 style={titleStyle}>Minha Missao</h1>
           <p style={subtitleStyle}>
             {user?.name} —{' '}
             {totalPendencias === 0
               ? 'todos os projetos em dia.'
-              : `${totalPendencias} pendência${totalPendencias > 1 ? 's' : ''} em ${sorted.length} projeto${sorted.length > 1 ? 's' : ''}`}
+              : `${totalPendencias} pendencia${totalPendencias > 1 ? 's' : ''} em ${sorted.length} projeto${sorted.length > 1 ? 's' : ''}`}
           </p>
         </div>
         <button onClick={() => setShowNewProject(!showNewProject)} style={newProjectBtn}>
-          {showNewProject ? '✕ Cancelar' : '+ Novo projeto'}
+          {showNewProject ? 'Cancelar' : '+ Novo'}
         </button>
       </div>
 
-      {/* ═══ FORM NOVO PROJETO ═══ */}
+      {/* NEW PROJECT FORM */}
       {showNewProject && (
         <NewProjectForm
           onSubmit={dados => {
@@ -132,122 +131,100 @@ export function MissaoPage() {
         />
       )}
 
-      {/* ═══ CAMADA 1 — ALERTA PRINCIPAL ═══ */}
+      {/* ALERT BANNER */}
       {mainAlert && (
         <div style={mainAlertStyle}>
-          <div style={mainAlertIcon}>⚠️</div>
+          <span style={mainAlertLabel}>Alerta</span>
           <p style={mainAlertText}>{mainAlert}</p>
         </div>
       )}
 
-      {/* ═══ CAMADA 2 — O QUE COBRAR HOJE ═══ */}
+      {/* FOCUS: O que cobrar hoje */}
       {focus.length > 0 && (
-        <div style={focusSectionStyle}>
-          <h2 style={focusTitleStyle}>O que cobrar hoje</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+        <section style={sectionBlock}>
+          <h2 style={sectionTitleStyle}>O que cobrar hoje</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             {focus.map((item, i) => {
-              const colors = FOCUS_COLORS[item.priority];
+              const borderColor = FOCUS_BORDER_COLORS[item.priority];
               return (
-                <div key={i} style={{ ...focusRowStyle, borderLeftColor: colors.cor }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      width: '100%',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        flex: 1,
-                        minWidth: 0,
-                      }}
-                    >
-                      <span style={{ ...focusDot, background: colors.cor }} />
-                      <span style={focusName}>{item.responsibleName}</span>
-                      <span style={focusArrow}>→</span>
-                      <span style={focusMessage}>{item.message}</span>
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        flexShrink: 0,
-                        marginLeft: '0.5rem',
-                      }}
-                    >
-                      <span style={focusProject}>({item.projectName})</span>
-                      {item.daysLate != null && item.daysLate > 0 && (
-                        <span style={{ ...focusLate, color: colors.cor }}>{item.daysLate}d</span>
-                      )}
-                    </div>
-                  </div>
+                <div key={i} style={{ ...focusRowStyle, borderLeftColor: borderColor }}>
+                  <span style={focusName}>{item.responsibleName}</span>
+                  <span style={focusArrow}>&rarr;</span>
+                  <span style={focusMessage}>{item.message}</span>
+                  <span style={focusProject}>({item.projectName})</span>
+                  {item.daysLate != null && item.daysLate > 0 && (
+                    <span style={{ ...focusLate, color: borderColor }}>{item.daysLate}d</span>
+                  )}
                 </div>
               );
             })}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* ═══ CAMADA 3 — PROJETOS ═══ */}
-
-      {/* IA Messages (agora abaixo do focus) */}
+      {/* IA MESSAGES */}
       {allAiMessages.length > 0 && (
-        <div style={iaBoxStyle}>
-          <div style={iaLabelStyle}>Coordenador IA</div>
-          {allAiMessages.map((msg, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                gap: '0.5rem',
-                marginBottom: i < allAiMessages.length - 1 ? '0.5rem' : 0,
-              }}
-            >
-              <span>{URGENCIA_ICON[msg.urgency] ?? '🔵'}</span>
-              <span style={{ fontSize: '0.875rem', lineHeight: 1.4 }}>{msg.text}</span>
-            </div>
-          ))}
-        </div>
+        <section style={sectionBlock}>
+          <h2 style={sectionTitleStyle}>Coordenador IA</h2>
+          <div style={iaBoxStyle}>
+            {allAiMessages.map((msg, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  gap: 8,
+                  marginBottom: i < allAiMessages.length - 1 ? 8 : 0,
+                  fontSize: 14,
+                  lineHeight: '20px',
+                }}
+              >
+                <span
+                  style={{
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: 'var(--text-muted)',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  [{URGENCIA_LABEL[msg.urgency] ?? 'Info'}]
+                </span>
+                <span>{msg.text}</span>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
-      {/* ═══ CRITICAL / HIGH ═══ */}
+      {/* CRITICAL / HIGH */}
       {criticos.length > 0 && (
-        <section style={{ marginBottom: '1.5rem' }}>
-          <h2 style={sectionTitle}>
-            <span style={{ color: 'var(--sev-critica)' }}>⚠</span> Atenção imediata
-          </h2>
+        <section style={sectionBlock}>
+          <h2 style={sectionTitleStyle}>Atencao imediata</h2>
           <div style={cardColumn}>
             {criticos.map(g => (
               <div key={g.projectId}>
                 <MissionProjectCard group={g} onOpen={handleCardClick} />
                 {expandedId === g.projectId && (
-                  <div style={expandedBox} className="slide-up">
+                  <div style={expandedBox}>
                     <MissionList group={g} />
-                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem' }}>
+                    <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
                       <button
                         onClick={() => navigate(`/projeto/${g.projectId}`)}
-                        className="btn btn-primary"
-                        style={{ flex: 1 }}
+                        style={openProjectBtn}
                       >
-                        Abrir projeto →
+                        Abrir projeto
                       </button>
                       <button
                         onClick={() => {
                           if (
                             confirm(
-                              `Excluir projeto "${g.projectName}"? Esta ação não pode ser desfeita.`
+                              `Excluir projeto "${g.projectName}"? Esta acao nao pode ser desfeita.`
                             )
                           )
                             removeProjeto.mutate(g.projectId);
                         }}
-                        style={deleteProjBtn}
+                        style={deleteBtn}
                       >
-                        🗑
+                        X
                       </button>
                     </div>
                   </div>
@@ -258,37 +235,36 @@ export function MissaoPage() {
         </section>
       )}
 
-      {/* ═══ REMAINING ═══ */}
+      {/* REMAINING */}
       {demais.length > 0 && (
-        <section>
-          <h2 style={sectionTitle}>Projetos em andamento</h2>
+        <section style={sectionBlock}>
+          <h2 style={sectionTitleStyle}>Projetos em andamento</h2>
           <div style={cardColumn}>
             {demais.map(g => (
               <div key={g.projectId}>
                 <MissionProjectCard group={g} onOpen={handleCardClick} />
                 {expandedId === g.projectId && (
-                  <div style={expandedBox} className="slide-up">
+                  <div style={expandedBox}>
                     <MissionList group={g} />
-                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem' }}>
+                    <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
                       <button
                         onClick={() => navigate(`/projeto/${g.projectId}`)}
-                        className="btn btn-primary"
-                        style={{ flex: 1 }}
+                        style={openProjectBtn}
                       >
-                        Abrir projeto →
+                        Abrir projeto
                       </button>
                       <button
                         onClick={() => {
                           if (
                             confirm(
-                              `Excluir projeto "${g.projectName}"? Esta ação não pode ser desfeita.`
+                              `Excluir projeto "${g.projectName}"? Esta acao nao pode ser desfeita.`
                             )
                           )
                             removeProjeto.mutate(g.projectId);
                         }}
-                        style={deleteProjBtn}
+                        style={deleteBtn}
                       >
-                        🗑
+                        X
                       </button>
                     </div>
                   </div>
@@ -299,11 +275,10 @@ export function MissaoPage() {
         </section>
       )}
 
-      {/* ═══ EMPTY ═══ */}
+      {/* EMPTY */}
       {sorted.length === 0 && (
         <div style={emptyStyle}>
-          <span style={{ fontSize: '3rem', opacity: 0.3 }}>◎</span>
-          <p style={{ color: 'var(--text-muted)' }}>Nenhum projeto ativo.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Nenhum projeto ativo.</p>
         </div>
       )}
     </div>
@@ -311,7 +286,7 @@ export function MissaoPage() {
 }
 
 // ════════════════════════════════════
-// NOVO PROJETO — form inline
+// NEW PROJECT FORM
 // ════════════════════════════════════
 
 interface NovoProjetoFormData {
@@ -345,19 +320,8 @@ function NewProjectForm({
 
   return (
     <div style={newProjForm}>
-      <div
-        style={{
-          fontSize: '0.75rem',
-          fontWeight: 700,
-          color: 'var(--vale-teal-light)',
-          textTransform: 'uppercase',
-          letterSpacing: '0.06em',
-          marginBottom: '0.5rem',
-        }}
-      >
-        Criar novo projeto
-      </div>
-      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+      <div style={formLabel}>Criar novo projeto</div>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         <input
           value={titulo}
           onChange={e => setTitulo(e.target.value)}
@@ -372,7 +336,15 @@ function NewProjectForm({
           onChange={e => setDataApr(e.target.value)}
           style={{ ...formInput, maxWidth: 160 }}
         />
-        <button onClick={handleSubmit} disabled={!titulo.trim() || isPending} style={formSubmitBtn}>
+        <button
+          onClick={handleSubmit}
+          disabled={!titulo.trim() || isPending}
+          style={{
+            ...formSubmitBtn,
+            opacity: !titulo.trim() || isPending ? 0.5 : 1,
+            cursor: !titulo.trim() || isPending ? 'not-allowed' : 'pointer',
+          }}
+        >
           {isPending ? '...' : 'Criar'}
         </button>
       </div>
@@ -384,232 +356,247 @@ function NewProjectForm({
 // STYLES
 // ════════════════════════════════════
 
+const headerStyle: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  marginBottom: 24,
+};
+
 const titleStyle: React.CSSProperties = {
-  fontSize: '1.375rem',
+  fontSize: 24,
   fontWeight: 700,
-  letterSpacing: '-0.02em',
+  color: 'var(--text-primary)',
   margin: 0,
+  fontFamily: 'var(--font-family)',
 };
 
 const subtitleStyle: React.CSSProperties = {
-  fontSize: '0.875rem',
+  fontSize: 14,
   color: 'var(--text-secondary)',
-  marginTop: '0.125rem',
+  marginTop: 2,
+  margin: 0,
 };
 
-const iaBoxStyle: React.CSSProperties = {
-  background: 'var(--bg-elevated)',
-  border: '1px solid var(--vale-gold)',
-  borderLeft: '3px solid var(--vale-gold)',
-  borderRadius: 'var(--radius-md)',
-  padding: '1rem 1.25rem',
-  marginBottom: '1.5rem',
+const sectionBlock: React.CSSProperties = {
+  marginBottom: 24,
 };
 
-const iaLabelStyle: React.CSSProperties = {
-  fontSize: '0.75rem',
+const sectionTitleStyle: React.CSSProperties = {
+  fontSize: 12,
   fontWeight: 600,
-  color: 'var(--vale-gold)',
+  color: 'var(--text-secondary)',
   textTransform: 'uppercase',
-  letterSpacing: '0.06em',
-  marginBottom: '0.75rem',
-};
-
-const sectionTitle: React.CSSProperties = {
-  fontSize: '0.8125rem',
-  fontWeight: 600,
-  color: 'var(--text-muted)',
-  textTransform: 'uppercase',
-  letterSpacing: '0.06em',
-  marginBottom: '0.75rem',
-  display: 'flex',
-  gap: '0.375rem',
-  alignItems: 'center',
+  letterSpacing: '0.05em',
+  marginBottom: 12,
+  fontFamily: 'var(--font-family)',
 };
 
 const cardColumn: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '0.75rem',
+  gap: 8,
 };
 
 const expandedBox: React.CSSProperties = {
-  marginTop: '0.5rem',
-  padding: '1rem',
-  background: 'var(--bg-elevated)',
-  border: '1px solid var(--border-subtle)',
-  borderRadius: 'var(--radius-md)',
+  marginTop: 8,
+  padding: 16,
+  background: 'var(--bg-secondary)',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
 };
 
 const loadingStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  gap: '0.5rem',
-  padding: '2rem',
-  color: 'var(--text-muted)',
+  gap: 8,
+  padding: 32,
+  color: 'var(--text-secondary)',
+  fontSize: 14,
 };
 
 const emptyStyle: React.CSSProperties = {
   textAlign: 'center',
-  padding: '4rem 1rem',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '0.75rem',
+  padding: '64px 16px',
 };
 
-// ── Camada 1: Alerta principal ──
+// Alert
 
 const mainAlertStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'flex-start',
-  gap: '0.75rem',
-  padding: '1rem 1.25rem',
-  background: 'var(--glow-red)',
-  border: '1px solid var(--sev-critica)',
-  borderRadius: 'var(--radius-md)',
-  marginBottom: '1.25rem',
+  gap: 12,
+  padding: '12px 16px',
+  background: 'var(--accent-red-subtle)',
+  borderLeft: '3px solid var(--accent-red)',
+  borderRadius: 6,
+  marginBottom: 24,
 };
 
-const mainAlertIcon: React.CSSProperties = {
-  fontSize: '1.5rem',
-  lineHeight: 1,
-  flexShrink: 0,
+const mainAlertLabel: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 600,
+  color: 'var(--accent-red)',
+  textTransform: 'uppercase',
+  whiteSpace: 'nowrap',
+  lineHeight: '20px',
 };
 
 const mainAlertText: React.CSSProperties = {
-  fontSize: '1.0625rem',
+  fontSize: 14,
   fontWeight: 600,
-  lineHeight: 1.4,
+  lineHeight: '20px',
   color: 'var(--text-primary)',
   margin: 0,
 };
 
-// ── Camada 2: O que cobrar hoje ──
-
-const focusSectionStyle: React.CSSProperties = {
-  marginBottom: '1.5rem',
-};
-
-const focusTitleStyle: React.CSSProperties = {
-  fontSize: '0.75rem',
-  fontWeight: 700,
-  color: 'var(--text-muted)',
-  textTransform: 'uppercase',
-  letterSpacing: '0.08em',
-  marginBottom: '0.625rem',
-};
+// Focus rows
 
 const focusRowStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  padding: '0.5rem 0.75rem',
-  background: 'var(--bg-card)',
+  gap: 8,
+  padding: '8px 12px',
+  background: 'var(--bg-primary)',
   border: '1px solid var(--border-subtle)',
   borderLeft: '3px solid',
-  borderRadius: 'var(--radius-sm)',
-};
-
-const focusDot: React.CSSProperties = {
-  width: 7,
-  height: 7,
-  borderRadius: '50%',
-  flexShrink: 0,
+  borderRadius: 6,
+  fontSize: 14,
 };
 
 const focusName: React.CSSProperties = {
-  fontSize: '0.875rem',
-  fontWeight: 700,
+  fontWeight: 600,
   whiteSpace: 'nowrap',
+  color: 'var(--text-primary)',
 };
 
 const focusArrow: React.CSSProperties = {
-  fontSize: '0.75rem',
   color: 'var(--text-muted)',
   flexShrink: 0,
 };
 
 const focusMessage: React.CSSProperties = {
-  fontSize: '0.8125rem',
   color: 'var(--text-secondary)',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+  flex: 1,
+  minWidth: 0,
 };
 
 const focusProject: React.CSSProperties = {
-  fontSize: '0.6875rem',
+  fontSize: 12,
   color: 'var(--text-muted)',
-  whiteSpace: 'nowrap',
-};
-
-const focusLate: React.CSSProperties = {
-  fontSize: '0.6875rem',
-  fontWeight: 700,
-  fontFamily: 'var(--font-mono)',
-};
-
-// ── CRUD styles ──
-
-const newProjectBtn: React.CSSProperties = {
-  padding: '0.4rem 0.875rem',
-  fontSize: '0.75rem',
-  fontWeight: 700,
-  border: '1px solid var(--vale-teal)',
-  color: 'var(--vale-teal-light)',
-  background: 'var(--glow-teal)',
-  borderRadius: 8,
-  cursor: 'pointer',
-  fontFamily: 'var(--font-body)',
   whiteSpace: 'nowrap',
   flexShrink: 0,
 };
 
-const deleteProjBtn: React.CSSProperties = {
-  width: 40,
-  height: 40,
-  borderRadius: 8,
-  border: '1px solid var(--sev-critica)',
-  background: 'rgba(239,68,68,0.08)',
-  color: 'var(--sev-critica)',
+const focusLate: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 700,
+  fontFamily: 'var(--font-mono)',
+  flexShrink: 0,
+};
+
+// IA box
+
+const iaBoxStyle: React.CSSProperties = {
+  padding: '12px 16px',
+  background: 'var(--bg-secondary)',
+  border: '1px solid var(--border)',
+  borderLeft: '3px solid var(--accent-yellow)',
+  borderRadius: 6,
+};
+
+// Buttons
+
+const newProjectBtn: React.CSSProperties = {
+  padding: '4px 12px',
+  fontSize: 14,
+  fontWeight: 600,
+  border: '1px solid var(--border)',
+  color: 'var(--text-primary)',
+  background: 'var(--bg-primary)',
+  borderRadius: 6,
+  cursor: 'pointer',
+  fontFamily: 'var(--font-family)',
+  whiteSpace: 'nowrap',
+  flexShrink: 0,
+  height: 32,
+};
+
+const openProjectBtn: React.CSSProperties = {
+  flex: 1,
+  padding: '4px 16px',
+  fontSize: 14,
+  fontWeight: 600,
+  background: 'var(--btn-primary-bg)',
+  color: 'var(--btn-primary-text)',
+  border: 'none',
+  borderRadius: 6,
+  cursor: 'pointer',
+  fontFamily: 'var(--font-family)',
+  height: 32,
+};
+
+const deleteBtn: React.CSSProperties = {
+  width: 32,
+  height: 32,
+  borderRadius: 6,
+  border: 'none',
+  background: 'transparent',
+  color: 'var(--text-muted)',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '1rem',
+  fontSize: 14,
+  fontWeight: 600,
+  fontFamily: 'var(--font-family)',
   flexShrink: 0,
 };
 
+// New project form
+
 const newProjForm: React.CSSProperties = {
-  padding: '1rem 1.25rem',
-  background: 'var(--bg-card)',
-  border: '1px solid var(--vale-teal)',
-  borderRadius: 'var(--radius-md)',
-  marginBottom: '1.25rem',
+  padding: '16px',
+  background: 'var(--bg-primary)',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
+  marginBottom: 24,
+};
+
+const formLabel: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 600,
+  color: 'var(--text-secondary)',
+  textTransform: 'uppercase',
+  letterSpacing: '0.05em',
+  marginBottom: 8,
 };
 
 const formInput: React.CSSProperties = {
   flex: 1,
   minWidth: 150,
-  padding: '0.5rem 0.75rem',
-  background: 'var(--bg-input)',
-  border: '1px solid var(--border-default)',
+  padding: '6px 12px',
+  background: 'var(--bg-primary)',
+  border: '1px solid var(--border)',
   borderRadius: 6,
   color: 'var(--text-primary)',
-  fontSize: '0.875rem',
-  fontFamily: 'var(--font-body)',
+  fontSize: 14,
+  fontFamily: 'var(--font-family)',
   outline: 'none',
+  lineHeight: '20px',
 };
 
 const formSubmitBtn: React.CSSProperties = {
-  padding: '0.5rem 1.25rem',
-  background: 'var(--vale-teal)',
-  color: 'white',
+  padding: '6px 16px',
+  background: 'var(--btn-primary-bg)',
+  color: 'var(--btn-primary-text)',
   border: 'none',
   borderRadius: 6,
-  fontSize: '0.875rem',
-  fontWeight: 700,
-  cursor: 'pointer',
-  fontFamily: 'var(--font-body)',
+  fontSize: 14,
+  fontWeight: 600,
+  fontFamily: 'var(--font-family)',
   whiteSpace: 'nowrap',
 };

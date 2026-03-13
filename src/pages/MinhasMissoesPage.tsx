@@ -1,5 +1,5 @@
 /**
- * MINHAS MISSÕES — Visão do MEMBRO.
+ * MINHAS MISSOES — Visao do MEMBRO.
  *
  * Checklist 6:
  *   [x] Listar tarefas
@@ -8,8 +8,8 @@
  *   [x] Atualizar status
  *   [x] Registrar impedimento
  *
- * O membro vê APENAS o que ELE precisa entregar.
- * Nada de projeto inteiro, nada de contexto que não é dele.
+ * O membro ve APENAS o que ELE precisa entregar.
+ * Nada de projeto inteiro, nada de contexto que nao e dele.
  */
 
 import { useState } from 'react';
@@ -24,64 +24,62 @@ import {
 } from '@modules/impedimento';
 import { dispatchDomainEvent } from '@modules/core/domainEvents';
 
-// ═══════════════════════════════════
 // STYLES
-// ═══════════════════════════════════
-
 const pageStyle: React.CSSProperties = {
-  padding: '16px',
+  padding: '24px 0',
   maxWidth: 600,
   margin: '0 auto',
 };
 
 const headerStyle: React.CSSProperties = {
-  fontSize: '1.4rem',
+  fontSize: 24,
   fontWeight: 700,
   color: 'var(--text-primary)',
   marginBottom: 4,
 };
 
 const subtitleStyle: React.CSSProperties = {
-  fontSize: '0.85rem',
+  fontSize: 14,
   color: 'var(--text-secondary)',
   marginBottom: 20,
 };
 
 const cardStyle: React.CSSProperties = {
-  background: 'var(--surface-primary)',
-  border: '1px solid var(--border-subtle)',
-  borderRadius: 12,
+  background: 'var(--bg-primary)',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
   padding: 16,
   marginBottom: 12,
 };
 
 const taskTitleStyle: React.CSSProperties = {
   fontWeight: 600,
-  fontSize: '0.95rem',
+  fontSize: 14,
   color: 'var(--text-primary)',
   marginBottom: 4,
 };
 
 const projectLabelStyle: React.CSSProperties = {
-  fontSize: '0.75rem',
-  color: 'var(--text-tertiary)',
+  fontSize: 12,
+  color: 'var(--text-muted)',
   marginBottom: 8,
 };
 
 const metaRowStyle: React.CSSProperties = {
   display: 'flex',
   gap: 12,
-  fontSize: '0.8rem',
+  fontSize: 14,
   color: 'var(--text-secondary)',
   marginBottom: 12,
+  alignItems: 'center',
 };
 
 const badgeStyle = (color: string): React.CSSProperties => ({
   display: 'inline-block',
   padding: '2px 8px',
-  borderRadius: 8,
-  fontSize: '0.7rem',
-  fontWeight: 700,
+  borderRadius: 6,
+  fontSize: 11,
+  fontWeight: 600,
   color: '#fff',
   background: color,
 });
@@ -93,40 +91,40 @@ const btnRow: React.CSSProperties = {
 
 const btnPrimary: React.CSSProperties = {
   flex: 1,
-  padding: '10px 0',
-  borderRadius: 8,
+  padding: '8px 0',
+  borderRadius: 6,
   border: 'none',
-  background: 'var(--vale-green)',
+  background: 'var(--btn-primary-bg)',
   color: '#fff',
   fontWeight: 600,
-  fontSize: '0.85rem',
+  fontSize: 14,
   cursor: 'pointer',
-  minHeight: 48,
+  fontFamily: 'inherit',
 };
 
 const btnSecondary: React.CSSProperties = {
   flex: 1,
-  padding: '10px 0',
-  borderRadius: 8,
-  border: '1px solid var(--border-default)',
-  background: 'var(--surface-secondary)',
+  padding: '8px 0',
+  borderRadius: 6,
+  border: '1px solid var(--border)',
+  background: 'var(--bg-secondary)',
   color: 'var(--text-primary)',
   fontWeight: 600,
-  fontSize: '0.85rem',
+  fontSize: 14,
   cursor: 'pointer',
-  minHeight: 48,
+  fontFamily: 'inherit',
 };
 
 const btnDanger: React.CSSProperties = {
   ...btnSecondary,
-  border: '1px solid var(--priority-critical-bg, #fee)',
-  color: 'var(--priority-critical, #dc2626)',
+  border: '1px solid var(--accent-red)',
+  color: 'var(--accent-red)',
 };
 
 const emptyStyle: React.CSSProperties = {
   textAlign: 'center',
   padding: 40,
-  color: 'var(--text-tertiary)',
+  color: 'var(--text-muted)',
 };
 
 const modalOverlay: React.CSSProperties = {
@@ -141,8 +139,9 @@ const modalOverlay: React.CSSProperties = {
 };
 
 const modalBox: React.CSSProperties = {
-  background: 'var(--surface-primary)',
-  borderRadius: 16,
+  background: 'var(--bg-primary)',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
   padding: 24,
   width: '100%',
   maxWidth: 400,
@@ -150,54 +149,59 @@ const modalBox: React.CSSProperties = {
 
 const selectStyle: React.CSSProperties = {
   width: '100%',
-  padding: 10,
-  borderRadius: 8,
-  border: '1px solid var(--border-default)',
-  background: 'var(--surface-secondary)',
+  padding: '8px 12px',
+  borderRadius: 6,
+  border: '1px solid var(--border)',
+  background: 'var(--bg-secondary)',
   color: 'var(--text-primary)',
-  fontSize: '0.9rem',
+  fontSize: 14,
   marginBottom: 12,
-  minHeight: 48,
+  fontFamily: 'inherit',
 };
 
 const textareaStyle: React.CSSProperties = {
   width: '100%',
-  padding: 10,
-  borderRadius: 8,
-  border: '1px solid var(--border-default)',
-  background: 'var(--surface-secondary)',
+  padding: '8px 12px',
+  borderRadius: 6,
+  border: '1px solid var(--border)',
+  background: 'var(--bg-secondary)',
   color: 'var(--text-primary)',
-  fontSize: '0.9rem',
+  fontSize: 14,
   minHeight: 80,
   resize: 'vertical',
   marginBottom: 12,
+  fontFamily: 'inherit',
 };
 
-// ═══════════════════════════════════
 // HELPERS
-// ═══════════════════════════════════
 
 function priorityColor(priority: string): string {
   switch (priority) {
-    case 'CRITICAL': return '#dc2626';
-    case 'HIGH': return '#ea580c';
-    case 'MEDIUM': return '#ca8a04';
-    default: return '#6b7280';
+    case 'CRITICAL':
+      return 'var(--accent-red)';
+    case 'HIGH':
+      return 'var(--accent-yellow)';
+    case 'MEDIUM':
+      return 'var(--accent-blue)';
+    default:
+      return 'var(--text-muted)';
   }
 }
 
 function priorityLabel(priority: string): string {
   switch (priority) {
-    case 'CRITICAL': return 'URGENTE';
-    case 'HIGH': return 'ALTO';
-    case 'MEDIUM': return 'MÉDIO';
-    default: return 'NORMAL';
+    case 'CRITICAL':
+      return 'URGENTE';
+    case 'HIGH':
+      return 'ALTO';
+    case 'MEDIUM':
+      return 'MEDIO';
+    default:
+      return 'NORMAL';
   }
 }
 
-// ═══════════════════════════════════
 // COMPONENT
-// ═══════════════════════════════════
 
 export function MinhasMissoesPage() {
   const { user } = useAuth();
@@ -210,10 +214,10 @@ export function MinhasMissoesPage() {
 
   // Filtrar apenas tarefas MINHAS
   const minhasTarefas: (MissionItem & { projectName: string; projectId: string })[] = [];
-  groups.forEach((g) => {
+  groups.forEach(g => {
     g.items
-      .filter((item) => item.responsibleId === user?.id)
-      .forEach((item) => {
+      .filter(item => item.responsibleId === user?.id)
+      .forEach(item => {
         minhasTarefas.push({
           ...item,
           projectName: g.projectName,
@@ -228,7 +232,7 @@ export function MinhasMissoesPage() {
     return (w[b.priority] || 0) - (w[a.priority] || 0);
   });
 
-  function handleConcluir(item: typeof minhasTarefas[0]) {
+  function handleConcluir(item: (typeof minhasTarefas)[0]) {
     dispatchDomainEvent({
       type: 'requirement_completed',
       projectId: item.projectId,
@@ -255,31 +259,37 @@ export function MinhasMissoesPage() {
   }
 
   if (isLoading) {
-    return <div style={pageStyle}><p style={emptyStyle}>Carregando...</p></div>;
+    return (
+      <div style={pageStyle}>
+        <p style={emptyStyle}>Carregando...</p>
+      </div>
+    );
   }
 
   return (
     <div style={pageStyle}>
-      <h1 style={headerStyle}>Minhas Missões</h1>
+      <h1 style={headerStyle}>Minhas Missoes</h1>
       <p style={subtitleStyle}>
         {minhasTarefas.length === 0
-          ? 'Nenhuma pendência. Bom trabalho! 🎉'
+          ? 'Nenhuma pendencia. Bom trabalho!'
           : `${minhasTarefas.length} tarefa${minhasTarefas.length > 1 ? 's' : ''} pendente${minhasTarefas.length > 1 ? 's' : ''}`}
       </p>
 
       {minhasTarefas.length === 0 && (
         <div style={emptyStyle}>
-          <div style={{ fontSize: '2.5rem', marginBottom: 8 }}>✅</div>
-          <p>Todas as tarefas concluídas.</p>
+          <p style={{ fontSize: 14 }}>Todas as tarefas concluidas.</p>
         </div>
       )}
 
-      {minhasTarefas.map((item) => (
-        <div key={item.id} style={{
-          ...cardStyle,
-          borderLeft: `4px solid ${priorityColor(item.priority)}`,
-        }}>
-          <p style={projectLabelStyle}>📁 {item.projectName}</p>
+      {minhasTarefas.map(item => (
+        <div
+          key={item.id}
+          style={{
+            ...cardStyle,
+            borderLeft: `3px solid ${priorityColor(item.priority)}`,
+          }}
+        >
+          <p style={projectLabelStyle}>{item.projectName}</p>
           <p style={taskTitleStyle}>{item.message}</p>
 
           <div style={metaRowStyle}>
@@ -287,30 +297,21 @@ export function MinhasMissoesPage() {
               {priorityLabel(item.priority)}
             </span>
             {(item.daysLate ?? 0) > 0 && (
-              <span style={{ color: '#dc2626', fontWeight: 600 }}>
+              <span style={{ color: 'var(--accent-red)', fontWeight: 600, fontSize: 12 }}>
                 {item.daysLate}d atrasado
               </span>
             )}
           </div>
 
           <div style={btnRow}>
-            <button
-              style={btnPrimary}
-              onClick={() => handleConcluir(item)}
-            >
-              ✅ Concluir
+            <button style={btnPrimary} onClick={() => handleConcluir(item)}>
+              Concluir
             </button>
-            <button
-              style={btnSecondary}
-              onClick={() => navigate(`/projeto/${item.projectId}`)}
-            >
-              📂 Abrir
+            <button style={btnSecondary} onClick={() => navigate(`/projeto/${item.projectId}`)}>
+              Abrir
             </button>
-            <button
-              style={btnDanger}
-              onClick={() => setImpedimentoModal(item)}
-            >
-              🚧 Impedido
+            <button style={btnDanger} onClick={() => setImpedimentoModal(item)}>
+              Impedido
             </button>
           </div>
         </div>
@@ -319,33 +320,62 @@ export function MinhasMissoesPage() {
       {/* Modal de impedimento */}
       {impedimentoModal && (
         <div style={modalOverlay} onClick={() => setImpedimentoModal(null)}>
-          <div style={modalBox} onClick={(e) => e.stopPropagation()}>
-            <h3 style={{ marginBottom: 16, fontWeight: 700 }}>🚧 Registrar Impedimento</h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: 16 }}>
+          <div style={modalBox} onClick={e => e.stopPropagation()}>
+            <h3
+              style={{
+                marginBottom: 16,
+                fontWeight: 700,
+                fontSize: 16,
+                color: 'var(--text-primary)',
+              }}
+            >
+              Registrar Impedimento
+            </h3>
+            <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 16 }}>
               {impedimentoModal.message}
             </p>
 
-            <label style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: 4 }}>
+            <label
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                display: 'block',
+                marginBottom: 4,
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+              }}
+            >
               Tipo do impedimento
             </label>
             <select
               style={selectStyle}
               value={impTipo}
-              onChange={(e) => setImpTipo(e.target.value as ImpedimentoTipo)}
+              onChange={e => setImpTipo(e.target.value as ImpedimentoTipo)}
             >
               {Object.entries(IMPEDIMENTO_LABELS).map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
+                <option key={key} value={key}>
+                  {label}
+                </option>
               ))}
             </select>
 
-            <label style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: 4 }}>
+            <label
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                display: 'block',
+                marginBottom: 4,
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+              }}
+            >
               Descreva o problema
             </label>
             <textarea
               style={textareaStyle}
               value={impDesc}
-              onChange={(e) => setImpDesc(e.target.value)}
-              placeholder="Ex: Sem acesso à via 3 por interdição"
+              onChange={e => setImpDesc(e.target.value)}
+              placeholder="Ex: Sem acesso a via 3 por interdicao"
             />
 
             <div style={btnRow}>
@@ -353,7 +383,7 @@ export function MinhasMissoesPage() {
                 Cancelar
               </button>
               <button
-                style={{ ...btnPrimary, background: '#dc2626' }}
+                style={{ ...btnPrimary, background: 'var(--accent-red)' }}
                 onClick={handleRegistrarImpedimento}
                 disabled={!impDesc.trim()}
               >

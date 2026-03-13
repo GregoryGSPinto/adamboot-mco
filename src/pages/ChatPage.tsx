@@ -7,12 +7,12 @@ import { subscribeNudges } from '@modules/chat/nudgeBus';
 import { useEnviarMensagem } from '@modules/conversa';
 
 /**
- * Página /chat — Conversa operacional.
+ * Pagina /chat — Conversa operacional.
  *
- * Se só 1 projeto ativo → abre direto.
- * Se vários → lista para escolher.
+ * Se so 1 projeto ativo → abre direto.
+ * Se varios → lista para escolher.
  *
- * Escuta nudgeBus: quando líder cobra pelo dashboard,
+ * Escuta nudgeBus: quando lider cobra pelo dashboard,
  * a mensagem aparece automaticamente aqui.
  */
 export function ChatPage() {
@@ -21,9 +21,9 @@ export function ChatPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const lista = projetos ?? [];
-  const selected = lista.find((p) => p.projeto.id === selectedId);
+  const selected = lista.find(p => p.projeto.id === selectedId);
 
-  // Se só 1 projeto, auto-seleciona
+  // Se so 1 projeto, auto-seleciona
   useEffect(() => {
     if (lista.length === 1 && !selectedId) {
       setSelectedId(lista[0].projeto.id);
@@ -33,8 +33,8 @@ export function ChatPage() {
   if (isLoading) {
     return (
       <div style={loadingStyle}>
-        <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--vale-teal)', animation: 'pulse-step 1s ease-in-out infinite' }} />
-        Carregando...
+        <div style={spinnerStyle} />
+        <span>Carregando...</span>
       </div>
     );
   }
@@ -56,32 +56,51 @@ export function ChatPage() {
 
   // Seletor de projeto
   return (
-    <div className="fade-in">
-      <div style={{ marginBottom: '1.5rem' }}>
+    <div className="fade-in" style={{ padding: '24px 0' }}>
+      <div style={{ marginBottom: 24 }}>
         <h1 style={titleStyle}>Conversa</h1>
         <p style={subtitleStyle}>Escolha o projeto para abrir a conversa.</p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        {lista.map((p) => (
+      <div style={{ border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
+        {lista.map((p, i) => (
           <button
             key={p.projeto.id}
             onClick={() => setSelectedId(p.projeto.id)}
-            style={projectBtn}
+            style={{
+              ...projectBtn,
+              borderBottom: i < lista.length - 1 ? '1px solid var(--border)' : 'none',
+            }}
           >
             <div style={{ flex: 1, textAlign: 'left' }}>
-              <div style={{ fontSize: '0.9375rem', fontWeight: 600 }}>{p.projeto.titulo}</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--vale-teal-light)' }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent-blue)' }}>
+                {p.projeto.titulo}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
                 Fase {p.projeto.faseAtual} — {p.faseLabel}
               </div>
             </div>
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.8125rem' }}>→</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              style={{ color: 'var(--text-muted)', flexShrink: 0 }}
+            >
+              <path
+                d="M6 3l5 5-5 5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         ))}
       </div>
 
       {lista.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+        <div style={{ textAlign: 'center', padding: 48, color: 'var(--text-muted)', fontSize: 14 }}>
           Nenhum projeto ativo.
         </div>
       )}
@@ -90,20 +109,20 @@ export function ChatPage() {
 }
 
 /**
- * Componente invisível que escuta nudges do dashboard
+ * Componente invisivel que escuta nudges do dashboard
  * e os injeta como mensagens do sistema no chat.
  */
 function NudgeReceiver({ projectId }: { projectId: string }) {
   const enviar = useEnviarMensagem(projectId);
 
   useEffect(() => {
-    const unsub = subscribeNudges((msg) => {
+    const unsub = subscribeNudges(msg => {
       if (msg.projectId === projectId) {
         enviar.mutate({
           autorId: 'sistema',
           autorNome: 'Sistema MCO',
-          faseAtual: 0, // sistema não pertence a fase
-          texto: `🔔 ${msg.text}`,
+          faseAtual: 0, // sistema nao pertence a fase
+          texto: `[Alerta] ${msg.text}`,
         });
       }
     });
@@ -116,35 +135,44 @@ function NudgeReceiver({ projectId }: { projectId: string }) {
 const loadingStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  gap: '0.5rem',
-  padding: '2rem',
+  gap: 8,
+  padding: 32,
   color: 'var(--text-muted)',
+  fontSize: 14,
+};
+
+const spinnerStyle: React.CSSProperties = {
+  width: 16,
+  height: 16,
+  border: '2px solid var(--border)',
+  borderTopColor: 'var(--text-muted)',
+  borderRadius: '50%',
+  animation: 'spin 0.6s linear infinite',
 };
 
 const titleStyle: React.CSSProperties = {
-  fontSize: '1.375rem',
+  fontSize: 24,
   fontWeight: 700,
-  letterSpacing: '-0.02em',
   margin: 0,
+  color: 'var(--text-primary)',
 };
 
 const subtitleStyle: React.CSSProperties = {
-  fontSize: '0.875rem',
+  fontSize: 14,
   color: 'var(--text-secondary)',
-  marginTop: '0.125rem',
+  marginTop: 4,
 };
 
 const projectBtn: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  gap: '0.75rem',
+  gap: 12,
   width: '100%',
-  padding: '1rem 1.25rem',
-  background: 'var(--bg-card)',
-  border: '1px solid var(--border-subtle)',
-  borderRadius: 'var(--radius-md)',
+  padding: '12px 16px',
+  background: 'var(--bg-primary)',
+  border: 'none',
   cursor: 'pointer',
-  fontFamily: 'var(--font-body)',
+  fontFamily: 'inherit',
   color: 'var(--text-primary)',
-  transition: 'all var(--duration-fast)',
+  transition: 'background 0.15s',
 };

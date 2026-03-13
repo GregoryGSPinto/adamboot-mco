@@ -18,8 +18,8 @@ export function ProjetoPage() {
   if (isLoading) {
     return (
       <div style={loadingStyle}>
-        <div style={pulseStyle} />
-        Carregando projetos...
+        <div style={spinnerStyle} />
+        <span>Carregando...</span>
       </div>
     );
   }
@@ -31,25 +31,44 @@ export function ProjetoPage() {
   }
 
   return (
-    <div className="fade-in">
-      <div style={{ marginBottom: '1.5rem' }}>
+    <div className="fade-in" style={{ padding: '24px 0' }}>
+      <div style={{ marginBottom: 24 }}>
         <h1 style={pageTitleStyle}>Caderno do Projeto</h1>
         <p style={pageSubtitleStyle}>Selecione o projeto para abrir.</p>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        {lista.map((s) => (
+      <div style={{ border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
+        {lista.map((s, i) => (
           <button
             key={s.projeto.id}
             onClick={() => navigate(`/projeto/${s.projeto.id}`)}
-            style={selectorBtn}
+            style={{
+              ...rowBtn,
+              borderBottom: i < lista.length - 1 ? '1px solid var(--border)' : 'none',
+            }}
           >
             <div style={{ flex: 1, textAlign: 'left' }}>
-              <div style={{ fontSize: '0.9375rem', fontWeight: 600 }}>{s.projeto.titulo}</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--vale-teal-light)' }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent-blue)' }}>
+                {s.projeto.titulo}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
                 Fase {s.projeto.faseAtual}/{TOTAL_FASES} — {s.faseLabel}
               </div>
             </div>
-            <span style={{ color: 'var(--text-muted)' }}>→</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              style={{ color: 'var(--text-muted)', flexShrink: 0 }}
+            >
+              <path
+                d="M6 3l5 5-5 5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         ))}
       </div>
@@ -58,24 +77,46 @@ export function ProjetoPage() {
 }
 
 const loadingStyle: React.CSSProperties = {
-  display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '2rem', color: 'var(--text-muted)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  padding: 32,
+  color: 'var(--text-muted)',
+  fontSize: 14,
 };
 
-const pulseStyle: React.CSSProperties = {
-  width: 8, height: 8, borderRadius: '50%', background: 'var(--vale-teal)', animation: 'pulse-step 1s ease-in-out infinite',
+const spinnerStyle: React.CSSProperties = {
+  width: 16,
+  height: 16,
+  border: '2px solid var(--border)',
+  borderTopColor: 'var(--text-muted)',
+  borderRadius: '50%',
+  animation: 'spin 0.6s linear infinite',
 };
 
 const pageTitleStyle: React.CSSProperties = {
-  fontSize: '1.375rem', fontWeight: 700, letterSpacing: '-0.02em', margin: 0,
+  fontSize: 24,
+  fontWeight: 700,
+  margin: 0,
+  color: 'var(--text-primary)',
 };
 
 const pageSubtitleStyle: React.CSSProperties = {
-  fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.125rem',
+  fontSize: 14,
+  color: 'var(--text-secondary)',
+  marginTop: 4,
 };
 
-const selectorBtn: React.CSSProperties = {
-  display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%',
-  padding: '1rem 1.25rem', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-  borderRadius: 'var(--radius-md)', cursor: 'pointer', fontFamily: 'var(--font-body)',
-  color: 'var(--text-primary)', transition: 'all var(--duration-fast)',
+const rowBtn: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 12,
+  width: '100%',
+  padding: '12px 16px',
+  background: 'var(--bg-primary)',
+  border: 'none',
+  cursor: 'pointer',
+  fontFamily: 'inherit',
+  color: 'var(--text-primary)',
+  transition: 'background 0.15s',
 };

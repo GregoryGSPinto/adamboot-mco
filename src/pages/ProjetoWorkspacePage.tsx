@@ -18,14 +18,14 @@ import { GerarApresentacaoView } from '@modules/a3/GerarApresentacaoView';
 
 type Tab = 'a3' | 'missao' | 'conversa' | 'reuniao' | 'verificacao' | 'apresentacao' | 'documentos';
 
-const TABS: { key: Tab; label: string; icon: string }[] = [
-  { key: 'a3', label: 'A3', icon: '◈' },
-  { key: 'missao', label: 'Missão', icon: '◎' },
-  { key: 'conversa', label: 'Conversa', icon: '💬' },
-  { key: 'reuniao', label: 'Reunião', icon: '👥' },
-  { key: 'verificacao', label: 'Resultado', icon: '📊' },
-  { key: 'apresentacao', label: 'Apresentar', icon: '📽' },
-  { key: 'documentos', label: 'Docs', icon: '📚' },
+const TABS: { key: Tab; label: string }[] = [
+  { key: 'a3', label: 'A3' },
+  { key: 'missao', label: 'Missao' },
+  { key: 'conversa', label: 'Conversa' },
+  { key: 'reuniao', label: 'Reuniao' },
+  { key: 'verificacao', label: 'Resultado' },
+  { key: 'apresentacao', label: 'Apresentar' },
+  { key: 'documentos', label: 'Docs' },
 ];
 
 /**
@@ -33,7 +33,7 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
  *
  * Envolve tudo em ProjectProvider.
  * O provider carrega StatusProjeto UMA VEZ.
- * Todas as abas leem do contexto — zero duplicação.
+ * Todas as abas leem do contexto — zero duplicacao.
  *
  * Teste de arquitetura:
  *   "Se mudar de 8 para 10 fases, quantos arquivos altera?"
@@ -66,30 +66,41 @@ function WorkspaceContent() {
 
   const projeto = status.projeto;
 
-  // Registra projeto na memória do ReactionEngine
+  // Registra projeto na memoria do ReactionEngine
   useEffect(() => {
     registerProject(projectId, projeto.faseAtual);
   }, [projectId, projeto.faseAtual]);
 
   return (
-    <div className="fade-in">
-      {/* ═══ HEADER DO WORKSPACE ═══ */}
+    <div className="fade-in" style={{ padding: '24px 0' }}>
+      {/* HEADER DO WORKSPACE */}
       <div style={wsHeaderStyle}>
-        <button onClick={() => navigate('/missao')} style={backBtn}>← Missões</button>
+        <button onClick={() => navigate('/missao')} style={backBtn}>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ marginRight: 4 }}>
+            <path
+              d="M10 3L5 8l5 5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Missoes
+        </button>
         <div style={{ flex: 1 }}>
           <h1 style={wsTitleStyle}>{projeto.titulo}</h1>
           <span style={wsSubStyle}>
             Fase {projeto.faseAtual} — {status.faseLabel}
             {status.diasRestantes >= 0
-              ? ` · ${status.diasRestantes}d restantes`
-              : ` · ${Math.abs(status.diasRestantes)}d atrasado`}
+              ? ` -- ${status.diasRestantes}d restantes`
+              : ` -- ${Math.abs(status.diasRestantes)}d atrasado`}
           </span>
         </div>
       </div>
 
-      {/* ═══ TABS ═══ */}
+      {/* TABS */}
       <div style={tabBarStyle}>
-        {TABS.map((tab) => {
+        {TABS.map(tab => {
           const isActive = activeTab === tab.key;
           return (
             <button
@@ -97,19 +108,17 @@ function WorkspaceContent() {
               onClick={() => setActiveTab(tab.key)}
               style={{
                 ...tabBtnStyle,
-                color: isActive ? 'var(--vale-teal-light)' : 'var(--text-muted)',
-                borderBottomColor: isActive ? 'var(--vale-teal)' : 'transparent',
-                background: isActive ? 'var(--glow-teal)' : 'transparent',
+                color: isActive ? 'var(--text-primary)' : 'var(--text-muted)',
+                borderBottomColor: isActive ? 'var(--text-primary)' : 'transparent',
               }}
             >
-              <span style={{ fontSize: '0.8125rem' }}>{tab.icon}</span>
-              <span>{tab.label}</span>
+              {tab.label}
             </button>
           );
         })}
       </div>
 
-      {/* ═══ TAB CONTENT ═══ */}
+      {/* TAB CONTENT */}
       <div style={tabContentStyle}>
         {activeTab === 'a3' && <TabA3 />}
         {activeTab === 'missao' && <TabMissao />}
@@ -124,8 +133,7 @@ function WorkspaceContent() {
 }
 
 // ════════════════════════════════════
-// TAB: MISSÃO
-// Lê missionGroup do contexto — zero re-fetch
+// TAB: MISSAO
 // ════════════════════════════════════
 
 function TabMissao() {
@@ -134,9 +142,8 @@ function TabMissao() {
   if (missionGroup.items.length === 0) {
     return (
       <div style={emptyTabStyle}>
-        <span style={{ fontSize: '1.5rem', opacity: 0.3 }}>✓</span>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-          Nenhuma pendência neste projeto. Tudo em dia.
+        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
+          Nenhuma pendencia neste projeto. Tudo em dia.
         </p>
       </div>
     );
@@ -145,19 +152,18 @@ function TabMissao() {
   const { mainAlert, focus: _focus } = computeLeaderFocus([missionGroup]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {mainAlert && (
         <div style={alertStyle}>
-          <span style={{ fontSize: '1.25rem' }}>⚠️</span>
-          <p style={{ fontSize: '0.9375rem', fontWeight: 600, margin: 0 }}>{mainAlert}</p>
+          <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: 'var(--accent-red)' }}>
+            {mainAlert}
+          </p>
         </div>
       )}
 
-      <div style={sectionLabelStyle}>
-        Cobranças deste projeto ({missionGroup.items.length})
-      </div>
+      <div style={sectionLabelStyle}>Cobrancas deste projeto ({missionGroup.items.length})</div>
 
-      {missionGroup.items.map((item) => (
+      {missionGroup.items.map(item => (
         <MissionItemRow key={item.id} item={item} />
       ))}
     </div>
@@ -165,8 +171,7 @@ function TabMissao() {
 }
 
 // ════════════════════════════════════
-// TAB: A3 (workspace principal — envolve CadernoView)
-// A3WorkspaceView adiciona: step indicator, feedback, orientação
+// TAB: A3
 // ════════════════════════════════════
 
 function TabA3() {
@@ -174,7 +179,7 @@ function TabA3() {
 }
 
 // ════════════════════════════════════
-// TAB: APRESENTAÇÃO (gerar slides automáticos)
+// TAB: APRESENTACAO
 // ════════════════════════════════════
 
 function TabApresentacao() {
@@ -183,7 +188,6 @@ function TabApresentacao() {
 
 // ════════════════════════════════════
 // TAB: CONVERSA
-// Lê projeto do contexto + NudgeReceiver
 // ════════════════════════════════════
 
 function TabConversa({ onBack }: { onBack: () => void }) {
@@ -205,7 +209,6 @@ function TabConversa({ onBack }: { onBack: () => void }) {
 
 // ════════════════════════════════════
 // TAB: DOCUMENTOS
-// Lê evidências do contexto — zero fetch próprio
 // ════════════════════════════════════
 
 function TabDocumentos() {
@@ -225,12 +228,12 @@ function TabDocumentos() {
   const total = projeto.evidencias.length;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       <div style={sectionLabelStyle}>
-        {total} evidência{total !== 1 ? 's' : ''} registrada{total !== 1 ? 's' : ''}
+        {total} evidencia{total !== 1 ? 's' : ''} registrada{total !== 1 ? 's' : ''}
       </div>
 
-      {phases.map((fase) => {
+      {phases.map(fase => {
         const items = byPhase.get(fase) ?? [];
         const label = FASE_LABELS[fase] ?? `Fase ${fase}`;
         const isPast = fase < projeto.faseAtual;
@@ -238,33 +241,49 @@ function TabDocumentos() {
 
         return (
           <div key={fase} style={docPhaseRow}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
-              <span style={{
-                ...docPhaseBadge,
-                background: isCurrent ? 'var(--glow-gold)' : isPast ? 'var(--glow-green)' : 'var(--bg-input)',
-                color: isCurrent ? 'var(--vale-gold)' : isPast ? 'var(--vale-green)' : 'var(--text-muted)',
-                borderColor: isCurrent ? 'var(--vale-gold)' : isPast ? 'rgba(105,190,40,0.3)' : 'var(--border-default)',
-              }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
+              <span
+                style={{
+                  ...docPhaseBadge,
+                  background: isCurrent
+                    ? 'var(--accent-yellow)'
+                    : isPast
+                      ? 'var(--accent-green)'
+                      : 'var(--bg-secondary)',
+                  color: '#fff',
+                }}
+              >
                 F{fase}
               </span>
-              <span style={{ fontSize: '0.8125rem', fontWeight: isCurrent ? 600 : 400 }}>
+              <span
+                style={{
+                  fontSize: 14,
+                  fontWeight: isCurrent ? 600 : 400,
+                  color: 'var(--text-primary)',
+                }}
+              >
                 {label}
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               {items.length > 0 ? (
                 <>
-                  {items.slice(0, 4).map((ev, idx) => (
-                    <div key={idx} style={docDot} title={ev.requisitoId}>📎</div>
-                  ))}
-                  {items.length > 4 && (
-                    <span style={{ fontSize: '0.5625rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                      +{items.length - 4}
-                    </span>
-                  )}
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: 'var(--text-secondary)',
+                      background: 'var(--bg-secondary)',
+                      padding: '1px 6px',
+                      borderRadius: 6,
+                      border: '1px solid var(--border)',
+                    }}
+                  >
+                    {items.length}
+                  </span>
                 </>
               ) : (
-                <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                <span style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
                   {fase <= projeto.faseAtual ? 'sem registros' : '—'}
                 </span>
               )}
@@ -277,8 +296,7 @@ function TabDocumentos() {
 }
 
 // ════════════════════════════════════
-// NUDGE RECEIVER (invisível)
-// Escuta cobranças do dashboard → injeta no chat
+// NUDGE RECEIVER (invisivel)
 // ════════════════════════════════════
 
 function NudgeReceiver() {
@@ -286,13 +304,13 @@ function NudgeReceiver() {
   const enviar = useEnviarMensagem(projectId);
 
   useEffect(() => {
-    const unsub = subscribeNudges((msg) => {
+    const unsub = subscribeNudges(msg => {
       if (msg.projectId === projectId) {
         enviar.mutate({
           autorId: 'sistema',
           autorNome: 'Sistema MCO',
           faseAtual: 0,
-          texto: `🔔 ${msg.text}`,
+          texto: `[Alerta] ${msg.text}`,
         });
       }
     });
@@ -303,21 +321,16 @@ function NudgeReceiver() {
 }
 
 // ════════════════════════════════════
-// TAB: REUNIÃO
-// Modo reunião com presença, decisões, tarefas, ata
+// TAB: REUNIAO
 // ════════════════════════════════════
 
 function TabReuniao() {
   const { status } = useProjectContext();
-
-  return (
-    <ReuniaoPanel status={status} />
-  );
+  return <ReuniaoPanel status={status} />;
 }
 
 // ════════════════════════════════════
-// TAB: VERIFICAÇÃO
-// Antes/depois, resultado, confirmação eliminação
+// TAB: VERIFICACAO
 // ════════════════════════════════════
 
 function TabVerificacao() {
@@ -325,7 +338,14 @@ function TabVerificacao() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 12,
+        }}
+      >
         <div />
         <RelatorioExport status={status} userId="demo-user-001" />
       </div>
@@ -339,33 +359,61 @@ function TabVerificacao() {
 // ════════════════════════════════════
 
 const wsHeaderStyle: React.CSSProperties = {
-  display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.75rem',
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: 12,
+  marginBottom: 16,
 };
 
 const backBtn: React.CSSProperties = {
-  background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer',
-  fontSize: '0.8125rem', padding: '0.25rem 0', fontFamily: 'var(--font-body)', flexShrink: 0,
-  marginTop: '0.25rem',
+  background: 'none',
+  border: 'none',
+  color: 'var(--text-secondary)',
+  cursor: 'pointer',
+  fontSize: 14,
+  padding: '4px 0',
+  fontFamily: 'inherit',
+  flexShrink: 0,
+  marginTop: 2,
+  display: 'flex',
+  alignItems: 'center',
 };
 
 const wsTitleStyle: React.CSSProperties = {
-  fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.02em', margin: 0, lineHeight: 1.3,
+  fontSize: 20,
+  fontWeight: 700,
+  margin: 0,
+  lineHeight: 1.3,
+  color: 'var(--text-primary)',
 };
 
 const wsSubStyle: React.CSSProperties = {
-  fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.125rem', display: 'block',
+  fontSize: 12,
+  color: 'var(--text-secondary)',
+  marginTop: 2,
+  display: 'block',
 };
 
 const tabBarStyle: React.CSSProperties = {
-  display: 'flex', gap: '2px', borderBottom: '1px solid var(--border-subtle)',
-  marginBottom: '1.25rem', overflowX: 'auto',
+  display: 'flex',
+  gap: 0,
+  borderBottom: '1px solid var(--border)',
+  marginBottom: 16,
+  overflowX: 'auto',
 };
 
 const tabBtnStyle: React.CSSProperties = {
-  display: 'flex', alignItems: 'center', gap: '0.375rem',
-  padding: '0.625rem 1rem', border: 'none', borderBottom: '2px solid',
-  fontSize: '0.8125rem', fontWeight: 600, fontFamily: 'var(--font-body)',
-  cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all var(--duration-fast)',
+  padding: '8px 16px',
+  border: 'none',
+  borderBottom: '2px solid',
+  fontSize: 14,
+  fontWeight: 600,
+  fontFamily: 'inherit',
+  background: 'transparent',
+  cursor: 'pointer',
+  whiteSpace: 'nowrap',
+  transition: 'all 0.15s',
+  marginBottom: -1,
 };
 
 const tabContentStyle: React.CSSProperties = {
@@ -373,35 +421,40 @@ const tabContentStyle: React.CSSProperties = {
 };
 
 const emptyTabStyle: React.CSSProperties = {
-  textAlign: 'center', padding: '3rem 1rem',
-  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
+  textAlign: 'center',
+  padding: '48px 16px',
 };
 
 const alertStyle: React.CSSProperties = {
-  display: 'flex', alignItems: 'flex-start', gap: '0.75rem',
-  padding: '1rem 1.25rem', background: 'var(--glow-red)',
-  border: '1px solid var(--sev-critica)', borderRadius: 'var(--radius-md)',
+  padding: '12px 16px',
+  background: 'var(--bg-secondary)',
+  border: '1px solid var(--accent-red)',
+  borderRadius: 6,
 };
 
 const sectionLabelStyle: React.CSSProperties = {
-  fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)',
-  textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem',
+  fontSize: 12,
+  fontWeight: 600,
+  color: 'var(--text-muted)',
+  textTransform: 'uppercase',
+  letterSpacing: '0.04em',
+  marginBottom: 4,
 };
 
 const docPhaseRow: React.CSSProperties = {
-  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-  padding: '0.5rem 0.625rem', background: 'var(--bg-card)',
-  border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '8px 12px',
+  background: 'var(--bg-primary)',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
 };
 
 const docPhaseBadge: React.CSSProperties = {
-  fontSize: '0.5625rem', fontWeight: 700, fontFamily: 'var(--font-mono)',
-  padding: '0.15rem 0.4rem', borderRadius: 'var(--radius-full)',
-  border: '1px solid', flexShrink: 0,
-};
-
-const docDot: React.CSSProperties = {
-  width: 24, height: 24, borderRadius: 'var(--radius-xs)',
-  background: 'var(--bg-input)', display: 'flex',
-  alignItems: 'center', justifyContent: 'center', fontSize: '0.6875rem',
+  fontSize: 10,
+  fontWeight: 700,
+  padding: '2px 6px',
+  borderRadius: 6,
+  flexShrink: 0,
 };

@@ -1,12 +1,12 @@
 import type React from 'react';
 import { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '@app/auth';
+import { isDevAuth } from '@app/auth';
 import { Navigate } from 'react-router-dom';
 
 /**
- * LOGIN — minimalista.
- * Apenas logo MCO + campos de acesso.
- * Respeita tema global (dark/light).
+ * LOGIN — GitHub-minimal flat design.
+ * Centered card, system font stack, CSS custom properties only.
  */
 export function HomePage() {
   const { isAuthenticated, login, loginError } = useAuth();
@@ -33,120 +33,245 @@ export function HomePage() {
     setLoading(false);
     // Increment errorCount to re-trigger shake on repeated failures.
     // On success, isAuthenticated flips and <Navigate> renders immediately.
-    setErrorCount((c) => c + 1);
+    setErrorCount(c => c + 1);
   }, [email, password, login]);
 
-  const onKey = useCallback((e: React.KeyboardEvent) => { if (e.key === 'Enter') handleSubmit(); }, [handleSubmit]);
+  const onKey = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter') handleSubmit();
+    },
+    [handleSubmit]
+  );
 
   if (isAuthenticated) return <Navigate to="/missao" replace />;
 
   return (
     <div style={page}>
-      <style>{css}</style>
-      <div className={`login-card ${shake ? 'login-shake' : ''}`} style={card}>
-        {/* Logo */}
-        <div style={logoRow}>
-          <span style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--vale-teal)' }}>MCO</span>
+      <div style={shake ? { ...card, animation: 'login-shake 0.4s ease' } : card}>
+        {/* Title */}
+        <div style={titleRow}>
+          <span style={titleText}>MCO</span>
         </div>
+        <p style={subtitleText}>Motor de Conducao Operacional</p>
+
+        <div style={spacer} />
 
         {/* Error */}
         {loginError && (
           <div style={errorBox}>
-            <span style={{ fontSize: '0.8rem' }}>✕</span>
             <span>{loginError}</span>
           </div>
         )}
 
         {/* Email */}
         <div style={field}>
-          <label htmlFor="login-email" style={label}>E-mail</label>
-          <input id="login-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={onKey}
-            placeholder="demo@mco.vale.com" autoComplete="email" autoFocus style={input} className="login-input" />
+          <label htmlFor="login-email" style={label}>
+            E-mail
+          </label>
+          <input
+            id="login-email"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={onKey}
+            placeholder="demo@mco.vale.com"
+            autoComplete="email"
+            autoFocus
+            style={input}
+          />
         </div>
 
         {/* Senha */}
         <div style={field}>
-          <label htmlFor="login-password" style={label}>Senha</label>
-          <div style={{ position: 'relative' }}>
-            <input id="login-password" type={showPw ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={onKey} placeholder="••••••" autoComplete="current-password" style={input} className="login-input" />
-            <button onClick={() => setShowPw(!showPw)} style={eyeBtn} type="button" tabIndex={-1}
-              aria-label={showPw ? 'Ocultar senha' : 'Mostrar senha'}>
-              {showPw ? '◉' : '◎'}
+          <label htmlFor="login-password" style={label}>
+            Senha
+          </label>
+          <div style={{ position: 'relative' as const }}>
+            <input
+              id="login-password"
+              type={showPw ? 'text' : 'password'}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={onKey}
+              placeholder="******"
+              autoComplete="current-password"
+              style={input}
+            />
+            <button
+              onClick={() => setShowPw(!showPw)}
+              style={eyeBtn}
+              type="button"
+              tabIndex={-1}
+              aria-label={showPw ? 'Ocultar senha' : 'Mostrar senha'}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                {showPw ? (
+                  <path d="M8 2C4.5 2 1.7 4.1.3 7.5a.5.5 0 000 .5C1.7 11.4 4.5 14 8 14s6.3-2.6 7.7-6a.5.5 0 000-.5C14.3 4.1 11.5 2 8 2zm0 10a4 4 0 110-8 4 4 0 010 8zm0-6a2 2 0 100 4 2 2 0 000-4z" />
+                ) : (
+                  <path d="M.7 1.3a.5.5 0 01.7 0l14 14a.5.5 0 01-.7.7l-3-3A8.5 8.5 0 018 14C4.5 14 1.7 11.4.3 8a.5.5 0 010-.5A8.3 8.3 0 013.5 4.2L1.4 2a.5.5 0 010-.7zM5 8a3 3 0 003.9 2.8l-1-1A2 2 0 016.2 8L5 8zm3-6c3.5 0 6.3 2.6 7.7 6a.5.5 0 010 .5 9 9 0 01-1.8 2.4l-1.5-1.5A4 4 0 008 4a4 4 0 00-1 .1L5.6 2.8A8 8 0 018 2z" />
+                )}
+              </svg>
             </button>
           </div>
         </div>
 
         {/* Entrar */}
-        <button onClick={handleSubmit} disabled={loading || !email || !password} className="login-btn" style={submitBtn} aria-label="Entrar">
-          {loading ? <span className="login-spinner" /> : 'Entrar'}
+        <button
+          onClick={handleSubmit}
+          disabled={loading || !email || !password}
+          style={{
+            ...submitBtn,
+            opacity: loading || !email || !password ? 0.5 : 1,
+            cursor: loading || !email || !password ? 'not-allowed' : 'pointer',
+          }}
+          aria-label="Entrar"
+        >
+          {loading ? (
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              style={{ animation: 'spin 0.6s linear infinite' }}
+            >
+              <circle
+                cx="8"
+                cy="8"
+                r="6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeDasharray="28"
+                strokeDashoffset="8"
+                strokeLinecap="round"
+              />
+            </svg>
+          ) : (
+            'Entrar'
+          )}
         </button>
 
-        <p style={footer}>MCO · Melhoria Continua Operacional · Vale S.A.</p>
+        {/* Dev mode hint */}
+        {isDevAuth && (
+          <p style={devHint}>Modo desenvolvimento. Use as credenciais configuradas em .env.local</p>
+        )}
       </div>
     </div>
   );
 }
 
-const css = `
-  @keyframes login-fade { from { opacity:0; transform:translateY(16px) } to { opacity:1; transform:translateY(0) } }
-  @keyframes login-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
-  @keyframes login-spin { to { transform:rotate(360deg) } }
-  .login-card { animation: login-fade 0.5s ease-out; }
-  .login-shake { animation: login-shake 0.4s ease !important; }
-  .login-spinner { display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,0.2); border-top-color:white; border-radius:50%; animation:login-spin 0.6s linear infinite; }
-  .login-btn { transition: all 0.15s !important; }
-  .login-btn:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,158,153,0.25)!important; }
-  .login-btn:disabled { opacity:0.4; cursor:not-allowed; }
-  .login-input { transition: border-color 0.2s, box-shadow 0.2s; }
-  .login-input:focus { border-color: var(--vale-teal) !important; box-shadow: 0 0 0 3px rgba(0,158,153,0.12) !important; outline:none; }
-  .login-input::placeholder { color: var(--text-muted); }
-`;
+// ── Styles ──
 
 const page: React.CSSProperties = {
-  display: 'flex', alignItems: 'center', justifyContent: 'center',
-  minHeight: '100vh', background: 'var(--bg-root)', padding: '1rem',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minHeight: '100vh',
+  background: 'var(--bg-secondary)',
+  padding: 16,
+  fontFamily: 'var(--font-family)',
 };
+
 const card: React.CSSProperties = {
-  width: '100%', maxWidth: 360, padding: '2.5rem 2rem',
-  background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-  borderRadius: 16, boxShadow: '0 8px 40px rgba(0,0,0,0.08)',
+  width: '100%',
+  maxWidth: 360,
+  padding: '32px 24px',
+  background: 'var(--bg-primary)',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
 };
-const logoRow: React.CSSProperties = {
-  display: 'flex', alignItems: 'center', justifyContent: 'center',
-  gap: '0.625rem', marginBottom: '2rem',
+
+const titleRow: React.CSSProperties = {
+  textAlign: 'center',
+  marginBottom: 4,
 };
+
+const titleText: React.CSSProperties = {
+  fontSize: 24,
+  fontWeight: 700,
+  color: 'var(--text-primary)',
+  fontFamily: 'var(--font-family)',
+};
+
+const subtitleText: React.CSSProperties = {
+  fontSize: 14,
+  color: 'var(--text-secondary)',
+  textAlign: 'center',
+  margin: 0,
+};
+
+const spacer: React.CSSProperties = {
+  height: 24,
+};
+
 const errorBox: React.CSSProperties = {
-  display: 'flex', alignItems: 'center', gap: '0.5rem',
-  padding: '0.625rem 0.875rem', background: 'var(--glow-red)',
-  border: '1px solid var(--sev-critica)', borderRadius: 10,
-  color: 'var(--sev-critica)', fontSize: '0.8125rem', fontWeight: 500, marginBottom: '1rem',
+  padding: '8px 12px',
+  background: 'var(--accent-red-subtle)',
+  borderLeft: '3px solid var(--accent-red)',
+  borderRadius: 6,
+  color: 'var(--accent-red)',
+  fontSize: 14,
+  marginBottom: 16,
 };
-const field: React.CSSProperties = { marginBottom: '1rem' };
+
+const field: React.CSSProperties = {
+  marginBottom: 16,
+};
+
 const label: React.CSSProperties = {
-  display: 'block', fontSize: '0.6875rem', fontWeight: 700,
-  textTransform: 'uppercase', letterSpacing: '0.06em',
-  color: 'var(--text-muted)', marginBottom: '0.25rem',
+  display: 'block',
+  fontSize: 14,
+  fontWeight: 600,
+  color: 'var(--text-primary)',
+  marginBottom: 4,
+  fontFamily: 'var(--font-family)',
 };
+
 const input: React.CSSProperties = {
-  width: '100%', padding: '0.75rem 0.875rem',
-  background: 'var(--bg-input)', border: '1px solid var(--border-default)',
-  borderRadius: 10, fontSize: '0.9375rem', color: 'var(--text-primary)',
-  fontFamily: "'IBM Plex Sans', sans-serif",
+  width: '100%',
+  padding: '6px 12px',
+  background: 'var(--bg-primary)',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
+  fontSize: 14,
+  color: 'var(--text-primary)',
+  fontFamily: 'var(--font-family)',
+  lineHeight: '20px',
+  outline: 'none',
 };
+
 const eyeBtn: React.CSSProperties = {
-  position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)',
-  background: 'none', border: 'none', color: 'var(--text-muted)',
-  cursor: 'pointer', fontSize: '1rem', padding: '0.25rem',
+  position: 'absolute',
+  right: 8,
+  top: '50%',
+  transform: 'translateY(-50%)',
+  background: 'none',
+  border: 'none',
+  color: 'var(--text-muted)',
+  cursor: 'pointer',
+  padding: 4,
+  display: 'flex',
+  alignItems: 'center',
 };
+
 const submitBtn: React.CSSProperties = {
-  width: '100%', padding: '0.8125rem', marginTop: '0.5rem',
-  background: 'var(--vale-teal)', color: 'white', border: 'none',
-  borderRadius: 10, fontSize: '0.9375rem', fontWeight: 700,
-  cursor: 'pointer', fontFamily: "'IBM Plex Sans', sans-serif",
-  display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 46,
+  width: '100%',
+  height: 36,
+  marginTop: 4,
+  background: 'var(--btn-primary-bg)',
+  color: 'var(--btn-primary-text)',
+  border: 'none',
+  borderRadius: 6,
+  fontSize: 14,
+  fontWeight: 600,
+  fontFamily: 'var(--font-family)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 };
-const footer: React.CSSProperties = {
-  textAlign: 'center', fontSize: '0.5625rem', color: 'var(--text-muted)',
-  marginTop: '1.5rem', letterSpacing: '0.02em',
+
+const devHint: React.CSSProperties = {
+  textAlign: 'center',
+  fontSize: 12,
+  color: 'var(--text-muted)',
+  marginTop: 16,
 };

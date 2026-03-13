@@ -5,10 +5,10 @@ import { FASE_LABELS, requisitosDaFase } from '@shared/engine';
 import type { EvidenciaCumprida, RequisitoFase, StatusProjeto } from '@shared/engine';
 
 /**
- * /library — Biblioteca de evidências com CRUD.
+ * /library — Biblioteca de evidencias com CRUD.
  *
  * Cada fase expande para mostrar requisitos.
- * Evidências: marcar (✓) ou remover (✕).
+ * Evidencias: marcar ou remover.
  */
 export function BibliotecaPage() {
   const { data: projetos, isLoading } = useProjetos();
@@ -16,16 +16,8 @@ export function BibliotecaPage() {
   if (isLoading) {
     return (
       <div style={loadingStyle}>
-        <div
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            background: 'var(--vale-teal)',
-            animation: 'pulse-step 1s ease-in-out infinite',
-          }}
-        />
-        Carregando...
+        <div style={spinnerStyle} />
+        <span>Carregando...</span>
       </div>
     );
   }
@@ -33,22 +25,21 @@ export function BibliotecaPage() {
   const lista = projetos ?? [];
 
   return (
-    <div className="fade-in">
-      <div style={{ marginBottom: '1.5rem' }}>
+    <div className="fade-in" style={{ padding: '24px 0' }}>
+      <div style={{ marginBottom: 24 }}>
         <h1 style={titleStyle}>Biblioteca CCQ</h1>
         <p style={subtitleStyle}>
-          {lista.length} projeto{lista.length !== 1 ? 's' : ''} · Clique na fase para gerenciar
-          evidências
+          {lista.length} projeto{lista.length !== 1 ? 's' : ''} -- Clique na fase para gerenciar
+          evidencias
         </p>
       </div>
 
       {lista.length === 0 ? (
         <div style={emptyStyle}>
-          <span style={{ fontSize: '2.5rem', opacity: 0.3 }}>📚</span>
-          <p style={{ color: 'var(--text-muted)' }}>Nenhuma evidência registrada.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Nenhuma evidencia registrada.</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {lista.map(status => (
             <ProjectEvidenceSection key={status.projeto.id} status={status} />
           ))}
@@ -76,11 +67,13 @@ function ProjectEvidenceSection({ status }: { status: StatusProjeto }) {
   return (
     <div style={projectSection}>
       <div style={projectHeader}>
-        <h2 style={{ fontSize: '1rem', fontWeight: 700, margin: 0 }}>{proj.titulo}</h2>
-        <span style={evidenceCountBadge}>{proj.evidencias.length} evidências</span>
+        <h2 style={{ fontSize: 16, fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>
+          {proj.titulo}
+        </h2>
+        <span style={evidenceCountBadge}>{proj.evidencias.length}</span>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', padding: '0.5rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         {phases.map(fase => {
           const items = byPhase.get(fase) ?? [];
           const label = FASE_LABELS[fase] ?? `Fase ${fase}`;
@@ -94,36 +87,27 @@ function ProjectEvidenceSection({ status }: { status: StatusProjeto }) {
                 style={{
                   ...phaseRow,
                   cursor: fase <= proj.faseAtual ? 'pointer' : 'default',
-                  background: isExpanded ? 'var(--glow-teal)' : 'transparent',
+                  background: isExpanded ? 'var(--hover-bg)' : 'transparent',
                 }}
                 onClick={() => fase <= proj.faseAtual && setExpandedPhase(isExpanded ? null : fase)}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
                   <span
                     style={{
                       ...phaseBadge,
                       background: isCurrent
-                        ? 'var(--glow-gold)'
+                        ? 'var(--accent-yellow)'
                         : isPast
-                          ? 'var(--glow-green)'
-                          : 'var(--bg-input)',
-                      color: isCurrent
-                        ? 'var(--vale-gold)'
-                        : isPast
-                          ? 'var(--vale-green)'
-                          : 'var(--text-muted)',
-                      borderColor: isCurrent
-                        ? 'var(--vale-gold)'
-                        : isPast
-                          ? 'rgba(105,190,40,0.3)'
-                          : 'var(--border-default)',
+                          ? 'var(--accent-green)'
+                          : 'var(--bg-secondary)',
+                      color: '#fff',
                     }}
                   >
                     F{fase}
                   </span>
                   <span
                     style={{
-                      fontSize: '0.8125rem',
+                      fontSize: 14,
                       fontWeight: isCurrent ? 600 : 400,
                       color: fase > proj.faseAtual ? 'var(--text-muted)' : 'var(--text-primary)',
                     }}
@@ -131,19 +115,28 @@ function ProjectEvidenceSection({ status }: { status: StatusProjeto }) {
                     {label}
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   {items.length > 0 && <span style={countLabel}>{items.length}</span>}
                   {fase <= proj.faseAtual && (
-                    <span
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
                       style={{
-                        fontSize: '0.625rem',
                         color: 'var(--text-muted)',
                         transition: 'transform 0.2s',
                         transform: isExpanded ? 'rotate(90deg)' : 'rotate(0)',
                       }}
                     >
-                      ▶
-                    </span>
+                      <path
+                        d="M4 2l4 4-4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   )}
                 </div>
               </div>
@@ -177,7 +170,7 @@ function PhaseDetail({
     (req: RequisitoFase) => {
       const done = evidenciaIds.has(req.id);
       if (done) {
-        if (confirm(`Remover evidência de "${req.descricao}"?`)) removerEv.mutate(req.id);
+        if (confirm(`Remover evidencia de "${req.descricao}"?`)) removerEv.mutate(req.id);
       } else {
         cumprirReq.mutate({ requisitoId: req.id, userId: 'demo-user-001' });
       }
@@ -198,43 +191,50 @@ function PhaseDetail({
               onClick={() => handleToggle(req)}
               style={{
                 ...checkBtn,
-                background: done ? 'var(--glow-green)' : 'var(--bg-input)',
-                color: done ? 'var(--vale-green)' : 'var(--text-muted)',
-                borderColor: done ? 'rgba(105,190,40,0.4)' : 'var(--border-default)',
+                background: done ? 'var(--accent-green)' : 'var(--bg-secondary)',
+                color: done ? '#fff' : 'var(--text-muted)',
+                border: done ? '1px solid var(--accent-green)' : '1px solid var(--border)',
               }}
-              title={done ? 'Remover evidência' : 'Marcar como cumprido'}
+              title={done ? 'Remover evidencia' : 'Marcar como cumprido'}
             >
-              {done ? '✓' : ' '}
+              {done ? '\u2713' : ' '}
             </button>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div
                 style={{
-                  fontSize: '0.8125rem',
+                  fontSize: 14,
                   fontWeight: 500,
                   color: done ? 'var(--text-primary)' : 'var(--text-secondary)',
                 }}
               >
                 {req.descricao}
               </div>
-              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.125rem' }}>
+              <div style={{ display: 'flex', gap: 8, marginTop: 2 }}>
                 <span style={reqTag}>{req.responsavelTipo}</span>
                 {req.obrigatorio && (
-                  <span style={{ ...reqTag, color: 'var(--sev-critica)' }}>obrigatório</span>
+                  <span style={{ ...reqTag, color: 'var(--accent-red)' }}>obrigatorio</span>
                 )}
                 {ev && (
-                  <span style={{ ...reqTag, color: 'var(--vale-green)' }}>{ev.dataRegistro}</span>
+                  <span style={{ ...reqTag, color: 'var(--accent-green)' }}>{ev.dataRegistro}</span>
                 )}
               </div>
             </div>
             {done && (
               <button
                 onClick={() => {
-                  if (confirm(`Remover evidência?`)) removerEv.mutate(req.id);
+                  if (confirm(`Remover evidencia?`)) removerEv.mutate(req.id);
                 }}
                 style={deleteBtn}
                 title="Remover"
               >
-                ✕
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path
+                    d="M1 1l8 8M9 1l-8 8"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </button>
             )}
           </div>
@@ -244,138 +244,136 @@ function PhaseDetail({
   );
 }
 
-// ════════════════════════════════════
 const loadingStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  gap: '0.5rem',
-  padding: '2rem',
+  gap: 8,
+  padding: 32,
   color: 'var(--text-muted)',
+  fontSize: 14,
+};
+const spinnerStyle: React.CSSProperties = {
+  width: 16,
+  height: 16,
+  border: '2px solid var(--border)',
+  borderTopColor: 'var(--text-muted)',
+  borderRadius: '50%',
+  animation: 'spin 0.6s linear infinite',
 };
 const titleStyle: React.CSSProperties = {
-  fontSize: '1.375rem',
+  fontSize: 24,
   fontWeight: 700,
-  letterSpacing: '-0.02em',
   margin: 0,
+  color: 'var(--text-primary)',
 };
 const subtitleStyle: React.CSSProperties = {
-  fontSize: '0.875rem',
+  fontSize: 14,
   color: 'var(--text-secondary)',
-  marginTop: '0.125rem',
+  marginTop: 4,
 };
 const emptyStyle: React.CSSProperties = {
   textAlign: 'center',
-  padding: '4rem 1rem',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '0.75rem',
+  padding: '48px 16px',
 };
 const projectSection: React.CSSProperties = {
-  background: 'var(--bg-card)',
-  border: '1px solid var(--border-subtle)',
-  borderRadius: 'var(--radius-md)',
+  border: '1px solid var(--border)',
+  borderRadius: 6,
   overflow: 'hidden',
+  background: 'var(--bg-primary)',
 };
 const projectHeader: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '0.875rem 1rem',
-  background: 'var(--bg-elevated)',
-  borderBottom: '1px solid var(--border-subtle)',
+  padding: '12px 16px',
+  background: 'var(--bg-secondary)',
+  borderBottom: '1px solid var(--border)',
 };
 const evidenceCountBadge: React.CSSProperties = {
-  fontSize: '0.6875rem',
-  fontWeight: 700,
-  fontFamily: 'var(--font-mono)',
+  fontSize: 12,
+  fontWeight: 600,
   color: 'var(--text-muted)',
-  background: 'var(--bg-input)',
-  padding: '0.15rem 0.5rem',
-  borderRadius: 'var(--radius-full)',
+  background: 'var(--bg-primary)',
+  padding: '2px 8px',
+  borderRadius: 10,
+  border: '1px solid var(--border)',
 };
 const phaseRow: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '0.5rem 0.5rem',
-  borderBottom: '1px solid var(--border-subtle)',
+  padding: '8px 16px',
+  borderBottom: '1px solid var(--border)',
   transition: 'background 0.15s',
 };
 const phaseBadge: React.CSSProperties = {
-  fontSize: '0.5625rem',
+  fontSize: 10,
   fontWeight: 700,
-  fontFamily: 'var(--font-mono)',
-  padding: '0.15rem 0.4rem',
-  borderRadius: 'var(--radius-full)',
-  border: '1px solid',
+  padding: '2px 6px',
+  borderRadius: 6,
   flexShrink: 0,
 };
 const countLabel: React.CSSProperties = {
-  fontSize: '0.625rem',
-  fontWeight: 700,
-  fontFamily: 'var(--font-mono)',
-  color: 'var(--vale-teal-light)',
-  background: 'var(--glow-teal)',
-  padding: '0.1rem 0.375rem',
-  borderRadius: 'var(--radius-full)',
+  fontSize: 12,
+  fontWeight: 600,
+  color: 'var(--text-secondary)',
+  background: 'var(--bg-secondary)',
+  padding: '1px 6px',
+  borderRadius: 10,
+  border: '1px solid var(--border)',
 };
 const detailContainer: React.CSSProperties = {
-  padding: '0.5rem 0.5rem 0.5rem 1.5rem',
+  padding: '8px 16px 8px 32px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '0.125rem',
-  background: 'var(--bg-elevated)',
-  borderBottom: '1px solid var(--border-subtle)',
+  background: 'var(--bg-secondary)',
+  borderBottom: '1px solid var(--border)',
 };
 const detailEmpty: React.CSSProperties = {
-  padding: '0.75rem 0.5rem 0.75rem 1.5rem',
-  fontSize: '0.75rem',
+  padding: '12px 16px 12px 32px',
+  fontSize: 12,
   color: 'var(--text-muted)',
   fontStyle: 'italic',
+  background: 'var(--bg-secondary)',
+  borderBottom: '1px solid var(--border)',
 };
 const detailRow: React.CSSProperties = {
   display: 'flex',
   alignItems: 'flex-start',
-  gap: '0.5rem',
-  padding: '0.5rem 0.25rem',
-  borderBottom: '1px solid var(--border-subtle)',
+  gap: 8,
+  padding: '8px 0',
+  borderBottom: '1px solid var(--border)',
 };
 const checkBtn: React.CSSProperties = {
-  width: 24,
-  height: 24,
-  borderRadius: 6,
-  border: '1px solid',
+  width: 22,
+  height: 22,
+  borderRadius: 4,
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontWeight: 800,
-  fontSize: '0.75rem',
+  fontWeight: 700,
+  fontSize: 12,
   flexShrink: 0,
   transition: 'all 0.15s',
-  fontFamily: 'var(--font-body)',
+  fontFamily: 'inherit',
 };
 const deleteBtn: React.CSSProperties = {
   width: 24,
   height: 24,
   borderRadius: 6,
-  border: '1px solid var(--sev-critica)',
-  background: 'rgba(239,68,68,0.08)',
-  color: 'var(--sev-critica)',
+  border: '1px solid var(--accent-red)',
+  background: 'var(--bg-primary)',
+  color: 'var(--accent-red)',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '0.6875rem',
-  fontWeight: 700,
   flexShrink: 0,
   transition: 'all 0.15s',
 };
 const reqTag: React.CSSProperties = {
-  fontSize: '0.5625rem',
+  fontSize: 11,
   fontWeight: 600,
   color: 'var(--text-muted)',
-  fontFamily: 'var(--font-mono)',
-  letterSpacing: '0.02em',
 };
