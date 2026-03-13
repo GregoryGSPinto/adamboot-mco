@@ -238,6 +238,35 @@ button {
 }
 
 /* ════════════════════════════════════
+   LAYOUT — RESPONSIVE
+   ════════════════════════════════════ */
+
+/* Desktop: sidebar visible, hamburger hidden, header nav visible */
+@media (min-width: 1025px) {
+  [data-sidebar] { display: block; }
+  [data-hamburger] { display: none !important; }
+  [data-header-nav] { display: flex; }
+}
+
+/* Tablet: sidebar collapsed (icons only) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  [data-sidebar] { width: 48px !important; }
+  [data-sidebar] span { display: none; }
+  [data-sidebar] nav { padding: 12px 4px !important; }
+  [data-sidebar] a { justify-content: center; padding: 8px !important; }
+  [data-hamburger] { display: none !important; }
+  [data-header-nav] { display: flex; }
+}
+
+/* Mobile: sidebar hidden, hamburger visible, header nav hidden */
+@media (max-width: 768px) {
+  [data-sidebar] { display: none; }
+  [data-hamburger] { display: flex !important; }
+  [data-header-nav] { display: none !important; }
+  main { padding: 16px !important; }
+}
+
+/* ════════════════════════════════════
    REDUCED MOTION
    ════════════════════════════════════ */
 
