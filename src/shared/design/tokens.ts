@@ -1,54 +1,51 @@
 /**
- * Design Tokens — MCO Design System Premium.
+ * Design Tokens — GitHub-Minimal Style
  *
- * Tokens de cor (escala completa Vale), severidade, status,
- * tipografia, raios, sombras e transicoes.
- * Referencia unica para todo o design system.
+ * All color/spacing/typography values use CSS custom properties
+ * defined in index.css. These TS tokens are for inline styles
+ * that need static values or semantic groupings.
  */
 
-// ════════════════════════════════════
-// CORES — Escala Vale
-// ════════════════════════════════════
-
+// Colors — static references for inline styles
 export const teal = {
   50: '#e6f7f7',
   100: '#b3e8e6',
   200: '#80d9d5',
   300: '#4dcac4',
   400: '#26bfb8',
-  500: '#009e99',
-  600: '#008a85',
-  700: '#007e7a',
-  800: '#006561',
-  900: '#004d49',
+  500: '#1a7f37', // remapped to accent-green
+  600: '#15692d',
+  700: '#0e5623',
+  800: '#084218',
+  900: '#032f0f',
 } as const;
 
 export const green = {
-  50: '#f0f9e6',
-  100: '#d4edb3',
-  200: '#b8e180',
-  300: '#9cd54d',
-  400: '#86cc28',
-  500: '#69be28',
-  600: '#57a020',
-  700: '#458218',
+  50: '#dafbe1',
+  100: '#aceebb',
+  200: '#6fdd8b',
+  300: '#4ac26b',
+  400: '#2da44e',
+  500: '#1a7f37',
+  600: '#15692d',
+  700: '#0e5623',
 } as const;
 
 export const gold = {
-  50: '#fdf6e1',
+  50: '#fdf4dc',
   100: '#fae5a6',
   200: '#f7d46b',
   300: '#f4c330',
-  400: '#f2b80e',
-  500: '#edb111',
-  600: '#d49b0e',
-  700: '#b8850c',
+  400: '#d29922',
+  500: '#9a6700',
+  600: '#7d5200',
+  700: '#603c00',
 } as const;
 
 export const cyan = {
-  500: '#00b0ca',
-  600: '#009ab1',
-  700: '#008498',
+  500: '#0969da',
+  600: '#0550ae',
+  700: '#033d8b',
 } as const;
 
 export const colors = {
@@ -57,84 +54,74 @@ export const colors = {
   gold,
   cyan,
 
-  // Brand shorthand
-  valeTeal: teal[700],
-  valeTealLight: teal[500],
-  valeGreen: green[500],
-  valeCyan: cyan[500],
-  valeGold: gold[500],
-  valeGray: '#747678',
+  // Semantic
+  success: '#1a7f37',
+  warning: '#9a6700',
+  danger: '#d1242f',
+  info: '#0969da',
 
-  // Semanticas
-  success: green[500],
-  warning: gold[500],
-  danger: '#ef4444',
-  info: cyan[500],
-
-  // Superficies (dark)
-  bgBase: '#07100f',
-  bgSurface: '#0c1917',
-  bgCard: '#152a28',
-  bgInput: '#0e1d1b',
-
-  // Texto
-  textPrimary: '#e6f0ef',
-  textSecondary: '#8fa9a6',
-  textMuted: '#567370',
+  // Text (use CSS vars in components; these are fallbacks)
+  textPrimary: '#1f2328',
+  textSecondary: '#656d76',
+  textMuted: '#8b949e',
   textOnBrand: '#ffffff',
 
-  // Bordas
-  borderSubtle: 'rgba(255,255,255,0.06)',
-  borderDefault: 'rgba(255,255,255,0.12)',
+  // Borders
+  borderSubtle: '#e8ecf0',
+  borderDefault: '#d1d9e0',
 } as const;
 
-// ════════════════════════════════════
-// SEVERIDADE (MASP visual)
-// ════════════════════════════════════
-
+// Severity (MASP visual)
 export const severity = {
-  critica: { bg: 'rgba(239,68,68,0.15)', fg: '#ef4444', border: '#ef4444' },
-  alta:    { bg: 'rgba(249,115,22,0.15)', fg: '#f97316', border: '#f97316' },
-  media:   { bg: 'rgba(237,177,17,0.15)', fg: '#edb111', border: '#edb111' },
-  baixa:   { bg: 'rgba(116,118,120,0.15)', fg: '#747678', border: '#747678' },
+  critica: {
+    bg: 'var(--accent-red-subtle)',
+    fg: 'var(--sev-critica)',
+    border: 'var(--sev-critica)',
+  },
+  alta: { bg: 'rgba(188, 76, 0, 0.1)', fg: 'var(--sev-alta)', border: 'var(--sev-alta)' },
+  media: { bg: 'var(--accent-yellow-subtle)', fg: 'var(--sev-media)', border: 'var(--sev-media)' },
+  baixa: { bg: 'var(--hover-bg)', fg: 'var(--sev-baixa)', border: 'var(--sev-baixa)' },
 } as const;
 
-// ════════════════════════════════════
-// STATUS (feedback visual)
-// ════════════════════════════════════
-
+// Status (feedback visual)
 export const status = {
-  ok:       { bg: 'rgba(105,190,40,0.15)', fg: '#69be28', border: '#69be28' },
-  aviso:    { bg: 'rgba(237,177,17,0.15)', fg: '#edb111', border: '#edb111' },
-  bloqueio: { bg: 'rgba(239,68,68,0.15)', fg: '#ef4444', border: '#ef4444' },
+  ok: {
+    bg: 'var(--accent-green-subtle)',
+    fg: 'var(--accent-green)',
+    border: 'var(--accent-green)',
+  },
+  aviso: {
+    bg: 'var(--accent-yellow-subtle)',
+    fg: 'var(--accent-yellow)',
+    border: 'var(--accent-yellow)',
+  },
+  bloqueio: {
+    bg: 'var(--accent-red-subtle)',
+    fg: 'var(--accent-red)',
+    border: 'var(--accent-red)',
+  },
 } as const;
 
-// ════════════════════════════════════
-// ESPACAMENTO
-// ════════════════════════════════════
-
+// Spacing
 export const spacing = {
-  xs: '0.25rem',
-  sm: '0.5rem',
-  md: '0.75rem',
-  lg: '1rem',
-  xl: '1.5rem',
-  '2xl': '2rem',
-  '3xl': '3rem',
+  xs: '4px',
+  sm: '8px',
+  md: '12px',
+  lg: '16px',
+  xl: '24px',
+  '2xl': '32px',
+  '3xl': '48px',
 } as const;
 
-// ════════════════════════════════════
-// TIPOGRAFIA
-// ════════════════════════════════════
-
+// Typography
 export const fontSizes = {
-  xs: '0.6875rem',
-  sm: '0.8125rem',
-  base: '0.875rem',
-  md: '1rem',
-  lg: '1.125rem',
-  xl: '1.5rem',
-  '2xl': '2rem',
+  xs: '12px',
+  sm: '14px',
+  base: '16px',
+  md: '16px',
+  lg: '20px',
+  xl: '24px',
+  '2xl': '32px',
 } as const;
 
 export const fontWeights = {
@@ -146,52 +133,40 @@ export const fontWeights = {
 } as const;
 
 export const fontFamilies = {
-  body: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-  mono: "'JetBrains Mono', 'Fira Code', monospace",
+  body: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif',
+  mono: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace',
 } as const;
 
-// ════════════════════════════════════
-// RAIOS
-// ════════════════════════════════════
-
+// Radii
 export const radii = {
   sm: '6px',
-  md: '8px',
-  lg: '12px',
-  xl: '16px',
+  md: '6px',
+  lg: '6px',
+  xl: '6px',
   full: '9999px',
 } as const;
 
-// ════════════════════════════════════
-// SOMBRAS
-// ════════════════════════════════════
-
+// Shadows
 export const shadows = {
-  sm: '0 1px 2px rgba(0,0,0,0.05)',
-  md: '0 4px 12px rgba(0,0,0,0.1)',
-  lg: '0 8px 32px rgba(0,0,0,0.15)',
-  xl: '0 16px 48px rgba(0,0,0,0.2)',
+  sm: 'var(--shadow-sm)',
+  md: 'var(--shadow-md)',
+  lg: '0 8px 24px rgba(0, 0, 0, 0.12)',
+  xl: '0 12px 36px rgba(0, 0, 0, 0.16)',
   glow: {
-    teal: '0 0 12px rgba(0,158,153,0.3)',
-    green: '0 0 12px rgba(105,190,40,0.3)',
-    danger: '0 0 12px rgba(239,68,68,0.3)',
+    teal: 'none',
+    green: 'none',
+    danger: 'none',
   },
 } as const;
 
-// ════════════════════════════════════
-// TRANSITIONS
-// ════════════════════════════════════
-
+// Transitions
 export const transitions = {
   fast: '0.1s ease',
   normal: '0.15s ease',
-  slow: '0.3s ease',
+  slow: '0.2s ease',
 } as const;
 
-// ════════════════════════════════════
-// Z-INDEX
-// ════════════════════════════════════
-
+// Z-Index
 export const zIndex = {
   base: 1,
   dropdown: 100,
