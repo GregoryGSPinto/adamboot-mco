@@ -50,7 +50,7 @@ export interface RelatorioGerado {
 // GENERATORS
 // ════════════════════════════════════
 
-let _versaoCounter: Map<string, number> = new Map();
+const _versaoCounter: Map<string, number> = new Map();
 
 /**
  * Gerar número automático do projeto.
@@ -67,7 +67,7 @@ export function gerarNumeroProjeto(dataInicio: string, sequencia: number): strin
 export function gerarRelatorio(
   status: StatusProjeto,
   config: RelatorioConfig,
-  userId: string,
+  userId: string
 ): RelatorioGerado {
   const { projeto } = status;
   const versao = (_versaoCounter.get(projeto.id) ?? 0) + 1;
@@ -84,7 +84,9 @@ export function gerarRelatorio(
   linhas.push(`Número: ${gerarNumeroProjeto(projeto.dataInicio, 1)}`);
   linhas.push(`Grupo: Grupo CCQ`);
   linhas.push(`Líder: ${projeto.liderId}`);
-  linhas.push(`Fase atual: ${projeto.faseAtual}/${TOTAL_FASES} — ${FASE_LABELS[projeto.faseAtual]}`);
+  linhas.push(
+    `Fase atual: ${projeto.faseAtual}/${TOTAL_FASES} — ${FASE_LABELS[projeto.faseAtual]}`
+  );
   linhas.push(`Status: ${projeto.status}`);
   linhas.push(`Início: ${new Date(projeto.dataInicio).toLocaleDateString('pt-BR')}`);
   linhas.push(`Apresentação: ${new Date(projeto.dataApresentacao).toLocaleDateString('pt-BR')}`);
@@ -95,7 +97,7 @@ export function gerarRelatorio(
 
   // Membros
   linhas.push('─── EQUIPE ───');
-  projeto.membros.forEach((m) => {
+  projeto.membros.forEach(m => {
     const nome = config.anonimizar ? `Membro ${m.id.slice(-3)}` : m.nome;
     linhas.push(`  ${nome} (${m.papel})`);
   });
@@ -105,7 +107,7 @@ export function gerarRelatorio(
   linhas.push('─── PROGRESSO ───');
   for (let f = 1; f <= TOTAL_FASES; f++) {
     const label = FASE_LABELS[f];
-    const done = projeto.evidencias.filter((e) => e.requisitoId.startsWith(`F${f}_`)).length;
+    const done = projeto.evidencias.filter(e => e.requisitoId.startsWith(`F${f}_`)).length;
     const status_icon = f < projeto.faseAtual ? '✅' : f === projeto.faseAtual ? '🔄' : '⬜';
     linhas.push(`  ${status_icon} Fase ${f}: ${label} (${done} evidências)`);
   }
@@ -114,8 +116,10 @@ export function gerarRelatorio(
   // Bloqueios atuais
   if (status.bloqueio.pendentes.length > 0) {
     linhas.push('─── PENDÊNCIAS ATUAIS ───');
-    status.bloqueio.pendentes.forEach((p) => {
-      const nome = config.anonimizar ? `Responsável ${p.responsavelNome.slice(0, 1)}***` : p.responsavelNome;
+    status.bloqueio.pendentes.forEach(p => {
+      const nome = config.anonimizar
+        ? `Responsável ${p.responsavelNome.slice(0, 1)}***`
+        : p.responsavelNome;
       linhas.push(`  ⚠ ${p.requisito.descricaoCurta} → ${nome}`);
     });
     linhas.push('');
@@ -135,8 +139,10 @@ export function gerarRelatorio(
   // Evidências
   if (config.incluirEvidencias && projeto.evidencias.length > 0) {
     linhas.push('─── EVIDÊNCIAS REGISTRADAS ───');
-    projeto.evidencias.forEach((e) => {
-      linhas.push(`  ✓ ${e.requisitoId} — por ${config.anonimizar ? '***' : e.preenchidoPor} em ${e.dataRegistro}`);
+    projeto.evidencias.forEach(e => {
+      linhas.push(
+        `  ✓ ${e.requisitoId} — por ${config.anonimizar ? '***' : e.preenchidoPor} em ${e.dataRegistro}`
+      );
     });
     linhas.push('');
   }
@@ -146,10 +152,12 @@ export function gerarRelatorio(
     const reunioes = getReunioesDosProjeto(projeto.id);
     if (reunioes.length > 0) {
       linhas.push('─── REUNIÕES ───');
-      reunioes.forEach((r) => {
+      reunioes.forEach(r => {
         const data = new Date(r.inicio).toLocaleDateString('pt-BR');
-        const presentes = r.participantes.filter((p) => p.presente).length;
-        linhas.push(`  ${data} — ${presentes} presentes, ${r.decisoes.length} decisões, ${r.tarefas.length} tarefas`);
+        const presentes = r.participantes.filter(p => p.presente).length;
+        linhas.push(
+          `  ${data} — ${presentes} presentes, ${r.decisoes.length} decisões, ${r.tarefas.length} tarefas`
+        );
       });
       linhas.push('');
     }
@@ -183,13 +191,13 @@ export function exportarCSV(status: StatusProjeto): string {
   linhas.push('Fase,Requisito,Status,Responsável,Data');
 
   // Evidências cumpridas
-  projeto.evidencias.forEach((e) => {
+  projeto.evidencias.forEach(e => {
     const faseNum = parseInt(e.requisitoId.split('_')[0].replace('F', ''));
     linhas.push(`${faseNum},${e.requisitoId},Cumprido,${e.preenchidoPor},${e.dataRegistro}`);
   });
 
   // Pendentes
-  status.bloqueio.pendentes.forEach((p) => {
+  status.bloqueio.pendentes.forEach(p => {
     linhas.push(`${p.requisito.fase},${p.requisito.id},Pendente,${p.responsavelNome},`);
   });
 

@@ -1,0 +1,6 @@
+node_modules
+dist
+coverage
+*.lock
+CHANGELOG.md
+package-lock.json

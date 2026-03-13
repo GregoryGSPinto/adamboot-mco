@@ -1,10 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  podeExecutar,
-  perfilNoProjeto,
-  acoesPermitidas,
-  exigirPermissao,
-} from './index';
+import { podeExecutar, perfilNoProjeto, acoesPermitidas, exigirPermissao } from './index';
 
 describe('podeExecutar', () => {
   it('admin can do anything', () => {
@@ -38,6 +33,7 @@ describe('podeExecutar', () => {
   });
 
   it('rejects unknown action', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(podeExecutar('admin', 'nonexistent_action' as any)).toBe(false);
   });
 

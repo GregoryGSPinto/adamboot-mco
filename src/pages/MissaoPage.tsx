@@ -19,9 +19,9 @@ const URGENCIA_ICON: Record<string, string> = {
 
 const FOCUS_COLORS: Record<MissionPriority, { cor: string; bg: string }> = {
   CRITICAL: { cor: 'var(--sev-critica)', bg: 'var(--glow-red)' },
-  HIGH:     { cor: '#f97316', bg: 'rgba(249,115,22,0.12)' },
-  MEDIUM:   { cor: 'var(--vale-gold)', bg: 'var(--glow-gold)' },
-  LOW:      { cor: 'var(--vale-gray-light)', bg: 'rgba(116,118,120,0.12)' },
+  HIGH: { cor: '#f97316', bg: 'rgba(249,115,22,0.12)' },
+  MEDIUM: { cor: 'var(--vale-gold)', bg: 'var(--glow-gold)' },
+  LOW: { cor: 'var(--vale-gray-light)', bg: 'rgba(116,118,120,0.12)' },
 };
 
 /**
@@ -51,7 +51,15 @@ export function MissaoPage() {
   if (isLoading) {
     return (
       <div style={loadingStyle}>
-        <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--vale-teal)', animation: 'pulse-step 1s ease-in-out infinite' }} />
+        <div
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            background: 'var(--vale-teal)',
+            animation: 'pulse-step 1s ease-in-out infinite',
+          }}
+        />
         Carregando projetos...
       </div>
     );
@@ -59,21 +67,28 @@ export function MissaoPage() {
 
   // Ordenar: CRITICO/ALTO primeiro, depois resto
   const sorted = [...groups].sort((a, b) => {
-    const riskOrder: Record<string, number> = { CRITICO: 5, ALTO: 4, MEDIO: 3, BAIXO: 2, EM_DIA: 1 };
+    const riskOrder: Record<string, number> = {
+      CRITICO: 5,
+      ALTO: 4,
+      MEDIO: 3,
+      BAIXO: 2,
+      EM_DIA: 1,
+    };
     return (riskOrder[b.riskLevel] ?? 0) - (riskOrder[a.riskLevel] ?? 0);
   });
 
-  const criticos = sorted.filter((g) => g.riskLevel === 'CRITICO' || g.riskLevel === 'ALTO');
-  const demais = sorted.filter((g) => g.riskLevel !== 'CRITICO' && g.riskLevel !== 'ALTO');
+  const criticos = sorted.filter(g => g.riskLevel === 'CRITICO' || g.riskLevel === 'ALTO');
+  const demais = sorted.filter(g => g.riskLevel !== 'CRITICO' && g.riskLevel !== 'ALTO');
   const totalPendencias = sorted.reduce((sum, g) => sum + g.items.length, 0);
 
   // IA messages for top summary
-  const allAiMessages = sorted.flatMap((g) =>
-    g.aiMessages.map((m) => ({ ...m, projectName: g.projectName }))
-  ).sort((a, b) => {
-    const ord: Record<string, number> = { critico: 0, urgente: 1, atencao: 2, info: 3 };
-    return (ord[a.urgency] ?? 3) - (ord[b.urgency] ?? 3);
-  }).slice(0, 3);
+  const allAiMessages = sorted
+    .flatMap(g => g.aiMessages.map(m => ({ ...m, projectName: g.projectName })))
+    .sort((a, b) => {
+      const ord: Record<string, number> = { critico: 0, urgente: 1, atencao: 2, info: 3 };
+      return (ord[a.urgency] ?? 3) - (ord[b.urgency] ?? 3);
+    })
+    .slice(0, 3);
 
   const handleCardClick = (projectId: string) => {
     setExpandedId(expandedId === projectId ? null : projectId);
@@ -85,11 +100,19 @@ export function MissaoPage() {
   return (
     <div className="fade-in">
       {/* ═══ HEADER ═══ */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          marginBottom: '1.25rem',
+        }}
+      >
         <div>
           <h1 style={titleStyle}>Minha Missão</h1>
           <p style={subtitleStyle}>
-            {user?.name} — {totalPendencias === 0
+            {user?.name} —{' '}
+            {totalPendencias === 0
               ? 'todos os projetos em dia.'
               : `${totalPendencias} pendência${totalPendencias > 1 ? 's' : ''} em ${sorted.length} projeto${sorted.length > 1 ? 's' : ''}`}
           </p>
@@ -102,7 +125,7 @@ export function MissaoPage() {
       {/* ═══ FORM NOVO PROJETO ═══ */}
       {showNewProject && (
         <NewProjectForm
-          onSubmit={(dados) => {
+          onSubmit={dados => {
             addProjeto.mutate(dados, { onSuccess: () => setShowNewProject(false) });
           }}
           isPending={addProjeto.isPending}
@@ -126,19 +149,40 @@ export function MissaoPage() {
               const colors = FOCUS_COLORS[item.priority];
               return (
                 <div key={i} style={{ ...focusRowStyle, borderLeftColor: colors.cor }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, minWidth: 0 }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        flex: 1,
+                        minWidth: 0,
+                      }}
+                    >
                       <span style={{ ...focusDot, background: colors.cor }} />
                       <span style={focusName}>{item.responsibleName}</span>
                       <span style={focusArrow}>→</span>
                       <span style={focusMessage}>{item.message}</span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0, marginLeft: '0.5rem' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        flexShrink: 0,
+                        marginLeft: '0.5rem',
+                      }}
+                    >
                       <span style={focusProject}>({item.projectName})</span>
                       {item.daysLate != null && item.daysLate > 0 && (
-                        <span style={{ ...focusLate, color: colors.cor }}>
-                          {item.daysLate}d
-                        </span>
+                        <span style={{ ...focusLate, color: colors.cor }}>{item.daysLate}d</span>
                       )}
                     </div>
                   </div>
@@ -156,7 +200,14 @@ export function MissaoPage() {
         <div style={iaBoxStyle}>
           <div style={iaLabelStyle}>Coordenador IA</div>
           {allAiMessages.map((msg, i) => (
-            <div key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: i < allAiMessages.length - 1 ? '0.5rem' : 0 }}>
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                gap: '0.5rem',
+                marginBottom: i < allAiMessages.length - 1 ? '0.5rem' : 0,
+              }}
+            >
               <span>{URGENCIA_ICON[msg.urgency] ?? '🔵'}</span>
               <span style={{ fontSize: '0.875rem', lineHeight: 1.4 }}>{msg.text}</span>
             </div>
@@ -171,7 +222,7 @@ export function MissaoPage() {
             <span style={{ color: 'var(--sev-critica)' }}>⚠</span> Atenção imediata
           </h2>
           <div style={cardColumn}>
-            {criticos.map((g) => (
+            {criticos.map(g => (
               <div key={g.projectId}>
                 <MissionProjectCard group={g} onOpen={handleCardClick} />
                 {expandedId === g.projectId && (
@@ -187,7 +238,11 @@ export function MissaoPage() {
                       </button>
                       <button
                         onClick={() => {
-                          if (confirm(`Excluir projeto "${g.projectName}"? Esta ação não pode ser desfeita.`))
+                          if (
+                            confirm(
+                              `Excluir projeto "${g.projectName}"? Esta ação não pode ser desfeita.`
+                            )
+                          )
                             removeProjeto.mutate(g.projectId);
                         }}
                         style={deleteProjBtn}
@@ -208,7 +263,7 @@ export function MissaoPage() {
         <section>
           <h2 style={sectionTitle}>Projetos em andamento</h2>
           <div style={cardColumn}>
-            {demais.map((g) => (
+            {demais.map(g => (
               <div key={g.projectId}>
                 <MissionProjectCard group={g} onOpen={handleCardClick} />
                 {expandedId === g.projectId && (
@@ -224,7 +279,11 @@ export function MissaoPage() {
                       </button>
                       <button
                         onClick={() => {
-                          if (confirm(`Excluir projeto "${g.projectName}"? Esta ação não pode ser desfeita.`))
+                          if (
+                            confirm(
+                              `Excluir projeto "${g.projectName}"? Esta ação não pode ser desfeita.`
+                            )
+                          )
                             removeProjeto.mutate(g.projectId);
                         }}
                         style={deleteProjBtn}
@@ -255,8 +314,19 @@ export function MissaoPage() {
 // NOVO PROJETO — form inline
 // ════════════════════════════════════
 
-function NewProjectForm({ onSubmit, isPending }: {
-  onSubmit: (dados: any) => void;
+interface NovoProjetoFormData {
+  titulo: string;
+  dataApresentacao: string;
+  liderId: string;
+  facilitadorId: string;
+  membros: { id: string; nome: string; papel: 'lider' | 'membro' | 'facilitador' }[];
+}
+
+function NewProjectForm({
+  onSubmit,
+  isPending,
+}: {
+  onSubmit: (dados: NovoProjetoFormData) => void;
   isPending: boolean;
 }) {
   const [titulo, setTitulo] = useState('');
@@ -268,26 +338,40 @@ function NewProjectForm({ onSubmit, isPending }: {
       titulo: titulo.trim(),
       dataApresentacao: dataApr,
       liderId: MEMBROS[0]?.id ?? 'user-001',
-      facilitadorId: MEMBROS.find((m) => m.papel === 'facilitador')?.id ?? 'user-002',
+      facilitadorId: MEMBROS.find(m => m.papel === 'facilitador')?.id ?? 'user-002',
       membros: MEMBROS,
     });
   };
 
   return (
     <div style={newProjForm}>
-      <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--vale-teal-light)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>
+      <div
+        style={{
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          color: 'var(--vale-teal-light)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          marginBottom: '0.5rem',
+        }}
+      >
         Criar novo projeto
       </div>
       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
         <input
           value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
+          onChange={e => setTitulo(e.target.value)}
           placeholder="Nome do projeto..."
           style={formInput}
           autoFocus
-          onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
         />
-        <input type="date" value={dataApr} onChange={(e) => setDataApr(e.target.value)} style={{ ...formInput, maxWidth: 160 }} />
+        <input
+          type="date"
+          value={dataApr}
+          onChange={e => setDataApr(e.target.value)}
+          style={{ ...formInput, maxWidth: 160 }}
+        />
         <button onClick={handleSubmit} disabled={!titulo.trim() || isPending} style={formSubmitBtn}>
           {isPending ? '...' : 'Criar'}
         </button>
@@ -468,35 +552,64 @@ const focusLate: React.CSSProperties = {
 // ── CRUD styles ──
 
 const newProjectBtn: React.CSSProperties = {
-  padding: '0.4rem 0.875rem', fontSize: '0.75rem', fontWeight: 700,
-  border: '1px solid var(--vale-teal)', color: 'var(--vale-teal-light)',
-  background: 'var(--glow-teal)', borderRadius: 8, cursor: 'pointer',
-  fontFamily: 'var(--font-body)', whiteSpace: 'nowrap', flexShrink: 0,
+  padding: '0.4rem 0.875rem',
+  fontSize: '0.75rem',
+  fontWeight: 700,
+  border: '1px solid var(--vale-teal)',
+  color: 'var(--vale-teal-light)',
+  background: 'var(--glow-teal)',
+  borderRadius: 8,
+  cursor: 'pointer',
+  fontFamily: 'var(--font-body)',
+  whiteSpace: 'nowrap',
+  flexShrink: 0,
 };
 
 const deleteProjBtn: React.CSSProperties = {
-  width: 40, height: 40, borderRadius: 8,
-  border: '1px solid var(--sev-critica)', background: 'rgba(239,68,68,0.08)',
-  color: 'var(--sev-critica)', cursor: 'pointer',
-  display: 'flex', alignItems: 'center', justifyContent: 'center',
-  fontSize: '1rem', flexShrink: 0,
+  width: 40,
+  height: 40,
+  borderRadius: 8,
+  border: '1px solid var(--sev-critica)',
+  background: 'rgba(239,68,68,0.08)',
+  color: 'var(--sev-critica)',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '1rem',
+  flexShrink: 0,
 };
 
 const newProjForm: React.CSSProperties = {
-  padding: '1rem 1.25rem', background: 'var(--bg-card)',
-  border: '1px solid var(--vale-teal)', borderRadius: 'var(--radius-md)',
+  padding: '1rem 1.25rem',
+  background: 'var(--bg-card)',
+  border: '1px solid var(--vale-teal)',
+  borderRadius: 'var(--radius-md)',
   marginBottom: '1.25rem',
 };
 
 const formInput: React.CSSProperties = {
-  flex: 1, minWidth: 150, padding: '0.5rem 0.75rem',
-  background: 'var(--bg-input)', border: '1px solid var(--border-default)',
-  borderRadius: 6, color: 'var(--text-primary)', fontSize: '0.875rem',
-  fontFamily: 'var(--font-body)', outline: 'none',
+  flex: 1,
+  minWidth: 150,
+  padding: '0.5rem 0.75rem',
+  background: 'var(--bg-input)',
+  border: '1px solid var(--border-default)',
+  borderRadius: 6,
+  color: 'var(--text-primary)',
+  fontSize: '0.875rem',
+  fontFamily: 'var(--font-body)',
+  outline: 'none',
 };
 
 const formSubmitBtn: React.CSSProperties = {
-  padding: '0.5rem 1.25rem', background: 'var(--vale-teal)', color: 'white',
-  border: 'none', borderRadius: 6, fontSize: '0.875rem', fontWeight: 700,
-  cursor: 'pointer', fontFamily: 'var(--font-body)', whiteSpace: 'nowrap',
+  padding: '0.5rem 1.25rem',
+  background: 'var(--vale-teal)',
+  color: 'white',
+  border: 'none',
+  borderRadius: 6,
+  fontSize: '0.875rem',
+  fontWeight: 700,
+  cursor: 'pointer',
+  fontFamily: 'var(--font-body)',
+  whiteSpace: 'nowrap',
 };

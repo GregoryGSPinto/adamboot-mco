@@ -1,10 +1,4 @@
-import type {
-  EventoDto,
-  CicloDto,
-  CriarEventoDto,
-  FaseCiclo,
-  EvidenciaDto,
-} from '@shared/dto';
+import type { EventoDto, CicloDto, CriarEventoDto, FaseCiclo, EvidenciaDto } from '@shared/dto';
 
 /**
  * Mock DB — simula backend MCO com dados reais de ferrovia.
@@ -26,7 +20,8 @@ let eventosDb: EventoDto[] = [
     id: 'evt-001',
     data: '2026-02-15T08:30:00.000Z',
     local: 'Pátio Norte — Linha 3, Desvio T-12',
-    descricao: 'Freio manual do vagão GDE-45012 não destravou completamente durante inspeção pré-partida. Trem aguardou 22min para troca do vagão.',
+    descricao:
+      'Freio manual do vagão GDE-45012 não destravou completamente durante inspeção pré-partida. Trem aguardou 22min para troca do vagão.',
     tipo: 'INCIDENTE',
     severidade: 'ALTA',
     usuarioId: 'dev-user-001',
@@ -39,7 +34,8 @@ let eventosDb: EventoDto[] = [
     id: 'evt-002',
     data: '2026-02-16T14:10:00.000Z',
     local: 'Oficina Central — Box 7',
-    descricao: 'Mecânico detectou desgaste anormal na sapata de freio do truque dianteiro. Componente com 40% da vida útil restante mas apresentando trincas laterais.',
+    descricao:
+      'Mecânico detectou desgaste anormal na sapata de freio do truque dianteiro. Componente com 40% da vida útil restante mas apresentando trincas laterais.',
     tipo: 'DESVIO',
     severidade: 'MEDIA',
     usuarioId: 'dev-user-001',
@@ -52,7 +48,8 @@ let eventosDb: EventoDto[] = [
     id: 'evt-003',
     data: '2026-02-17T06:45:00.000Z',
     local: 'Pátio Sul — Via Principal, km 12.3',
-    descricao: 'Manobrador quase foi atingido por vagão em movimento. Sinalização sonora da locomotiva falhou. Operador viu o vagão a 15m e saiu a tempo.',
+    descricao:
+      'Manobrador quase foi atingido por vagão em movimento. Sinalização sonora da locomotiva falhou. Operador viu o vagão a 15m e saiu a tempo.',
     tipo: 'QUASE_ACIDENTE',
     severidade: 'CRITICA',
     usuarioId: 'user-002',
@@ -65,7 +62,8 @@ let eventosDb: EventoDto[] = [
     id: 'evt-004',
     data: '2026-02-18T10:00:00.000Z',
     local: 'Terminal de Carga — Balança Rodoferroviária',
-    descricao: 'Procedimento de pesagem foi realizado sem travamento dos calços. Vagão deslocou 30cm durante pesagem. Sem danos.',
+    descricao:
+      'Procedimento de pesagem foi realizado sem travamento dos calços. Vagão deslocou 30cm durante pesagem. Sem danos.',
     tipo: 'DESVIO',
     severidade: 'MEDIA',
     usuarioId: 'user-003',
@@ -78,7 +76,8 @@ let eventosDb: EventoDto[] = [
     id: 'evt-005',
     data: '2026-02-19T07:15:00.000Z',
     local: 'Via Permanente — Trecho Curva km 8.7',
-    descricao: 'Auditoria identificou 3 dormentes consecutivos com fixação comprometida no trecho curvo. Região de alta velocidade (60km/h). Necessita troca urgente.',
+    descricao:
+      'Auditoria identificou 3 dormentes consecutivos com fixação comprometida no trecho curvo. Região de alta velocidade (60km/h). Necessita troca urgente.',
     tipo: 'AUDITORIA',
     severidade: 'ALTA',
     usuarioId: 'user-004',
@@ -94,15 +93,22 @@ let eventosDb: EventoDto[] = [
 // ============================
 
 const FASES_LISTA: FaseCiclo[] = [
-  'REGISTRO', 'CLASSIFICACAO', 'INVESTIGACAO', 'CAUSA_RAIZ',
-  'CONTRAMEDIDA', 'ACAO_CORRETIVA', 'VERIFICACAO', 'PADRONIZACAO',
+  'REGISTRO',
+  'CLASSIFICACAO',
+  'INVESTIGACAO',
+  'CAUSA_RAIZ',
+  'CONTRAMEDIDA',
+  'ACAO_CORRETIVA',
+  'VERIFICACAO',
+  'PADRONIZACAO',
 ];
 
-let ciclosDb: CicloDto[] = [
+const ciclosDb: CicloDto[] = [
   {
     id: 'ciclo-001',
     titulo: 'Falha recorrente em freio manual — vagões série GDE',
-    descricao: 'Investigar causa raiz de falhas nos freios manuais dos vagões GDE que vêm causando atrasos no Pátio Norte. 3 ocorrências nos últimos 30 dias.',
+    descricao:
+      'Investigar causa raiz de falhas nos freios manuais dos vagões GDE que vêm causando atrasos no Pátio Norte. 3 ocorrências nos últimos 30 dias.',
     responsavelId: 'dev-user-001',
     eventoOrigemId: 'evt-001',
     faseAtual: 'CAUSA_RAIZ',
@@ -114,10 +120,34 @@ let ciclosDb: CicloDto[] = [
     evidenciaIds: ['evi-001'],
     conhecimentoId: null,
     historicoFases: [
-      { faseDe: 'REGISTRO', fasePara: 'REGISTRO', data: '2026-02-15T09:00:00Z', usuarioId: 'dev-user-001', observacao: 'Ciclo criado' },
-      { faseDe: 'REGISTRO', fasePara: 'CLASSIFICACAO', data: '2026-02-15T10:00:00Z', usuarioId: 'dev-user-001', observacao: 'Classificado como incidente operacional' },
-      { faseDe: 'CLASSIFICACAO', fasePara: 'INVESTIGACAO', data: '2026-02-15T14:00:00Z', usuarioId: 'dev-user-001', observacao: 'Equipe definida' },
-      { faseDe: 'INVESTIGACAO', fasePara: 'CAUSA_RAIZ', data: '2026-02-16T09:00:00Z', usuarioId: 'dev-user-001', observacao: 'Evidências coletadas, iniciando 5 Porquês' },
+      {
+        faseDe: 'REGISTRO',
+        fasePara: 'REGISTRO',
+        data: '2026-02-15T09:00:00Z',
+        usuarioId: 'dev-user-001',
+        observacao: 'Ciclo criado',
+      },
+      {
+        faseDe: 'REGISTRO',
+        fasePara: 'CLASSIFICACAO',
+        data: '2026-02-15T10:00:00Z',
+        usuarioId: 'dev-user-001',
+        observacao: 'Classificado como incidente operacional',
+      },
+      {
+        faseDe: 'CLASSIFICACAO',
+        fasePara: 'INVESTIGACAO',
+        data: '2026-02-15T14:00:00Z',
+        usuarioId: 'dev-user-001',
+        observacao: 'Equipe definida',
+      },
+      {
+        faseDe: 'INVESTIGACAO',
+        fasePara: 'CAUSA_RAIZ',
+        data: '2026-02-16T09:00:00Z',
+        usuarioId: 'dev-user-001',
+        observacao: 'Evidências coletadas, iniciando 5 Porquês',
+      },
     ],
     criadoEm: '2026-02-15T09:00:00.000Z',
     atualizadoEm: '2026-02-16T09:00:00.000Z',
@@ -125,7 +155,8 @@ let ciclosDb: CicloDto[] = [
   {
     id: 'ciclo-002',
     titulo: 'Falha na sinalização sonora de locomotiva em manobra',
-    descricao: 'Quase-acidente grave no Pátio Sul. Buzina da locomotiva SD-70 não soou durante manobra. Risco direto à vida do manobrador.',
+    descricao:
+      'Quase-acidente grave no Pátio Sul. Buzina da locomotiva SD-70 não soou durante manobra. Risco direto à vida do manobrador.',
     responsavelId: 'dev-user-001',
     eventoOrigemId: 'evt-003',
     faseAtual: 'INVESTIGACAO',
@@ -137,9 +168,27 @@ let ciclosDb: CicloDto[] = [
     evidenciaIds: [],
     conhecimentoId: null,
     historicoFases: [
-      { faseDe: 'REGISTRO', fasePara: 'REGISTRO', data: '2026-02-17T07:00:00Z', usuarioId: 'dev-user-001', observacao: 'Ciclo criado — prioridade máxima' },
-      { faseDe: 'REGISTRO', fasePara: 'CLASSIFICACAO', data: '2026-02-17T08:00:00Z', usuarioId: 'dev-user-001', observacao: 'Quase-acidente crítico' },
-      { faseDe: 'CLASSIFICACAO', fasePara: 'INVESTIGACAO', data: '2026-02-17T10:00:00Z', usuarioId: 'dev-user-001', observacao: 'Iniciando investigação' },
+      {
+        faseDe: 'REGISTRO',
+        fasePara: 'REGISTRO',
+        data: '2026-02-17T07:00:00Z',
+        usuarioId: 'dev-user-001',
+        observacao: 'Ciclo criado — prioridade máxima',
+      },
+      {
+        faseDe: 'REGISTRO',
+        fasePara: 'CLASSIFICACAO',
+        data: '2026-02-17T08:00:00Z',
+        usuarioId: 'dev-user-001',
+        observacao: 'Quase-acidente crítico',
+      },
+      {
+        faseDe: 'CLASSIFICACAO',
+        fasePara: 'INVESTIGACAO',
+        data: '2026-02-17T10:00:00Z',
+        usuarioId: 'dev-user-001',
+        observacao: 'Iniciando investigação',
+      },
     ],
     criadoEm: '2026-02-17T07:00:00.000Z',
     atualizadoEm: '2026-02-17T10:00:00.000Z',
@@ -185,7 +234,7 @@ const evidenciasDb: EvidenciaDto[] = [
 // ============================
 
 function delay(ms = 300): Promise<void> {
-  return new Promise((r) => setTimeout(r, ms + Math.random() * 200));
+  return new Promise(r => setTimeout(r, ms + Math.random() * 200));
 }
 
 export const mockDb = {
@@ -196,14 +245,14 @@ export const mockDb = {
     const limit = Number(params?.limit ?? 20);
     const start = (page - 1) * limit;
     const sorted = [...eventosDb].sort(
-      (a, b) => new Date(b.criadoEm).getTime() - new Date(a.criadoEm).getTime(),
+      (a, b) => new Date(b.criadoEm).getTime() - new Date(a.criadoEm).getTime()
     );
     return { data: sorted.slice(start, start + limit), total: eventosDb.length, page, limit };
   },
 
   async buscarEvento(id: string) {
     await delay();
-    const evt = eventosDb.find((e) => e.id === id);
+    const evt = eventosDb.find(e => e.id === id);
     if (!evt) throw new Error(`Evento ${id} não encontrado`);
     return evt;
   },
@@ -234,14 +283,14 @@ export const mockDb = {
 
   async buscarCiclo(id: string) {
     await delay();
-    const ciclo = ciclosDb.find((c) => c.id === id);
+    const ciclo = ciclosDb.find(c => c.id === id);
     if (!ciclo) throw new Error(`Ciclo ${id} não encontrado`);
     return ciclo;
   },
 
   async avancarFase(cicloId: string, observacao?: string): Promise<CicloDto> {
     await delay(500);
-    const ciclo = ciclosDb.find((c) => c.id === cicloId);
+    const ciclo = ciclosDb.find(c => c.id === cicloId);
     if (!ciclo) throw new Error(`Ciclo ${cicloId} não encontrado`);
 
     const idx = FASES_LISTA.indexOf(ciclo.faseAtual);
@@ -273,7 +322,7 @@ export const mockDb = {
     await delay();
     let result = evidenciasDb;
     if (params?.eventoId) {
-      result = result.filter((e) => e.eventoId === params.eventoId);
+      result = result.filter(e => e.eventoId === params.eventoId);
     }
     return { data: result, total: result.length, page: 1, limit: 50 };
   },
@@ -283,21 +332,21 @@ export const mockDb = {
     await delay(200);
     return {
       totalEventos: eventosDb.length,
-      eventosSemCiclo: eventosDb.filter((e) => !e.cicloMelhoriaId).length,
-      ciclosAtivos: ciclosDb.filter((c) => c.status === 'ATIVO').length,
-      ciclosConcluidos: ciclosDb.filter((c) => c.status === 'CONCLUIDO').length,
+      eventosSemCiclo: eventosDb.filter(e => !e.cicloMelhoriaId).length,
+      ciclosAtivos: ciclosDb.filter(c => c.status === 'ATIVO').length,
+      ciclosConcluidos: ciclosDb.filter(c => c.status === 'CONCLUIDO').length,
       porSeveridade: {
-        CRITICA: eventosDb.filter((e) => e.severidade === 'CRITICA').length,
-        ALTA: eventosDb.filter((e) => e.severidade === 'ALTA').length,
-        MEDIA: eventosDb.filter((e) => e.severidade === 'MEDIA').length,
-        BAIXA: eventosDb.filter((e) => e.severidade === 'BAIXA').length,
+        CRITICA: eventosDb.filter(e => e.severidade === 'CRITICA').length,
+        ALTA: eventosDb.filter(e => e.severidade === 'ALTA').length,
+        MEDIA: eventosDb.filter(e => e.severidade === 'MEDIA').length,
+        BAIXA: eventosDb.filter(e => e.severidade === 'BAIXA').length,
       },
       porTipo: {
-        INCIDENTE: eventosDb.filter((e) => e.tipo === 'INCIDENTE').length,
-        QUASE_ACIDENTE: eventosDb.filter((e) => e.tipo === 'QUASE_ACIDENTE').length,
-        DESVIO: eventosDb.filter((e) => e.tipo === 'DESVIO').length,
-        OBSERVACAO: eventosDb.filter((e) => e.tipo === 'OBSERVACAO').length,
-        AUDITORIA: eventosDb.filter((e) => e.tipo === 'AUDITORIA').length,
+        INCIDENTE: eventosDb.filter(e => e.tipo === 'INCIDENTE').length,
+        QUASE_ACIDENTE: eventosDb.filter(e => e.tipo === 'QUASE_ACIDENTE').length,
+        DESVIO: eventosDb.filter(e => e.tipo === 'DESVIO').length,
+        OBSERVACAO: eventosDb.filter(e => e.tipo === 'OBSERVACAO').length,
+        AUDITORIA: eventosDb.filter(e => e.tipo === 'AUDITORIA').length,
       },
     };
   },

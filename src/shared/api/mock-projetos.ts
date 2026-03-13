@@ -33,7 +33,7 @@ export const MEMBROS: Membro[] = [
 
 function gerarEvidenciasCompletas(fase: number): EvidenciaCumprida[] {
   const reqs = getRequisitosFase(fase);
-  return reqs.map((r) => ({
+  return reqs.map(r => ({
     requisitoId: r.id,
     preenchidoPor: 'user-gregory',
     dataRegistro: '2025-12-01',
@@ -54,19 +54,60 @@ function criarSeedData(): ProjetoMelhoria[] {
       status: 'ativo',
       membros: [...MEMBROS],
       evidencias: [
-        { requisitoId: 'F1_DESCRICAO_FACTUAL', preenchidoPor: 'user-gregory', dataRegistro: '2026-01-21' },
-        { requisitoId: 'F1_INDICADOR_NUMERICO', preenchidoPor: 'user-carlos', dataRegistro: '2026-01-22' },
+        {
+          requisitoId: 'F1_DESCRICAO_FACTUAL',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-01-21',
+        },
+        {
+          requisitoId: 'F1_INDICADOR_NUMERICO',
+          preenchidoPor: 'user-carlos',
+          dataRegistro: '2026-01-22',
+        },
         { requisitoId: 'F1_ESCOPO', preenchidoPor: 'user-gregory', dataRegistro: '2026-01-22' },
-        { requisitoId: 'F1_COMPOSICAO_GRUPO', preenchidoPor: 'user-gregory', dataRegistro: '2026-01-20' },
-        { requisitoId: 'F2_ESTRATIFICACAO', preenchidoPor: 'user-carlos', dataRegistro: '2026-01-28' },
+        {
+          requisitoId: 'F1_COMPOSICAO_GRUPO',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-01-20',
+        },
+        {
+          requisitoId: 'F2_ESTRATIFICACAO',
+          preenchidoPor: 'user-carlos',
+          dataRegistro: '2026-01-28',
+        },
         { requisitoId: 'F2_DADOS_CAMPO', preenchidoPor: 'user-joao', dataRegistro: '2026-01-30' },
-        { requisitoId: 'F2_GRAFICO_CONCENTRACAO', preenchidoPor: 'user-ana', dataRegistro: '2026-02-01' },
-        { requisitoId: 'F2_FOCO_PRIORIZADO', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-02' },
-        { requisitoId: 'F2_REUNIAO_DESDOBRAMENTO', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-02' },
-        { requisitoId: 'F3_META_NUMERICA', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-05' },
+        {
+          requisitoId: 'F2_GRAFICO_CONCENTRACAO',
+          preenchidoPor: 'user-ana',
+          dataRegistro: '2026-02-01',
+        },
+        {
+          requisitoId: 'F2_FOCO_PRIORIZADO',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-02-02',
+        },
+        {
+          requisitoId: 'F2_REUNIAO_DESDOBRAMENTO',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-02-02',
+        },
+        {
+          requisitoId: 'F3_META_NUMERICA',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-02-05',
+        },
         { requisitoId: 'F3_PRAZO_META', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-05' },
-        { requisitoId: 'F3_JUSTIFICATIVA_META', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-05' },
-        { requisitoId: 'F3_APROVACAO_FACILITADOR', preenchidoPor: 'user-marcos', dataRegistro: '2026-02-06', aprovado: true },
+        {
+          requisitoId: 'F3_JUSTIFICATIVA_META',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-02-05',
+        },
+        {
+          requisitoId: 'F3_APROVACAO_FACILITADOR',
+          preenchidoPor: 'user-marcos',
+          dataRegistro: '2026-02-06',
+          aprovado: true,
+        },
         { requisitoId: 'F4_ISHIKAWA', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-12' },
       ],
       acoes: [],
@@ -87,11 +128,27 @@ function criarSeedData(): ProjetoMelhoria[] {
         { id: 'user-marcos', nome: 'Marcos', papel: 'facilitador' },
       ],
       evidencias: [
-        { requisitoId: 'F1_DESCRICAO_FACTUAL', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-11' },
-        { requisitoId: 'F1_INDICADOR_NUMERICO', preenchidoPor: 'user-pedro', dataRegistro: '2026-02-12' },
+        {
+          requisitoId: 'F1_DESCRICAO_FACTUAL',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-02-11',
+        },
+        {
+          requisitoId: 'F1_INDICADOR_NUMERICO',
+          preenchidoPor: 'user-pedro',
+          dataRegistro: '2026-02-12',
+        },
         { requisitoId: 'F1_ESCOPO', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-12' },
-        { requisitoId: 'F1_COMPOSICAO_GRUPO', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-10' },
-        { requisitoId: 'F2_ESTRATIFICACAO', preenchidoPor: 'user-carlos', dataRegistro: '2026-02-16' },
+        {
+          requisitoId: 'F1_COMPOSICAO_GRUPO',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-02-10',
+        },
+        {
+          requisitoId: 'F2_ESTRATIFICACAO',
+          preenchidoPor: 'user-carlos',
+          dataRegistro: '2026-02-16',
+        },
       ],
       acoes: [],
     },
@@ -116,12 +173,35 @@ function criarSeedData(): ProjetoMelhoria[] {
         ...gerarEvidenciasCompletas(3),
         ...gerarEvidenciasCompletas(4),
         ...gerarEvidenciasCompletas(5),
-        { requisitoId: 'F6_PERCENTUAL_EXECUCAO', preenchidoPor: 'user-gregory', dataRegistro: '2026-02-15' },
+        {
+          requisitoId: 'F6_PERCENTUAL_EXECUCAO',
+          preenchidoPor: 'user-gregory',
+          dataRegistro: '2026-02-15',
+        },
       ],
       acoes: [
-        { id: 'acao-001', descricao: 'Instalar relógio digital na cabine de troca de turno', responsavelId: 'user-joao', dataPrevista: '2026-02-10', dataReal: '2026-02-09', status: 'concluido' },
-        { id: 'acao-002', descricao: 'Criar checklist de passagem de turno padronizado', responsavelId: 'user-ana', dataPrevista: '2026-02-15', status: 'atrasado' },
-        { id: 'acao-003', descricao: 'Treinar equipe do turno A no novo procedimento', responsavelId: 'user-gregory', dataPrevista: '2026-02-20', status: 'pendente' },
+        {
+          id: 'acao-001',
+          descricao: 'Instalar relógio digital na cabine de troca de turno',
+          responsavelId: 'user-joao',
+          dataPrevista: '2026-02-10',
+          dataReal: '2026-02-09',
+          status: 'concluido',
+        },
+        {
+          id: 'acao-002',
+          descricao: 'Criar checklist de passagem de turno padronizado',
+          responsavelId: 'user-ana',
+          dataPrevista: '2026-02-15',
+          status: 'atrasado',
+        },
+        {
+          id: 'acao-003',
+          descricao: 'Treinar equipe do turno A no novo procedimento',
+          responsavelId: 'user-gregory',
+          dataPrevista: '2026-02-20',
+          status: 'pendente',
+        },
       ],
     },
   ];
@@ -165,14 +245,14 @@ export function resetProjetosDb(): void {
 }
 
 // Inicializa a partir do localStorage
-let projetosDb: ProjetoMelhoria[] = loadDb();
+const projetosDb: ProjetoMelhoria[] = loadDb();
 
 // ============================
 // OPERAÇÕES
 // ============================
 
 function delay(ms = 300): Promise<void> {
-  return new Promise((r) => setTimeout(r, ms + Math.random() * 150));
+  return new Promise(r => setTimeout(r, ms + Math.random() * 150));
 }
 
 export const mockProjetosDb = {
@@ -183,7 +263,7 @@ export const mockProjetosDb = {
 
   async buscarProjeto(id: string): Promise<ProjetoMelhoria> {
     await delay();
-    const p = projetosDb.find((p) => p.id === id);
+    const p = projetosDb.find(p => p.id === id);
     if (!p) throw new Error(`Projeto ${id} não encontrado`);
     return { ...p };
   },
@@ -192,12 +272,12 @@ export const mockProjetosDb = {
     projetoId: string,
     requisitoId: string,
     userId: string,
-    aprovado?: boolean,
+    aprovado?: boolean
   ): Promise<void> {
     await delay(400);
-    const projeto = projetosDb.find((p) => p.id === projetoId);
+    const projeto = projetosDb.find(p => p.id === projetoId);
     if (!projeto) throw new Error('Projeto não encontrado');
-    projeto.evidencias = projeto.evidencias.filter((e) => e.requisitoId !== requisitoId);
+    projeto.evidencias = projeto.evidencias.filter(e => e.requisitoId !== requisitoId);
     projeto.evidencias.push({
       requisitoId,
       preenchidoPor: userId,
@@ -209,20 +289,24 @@ export const mockProjetosDb = {
 
   async avancarFase(projetoId: string): Promise<ProjetoMelhoria> {
     await delay(500);
-    const projeto = projetosDb.find((p) => p.id === projetoId);
+    const projeto = projetosDb.find(p => p.id === projetoId);
     if (!projeto) throw new Error('Projeto não encontrado');
     const obrig = getReqObrig(projeto.faseAtual);
-    const evidenciaIds = new Set(projeto.evidencias.map((e) => e.requisitoId));
-    const faltantes = obrig.filter((r) => {
+    const evidenciaIds = new Set(projeto.evidencias.map(e => e.requisitoId));
+    const faltantes = obrig.filter(r => {
       if (r.tipoValidacao === 'aprovacao') {
-        const ev = projeto.evidencias.find((e) => e.requisitoId === r.id);
+        const ev = projeto.evidencias.find(e => e.requisitoId === r.id);
         return !ev?.aprovado;
       }
       return !evidenciaIds.has(r.id);
     });
-    if (faltantes.length > 0) throw new Error(`Ainda faltam ${faltantes.length} requisitos obrigatórios`);
+    if (faltantes.length > 0)
+      throw new Error(`Ainda faltam ${faltantes.length} requisitos obrigatórios`);
     projeto.faseAtual += 1;
-    if (projeto.faseAtual > 8) { projeto.faseAtual = 8; projeto.status = 'concluido'; }
+    if (projeto.faseAtual > 8) {
+      projeto.faseAtual = 8;
+      projeto.status = 'concluido';
+    }
     persist(projetosDb);
     return { ...projeto };
   },
@@ -231,9 +315,9 @@ export const mockProjetosDb = {
     await delay(200);
     return {
       totalProjetos: projetosDb.length,
-      ativos: projetosDb.filter((p) => p.status === 'ativo').length,
-      atrasados: projetosDb.filter((p) => p.status === 'atrasado').length,
-      concluidos: projetosDb.filter((p) => p.status === 'concluido').length,
+      ativos: projetosDb.filter(p => p.status === 'ativo').length,
+      atrasados: projetosDb.filter(p => p.status === 'atrasado').length,
+      concluidos: projetosDb.filter(p => p.status === 'concluido').length,
     };
   },
 
@@ -241,9 +325,9 @@ export const mockProjetosDb = {
 
   async removerEvidencia(projetoId: string, requisitoId: string): Promise<void> {
     await delay(300);
-    const projeto = projetosDb.find((p) => p.id === projetoId);
+    const projeto = projetosDb.find(p => p.id === projetoId);
     if (!projeto) throw new Error('Projeto não encontrado');
-    projeto.evidencias = projeto.evidencias.filter((e) => e.requisitoId !== requisitoId);
+    projeto.evidencias = projeto.evidencias.filter(e => e.requisitoId !== requisitoId);
     persist(projetosDb);
   },
 
@@ -251,7 +335,7 @@ export const mockProjetosDb = {
 
   async adicionarAcao(projetoId: string, acao: Omit<AcaoProjeto, 'id'>): Promise<AcaoProjeto> {
     await delay(300);
-    const projeto = projetosDb.find((p) => p.id === projetoId);
+    const projeto = projetosDb.find(p => p.id === projetoId);
     if (!projeto) throw new Error('Projeto não encontrado');
     const nova: AcaoProjeto = { ...acao, id: `acao-${Date.now()}` };
     projeto.acoes.push(nova);
@@ -261,17 +345,21 @@ export const mockProjetosDb = {
 
   async removerAcao(projetoId: string, acaoId: string): Promise<void> {
     await delay(300);
-    const projeto = projetosDb.find((p) => p.id === projetoId);
+    const projeto = projetosDb.find(p => p.id === projetoId);
     if (!projeto) throw new Error('Projeto não encontrado');
-    projeto.acoes = projeto.acoes.filter((a) => a.id !== acaoId);
+    projeto.acoes = projeto.acoes.filter(a => a.id !== acaoId);
     persist(projetosDb);
   },
 
-  async atualizarAcao(projetoId: string, acaoId: string, update: Partial<AcaoProjeto>): Promise<void> {
+  async atualizarAcao(
+    projetoId: string,
+    acaoId: string,
+    update: Partial<AcaoProjeto>
+  ): Promise<void> {
     await delay(300);
-    const projeto = projetosDb.find((p) => p.id === projetoId);
+    const projeto = projetosDb.find(p => p.id === projetoId);
     if (!projeto) throw new Error('Projeto não encontrado');
-    const acao = projeto.acoes.find((a) => a.id === acaoId);
+    const acao = projeto.acoes.find(a => a.id === acaoId);
     if (!acao) throw new Error('Ação não encontrada');
     Object.assign(acao, update);
     persist(projetosDb);
@@ -307,7 +395,7 @@ export const mockProjetosDb = {
 
   async removerProjeto(projetoId: string): Promise<void> {
     await delay(300);
-    const idx = projetosDb.findIndex((p) => p.id === projetoId);
+    const idx = projetosDb.findIndex(p => p.id === projetoId);
     if (idx < 0) throw new Error('Projeto não encontrado');
     projetosDb.splice(idx, 1);
     persist(projetosDb);

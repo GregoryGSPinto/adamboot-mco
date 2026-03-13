@@ -30,12 +30,14 @@ export function ProtectedRoute({ children, requiredRoles }: Props) {
   }
 
   if (requiredRoles && requiredRoles.length > 0) {
-    const userRoles = devUser.roles as string[];
-    const hasRole = requiredRoles.some((role) => userRoles.includes(role));
+    const userRoles = [...devUser.roles] as string[];
+    const hasRole = requiredRoles.some(role => userRoles.includes(role));
     if (!hasRole) {
       return (
         <div style={{ padding: '3rem', textAlign: 'center' }}>
-          <p style={{ color: 'var(--text-secondary)' }}>Acesso restrito. Voce nao tem permissao para acessar esta pagina.</p>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            Acesso restrito. Voce nao tem permissao para acessar esta pagina.
+          </p>
         </div>
       );
     }

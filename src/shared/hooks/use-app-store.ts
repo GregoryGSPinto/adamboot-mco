@@ -12,6 +12,7 @@ interface Notification {
   id: string;
   type: 'success' | 'error' | 'warning' | 'info';
   message: string;
+  timeoutId?: number;
 }
 
 function getInitialTheme(): Theme {
@@ -56,27 +57,37 @@ export const useAppStore = create<AppState>((set, get) => {
       applyTheme(next);
       set({ theme: next });
     },
-    setTheme: (t) => {
+    setTheme: t => {
       applyTheme(t);
       set({ theme: t });
     },
 
     sidebarOpen: true,
-    toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
+    toggleSidebar: () => set(s => ({ sidebarOpen: !s.sidebarOpen })),
 
     notifications: [],
     notify: (type, message) => {
       const id = crypto.randomUUID();
-      set((s) => ({ notifications: [...s.notifications, { id, type, message }] }));
+
       // Auto-dismiss after 4s
-      setTimeout(() => {
-        set((s) => ({ notifications: s.notifications.filter((n) => n.id !== id) }));
+      const timeoutId = window.setTimeout(() => {
+        set(s => ({ notifications: s.notifications.filter(n => n.id !== id) }));
       }, 4000);
+
+      set(s => ({
+        notifications: [...s.notifications, { id, type, message, timeoutId }],
+      }));
     },
-    dismissNotification: (id) =>
-      set((s) => ({ notifications: s.notifications.filter((n) => n.id !== id) })),
+    dismissNotification: id =>
+      set(s => {
+        const notification = s.notifications.find(n => n.id === id);
+        if (notification?.timeoutId) {
+          clearTimeout(notification.timeoutId);
+        }
+        return { notifications: s.notifications.filter(n => n.id !== id) };
+      }),
 
     tenantId: 'vale-ferrovias',
-    setTenantId: (id) => set({ tenantId: id }),
+    setTenantId: id => set({ tenantId: id }),
   };
 });

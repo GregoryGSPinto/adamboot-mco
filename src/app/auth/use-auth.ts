@@ -12,8 +12,10 @@ import { devUser, isDevAuth, devLogin, devLogout, isDevAuthenticated } from './d
  */
 export function useAuth() {
   if (isDevAuth) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     return useDevAuth();
   }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useMsalAuth();
 }
 
@@ -45,9 +47,7 @@ function useDevAuth() {
     isAuthenticated: authenticated,
     isLoading: false,
     account: null,
-    user: authenticated
-      ? { id: devUser.id, name: devUser.name, email: devUser.email }
-      : null,
+    user: authenticated ? { id: devUser.id, name: devUser.name, email: devUser.email } : null,
     login,
     logout,
     loginError,

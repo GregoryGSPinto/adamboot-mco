@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { evaluateBehavior, type ProjectBehaviorProfile } from './reactionEngine';
 
-function makeMemory(overrides: Record<string, any> = {}) {
+function makeMemory(overrides: Record<string, unknown> = {}) {
   const now = Date.now();
   return {
     lastEventAt: now,
