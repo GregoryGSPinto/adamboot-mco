@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 // dev-auth reads env at module load, so we need to set up env before import
 // We test the exported functions' behavior
